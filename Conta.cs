@@ -10,6 +10,7 @@ namespace Sistema_Gerenciamento_Despesas
 {
     internal class Conta
     {
+        //atributos 
         private int id;
         private string banco, agencia, numeroConta;
         private double saldo;
@@ -66,18 +67,29 @@ namespace Sistema_Gerenciamento_Despesas
             this.saldo = saldo;
         }
 
+        public List<Transacao> getTransacoes() 
+        {
+            return minhastransacoes;
+        }
+
+        public void setTransacoes(List<Transacao> minhastransacoes) 
+        { 
+            this.minhastransacoes = minhastransacoes;
+        }
+
         //Construtor objeto Conta
-        public Conta(int id, string banco, string agencia, string numeroConta, double saldo)
+        public Conta(int id, string banco, string agencia, string numeroConta, double saldo, List<Transacao> minhasTransacoes)
         {
             this.id = id;
             this.banco = banco;
             this.agencia = agencia;
             this.numeroConta = numeroConta;
             this.saldo = saldo;
+            this.minhastransacoes = minhasTransacoes;
 
         }
 
-        //override do ToString para os dados da Conta
+        //override ToString para retornar os dados da Conta
         public override string ToString()
         {
             return
@@ -94,10 +106,13 @@ namespace Sistema_Gerenciamento_Despesas
         //método que cria Contas e adiciona a uma Lista de Contas
         public List<Conta> CriarConta(List<Conta> minhasContas)
         {
+            
             String banco = null, agencia = null, numeroConta = null;
             double saldo = 0;
             int id = 0;
+            List<Transacao> minhasTransacoes = null;
 
+            //input usuario p/ criacao objeto
             Console.WriteLine("Para criar uma conta adicione as informacoes solicitadas abaixo:");
 
             Console.WriteLine("Digite o nome do seu banco:");
@@ -111,7 +126,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             id = criaId(minhasContas);
 
-            Conta c = new Conta(id, banco, agencia, numeroConta, saldo);
+            Conta c = new Conta(id, banco, agencia, numeroConta, saldo, minhasTransacoes);
 
             minhasContas.Add(c);
 
@@ -119,7 +134,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
-        //método que cria um id conforme a quantidade de contas existentes
+        //método que cria um id conforme a quantidade de contas existentes na lista de contas 
         public int criaId(List<Conta> minhasContas)
         {
 
@@ -135,7 +150,7 @@ namespace Sistema_Gerenciamento_Despesas
             return id;
         }
 
-
+        //método que remove a conta selecionada pelo usuario
         public List<Conta> RemoverConta(List<Conta> minhasContas)
         {
             Console.WriteLine("Estas são suas contas ativas:");
@@ -151,11 +166,38 @@ namespace Sistema_Gerenciamento_Despesas
 
             minhasContas.RemoveAt(contaRemover);
 
-            Console.WriteLine($" Conta: {getId} removida com sucesso!");
+            Console.WriteLine($" Conta: {getId} - {getBanco} removida com sucesso!");
 
             return minhasContas;
         }
-        //public List<Conta> mesclarContas(List<Conta> minhasContas)
+
+        //metodo que uni as transações da conta 2 na conta 1
+        public List<Conta> mesclarContas(List<Conta> minhasContas) 
+        {
+            Console.WriteLine("Estas são suas contas ativas:");
+
+            foreach (Conta c in minhasContas)
+            {
+                c.ToString();
+            }
+
+            Console.WriteLine("Digite a id da conta que receberá as transações da outra conta:");
+            int idConta1 = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite a id da conta que deseja unificar as transacoes com a primeira:");
+            int idConta2 = int.Parse(Console.ReadLine());
+
+            List<Transacao> lista1 = minhasContas[idConta1].getTransacoes(); //listas recebem as transações de cada conta especificada
+            List<Transacao> lista2 = minhasContas[idConta2].getTransacoes();
+
+            List<Transacao> mesclada = lista1.Concat(lista2).ToList(); //as transacoes da lista 2 são unidas com as da lista 1 
+            lista1 = mesclada.OrderBy(Transacao => Transacao.getData()).ToList(); //lista 1 receberá a lista unida e ordenada por data crescente
+
+            minhasContas[idConta1].setTransacoes(lista1); //aqui a conta 1 recebera a uniao de transações da conta 1 e 2
+
+
+            return minhasContas;
+        }
     }
 
 }

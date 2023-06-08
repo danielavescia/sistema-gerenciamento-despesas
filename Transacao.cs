@@ -13,7 +13,7 @@ namespace Sistema_Gerenciamento_Despesas
        private double valor;
 
         //propriedades de acesso
-        public DateOnly GetData() 
+        public DateOnly getData() 
         { 
             return data;
         }
@@ -76,7 +76,7 @@ namespace Sistema_Gerenciamento_Despesas
         {
             return 
                $@"
-               Data {GetData}
+               Data {getData}
                Tipo: {getTipo}
                Categoria: {getCategoria}
                Descricao: {getDescricao}
