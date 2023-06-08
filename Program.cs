@@ -44,12 +44,12 @@ class Program
 
                 case 3:
 
-                   
+
                     //Visualizar resumo das contas, resumo da receita e despesa do mês e verificar saldo dos ultimos 6 meses
-                    Console.WriteLine("___________________________________________________________________________________");
+                    Console.WriteLine("____________________________________________");
                     Console.WriteLine("PAINEL GERAL: ");
-                    Console.WriteLine("___________________________________________________________________________________");
-   
+                    Console.WriteLine("____________________________________________");
+
 
                     break;
 
@@ -74,9 +74,13 @@ class Program
 
     public static void ImprimeMenuInicial()
     {
-        Console.WriteLine("=============================== Sistema de Gerencimaneto de Despesas ======================================");
+        Console.WriteLine("____________________________________________");
+        Console.WriteLine("    Sistema de Gerencimaneto de Despesas    ");
+        Console.WriteLine("____________________________________________");
         Console.WriteLine();
-        Console.WriteLine("=========== MENU INICIAL ===========");
+        Console.WriteLine("____________________________________________");
+        Console.WriteLine("                 MENU INICIAL               ");
+        Console.WriteLine("____________________________________________");
         Console.WriteLine("1. Gerenciar Contas");
         Console.WriteLine("2. Gerenciar transações");
         Console.WriteLine("3. Painel Geral");

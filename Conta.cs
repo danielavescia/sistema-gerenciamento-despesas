@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Sistema_Gerenciamento_Despesas
 {
@@ -12,16 +13,17 @@ namespace Sistema_Gerenciamento_Despesas
         private int id;
         private string banco, agencia, numeroConta;
         private double saldo;
+        private List<Transacao> minhastransacoes;
 
         // Propriedades (getters e setters) 
-        public int getId() 
+        public int getId()
         {
             return id;
         }
 
-        public void setId(int id) 
-        { 
-           this.id = id;
+        public void setId(int id)
+        {
+            this.id = id;
         }
 
         public string getBanco()
@@ -74,10 +76,11 @@ namespace Sistema_Gerenciamento_Despesas
             this.saldo = saldo;
 
         }
-       
+
+        //override do ToString para os dados da Conta
         public override string ToString()
         {
-            return 
+            return
                $@"
                CONTA {getId}
                Banco: {getBanco}
@@ -87,7 +90,7 @@ namespace Sistema_Gerenciamento_Despesas
                 ";
         }
 
-    
+
         //método que cria Contas e adiciona a uma Lista de Contas
         public List<Conta> CriarConta(List<Conta> minhasContas)
         {
@@ -117,14 +120,14 @@ namespace Sistema_Gerenciamento_Despesas
         }
 
         //método que cria um id conforme a quantidade de contas existentes
-        public int criaId(List<Conta> minhasContas) 
+        public int criaId(List<Conta> minhasContas)
         {
 
             if (minhasContas == null)
             {
                 return id = 1;
             }
-            
+
             else
             {
                 id = minhasContas.Count + 1;
@@ -133,19 +136,26 @@ namespace Sistema_Gerenciamento_Despesas
         }
 
 
-        public List<Conta> RemoverConta(List<Conta> minhasContas) 
+        public List<Conta> RemoverConta(List<Conta> minhasContas)
         {
-            Console.WriteLine("Estas são suas contas ativas");
+            Console.WriteLine("Estas são suas contas ativas:");
 
-            foreach (Conta c in minhasContas) 
+            foreach (Conta c in minhasContas)
             {
                 c.ToString();
             }
 
-            Console.WriteLine("Digite a id de qual gostaria de remover:");
+            Console.WriteLine("Lembre-se ao remover sua conta você irá perder todos os dados relacionados a ela");
+            Console.WriteLine("Digite o Id da conta que deseja remover:");
+            int contaRemover = int.Parse(Console.ReadLine());
+
+            minhasContas.RemoveAt(contaRemover);
+
+            Console.WriteLine($" Conta: {getId} removida com sucesso!");
+
+            return minhasContas;
         }
-
-
+        //public List<Conta> mesclarContas(List<Conta> minhasContas)
     }
 
 }

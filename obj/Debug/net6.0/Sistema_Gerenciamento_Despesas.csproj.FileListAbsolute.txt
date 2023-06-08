@@ -1,0 +1,5 @@
+C:\Users\danie\OneDrive\Área de Trabalho\Sistema_Gerenciamento_Despesas\obj\Debug\net6.0\Sistema_Gerenciamento_Despesas.csproj.AssemblyReference.cache
+C:\Users\danie\OneDrive\Área de Trabalho\Sistema_Gerenciamento_Despesas\obj\Debug\net6.0\Sistema_Gerenciamento_Despesas.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danie\OneDrive\Área de Trabalho\Sistema_Gerenciamento_Despesas\obj\Debug\net6.0\Sistema_Gerenciamento_Despesas.AssemblyInfoInputs.cache
+C:\Users\danie\OneDrive\Área de Trabalho\Sistema_Gerenciamento_Despesas\obj\Debug\net6.0\Sistema_Gerenciamento_Despesas.AssemblyInfo.cs
+C:\Users\danie\OneDrive\Área de Trabalho\Sistema_Gerenciamento_Despesas\obj\Debug\net6.0\Sistema_Gerenciamento_Despesas.csproj.CoreCompileInputs.cache
