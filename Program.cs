@@ -7,6 +7,7 @@ internal class Program
 
     static void Main(string[] args)
     {
+        //cricao dos dados de exemplo solicitado
         List<Conta> minhasContas = new List<Conta>();
         List<Transacao> minhasTransacoes1 = new List<Transacao>();
         List<Transacao> minhasTransacoes2 = new List<Transacao>();
@@ -32,14 +33,12 @@ internal class Program
         Transacao transacao8 = new Transacao(new DateOnly(2023, 3, 8), "Despesa", "Saúde", "Consulta médica", 200.00);
 
         // Criando a lista de transações 1
-
         minhasTransacoes1.Add(transacao1);
         minhasTransacoes1.Add(transacao2);
         minhasTransacoes1.Add(transacao3);
         minhasTransacoes1.Add(transacao4);
 
         // Criando a lista de transações 2
-
         minhasTransacoes2.Add(transacao5);
         minhasTransacoes2.Add(transacao6);
         minhasTransacoes2.Add(transacao7);

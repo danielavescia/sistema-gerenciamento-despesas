@@ -112,8 +112,10 @@ namespace Sistema_Gerenciamento_Despesas
             List<Transacao> minhasTransacoes;
 
             //input usuario p/ criacao objeto
+            Console.WriteLine();
             Console.WriteLine("Para criar uma conta adicione as informacoes solicitadas abaixo:");
             Console.WriteLine();
+
             Console.WriteLine("Digite o nome do seu banco:");
             banco = Console.ReadLine();
 
@@ -154,17 +156,30 @@ namespace Sistema_Gerenciamento_Despesas
         public static List<Conta> RemoverConta(List<Conta> minhasContas)
         {
             ImprimirContasAtivas(minhasContas); // Imprime as contas ativas
+            
+            Console.WriteLine();
             Console.WriteLine(".------------------------------------------------------------------------------------------.");
             Console.WriteLine("|LEMBRE-SE QUE AO REMOVER SUA CONTA, VOCE IRA PERDER TODAS AS TRANSACOES RELACIONADAS A ELA|");
             Console.WriteLine(".------------------------------------------------------------------------------------------.");
-
-            Console.WriteLine("Digite a Id da conta que deseja remover:");
-            int contaRemover = int.Parse(Console.ReadLine()) -1; //id fornecida -1 == posicao na lista pq lista começa 0
             Console.WriteLine();
 
-            Console.WriteLine($" Conta: {minhasContas[contaRemover].getId()} - {minhasContas[contaRemover].getBanco()} removida com sucesso!");
-            minhasContas.RemoveAt(contaRemover); //remove a conta da lista conforme
+            if (minhasContas == null)
+            {
+                Console.WriteLine(".----------------------------------------.");
+                Console.WriteLine("|VOCE NAO POSSUI NENHUMA CONTA CADASTRADA|");
+                Console.WriteLine(".----------------------------------------.");
 
+            } else {
+
+                Console.WriteLine("Digite a Id da conta que deseja remover:");
+                int contaRemover = int.Parse(Console.ReadLine()) - 1; //id fornecida -1 == posicao na lista pq lista começa 0
+                Console.WriteLine();
+
+             
+                Console.WriteLine($"| Conta: {minhasContas[contaRemover].getId()} - {minhasContas[contaRemover].getBanco()} removida com sucesso!");
+                Console.WriteLine();
+                minhasContas.RemoveAt(contaRemover); //remove a conta da lista conforme
+            }
 
             return minhasContas;
         }
@@ -175,19 +190,32 @@ namespace Sistema_Gerenciamento_Despesas
             ImprimirContasAtivas(minhasContas);
            
             Console.WriteLine("Digite a id da conta que recebera as transacoes da outra conta:");
-            int idConta1 = int.Parse(Console.ReadLine())-1; //diminuir -1 para pegar o index correto na lista
+            int idConta1 = int.Parse(Console.ReadLine()); 
 
             Console.WriteLine("Digite a id da conta que deseja unificar as transacoes com a primeira:");
-            int idConta2 = int.Parse(Console.ReadLine())-1; //diminuir -1 para pegar o index correto na lista
-           
+            int idConta2 = int.Parse(Console.ReadLine());
 
-            List<Transacao> lista1 = minhasContas[idConta1].getTransacoes(); //listas recebem as transações de cada conta especificada
-            List<Transacao> lista2 = minhasContas[idConta2].getTransacoes();
+            //listas recebem as transações de cada conta especificada
+            List<Transacao> lista1 = minhasContas[idConta1 - 1].getTransacoes(); 
+            List<Transacao> lista2 = minhasContas[idConta2 - 1].getTransacoes(); //diminuir -1 para pegar o index correto na lista
 
-            List<Transacao> mesclada = lista1.Concat(lista2).ToList(); //as transacoes da lista 2 são unidas com as da lista 1 
-            lista1 = mesclada.OrderBy(Transacao => Transacao.getData()).ToList(); //lista 1 receberá a lista unida e ordenada por data crescente
+            if (lista1 == null)
+            {
+                Console.WriteLine(".--------------------------------------------------------.");
+                Console.WriteLine($"|A conta do banco de ID: {idConta1} nao possui transacoes|");
+                Console.WriteLine(".--------------------------------------------------------.");
 
-            minhasContas[idConta1].setTransacoes(lista1); //aqui a conta 1 recebera a uniao de transações da conta 1 e 2
+            } else if (lista2 == null) {
+                Console.WriteLine(".--------------------------------------------------------.");
+                Console.WriteLine($"|A conta do banco de ID: {idConta2} nao possui transacoes|");
+                Console.WriteLine(".--------------------------------------------------------.");
+
+            } else {
+                List<Transacao> mesclada = lista1.Concat(lista2).ToList(); //as transacoes da lista 2 são unidas com as da lista 1 
+                lista1 = mesclada.OrderBy(Transacao => Transacao.getData()).ToList(); //lista 1 receberá a lista unida e ordenada por data crescente
+
+                minhasContas[idConta1].setTransacoes(lista1); //aqui a conta 1 recebera a uniao de transações da conta 1 e 2
+            }
 
             return minhasContas;
         }
