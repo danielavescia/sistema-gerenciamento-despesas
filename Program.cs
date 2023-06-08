@@ -1,6 +1,13 @@
 ﻿
-class Program
-{
+using Sistema_Gerenciamento_Despesas;
+using System.Collections.Generic;
+
+internal class Program
+{ 
+    //variaveis conta
+    static List<Conta> minhasContas = new List<Conta>();
+    static List<Transacao> minhasTransacoes;
+
     static void Main(string[] args)
     {
         //variaveis relacionadas ao menu
@@ -23,7 +30,7 @@ class Program
 
                     ImprimeMenuCase1();
                     int opcaoMenu1 = int.Parse(Console.ReadLine());
-
+                    SwitchCase1(opcaoMenu1);
                     break;
 
                 // Exibir e adicionar informações especificas de cada conta como : extrato, adicionar transacoes, transferir fundos, editar ultima transacao
@@ -89,6 +96,7 @@ class Program
         Console.WriteLine("1. Cadastrar conta");
         Console.WriteLine("2. Remover conta");
         Console.WriteLine("3. Mesclar contas");
+        Console.WriteLine("4. Voltar ao menu inicial");
         Console.WriteLine();
         Console.WriteLine("Digite a opção desejada:");
     }
@@ -103,6 +111,7 @@ class Program
         Console.WriteLine("2. Incluir transação");
         Console.WriteLine("3. Editar a última transação");
         Console.WriteLine("4. Transferir fundos");
+        Console.WriteLine("5. Voltar ao menu inicial");
         Console.WriteLine();
         Console.WriteLine("Digite a opção desejada:");
     }
@@ -118,9 +127,42 @@ class Program
         Console.WriteLine("3. Editar a última transação");
         Console.WriteLine("4. Resumo de receitas e despesas do mês");
         Console.WriteLine("5. FUNCIONALIDADE X");
+        Console.WriteLine("6. Voltar ao menu inicial");
         Console.WriteLine();
         Console.WriteLine("Digite a opção desejada:");
     }
+
+    public static void SwitchCase1(int opcaoMenu1) 
+    {
+        switch (opcaoMenu1)
+        {
+            // Cadastrar conta
+            case 1:
+               Conta.CriarConta(minhasContas);
+               break;
+
+            // Remover conta;
+            case 2:
+                Conta.RemoverConta(minhasContas);
+                break;
+
+            // Mesclar contas
+            case 3:
+                Conta.MesclarContas(minhasContas);
+                break;
+
+            //sair p/ menu inicial
+            case 4:
+                Console.WriteLine("Retornando ao menu inicial...");
+                return;
+
+            default:
+                Console.WriteLine("Digite uma opcao valida!");
+                break;
+
+        }
+    }
+
 }
 
 

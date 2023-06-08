@@ -67,50 +67,49 @@ namespace Sistema_Gerenciamento_Despesas
             this.saldo = saldo;
         }
 
-        public List<Transacao> getTransacoes() 
+        public List<Transacao> getTransacoes()
         {
             return minhastransacoes;
         }
 
-        public void setTransacoes(List<Transacao> minhastransacoes) 
-        { 
+        public void setTransacoes(List<Transacao> minhastransacoes)
+        {
             this.minhastransacoes = minhastransacoes;
         }
 
         //Construtor objeto Conta
-        public Conta(int id, string banco, string agencia, string numeroConta, double saldo, List<Transacao> minhasTransacoes)
+        public Conta(int id, string banco, string agencia, string numeroConta, double saldo)
         {
             this.id = id;
             this.banco = banco;
             this.agencia = agencia;
             this.numeroConta = numeroConta;
             this.saldo = saldo;
-            this.minhastransacoes = minhasTransacoes;
-
+            List<Transacao> t = new List<Transacao>(); 
         }
 
         //override ToString para retornar os dados da Conta
-        public override string ToString()
+        public  override string ToString()
         {
             return
                $@"
-               CONTA {getId}
-               Banco: {getBanco}
-               Agencia: {getAgencia}
-               Conta: {getNumeroConta}
-               Saldo: {getSaldo}
+               CONTA {getId()}
+               Banco: {getBanco()}
+               Agencia: {getAgencia()}
+               Conta: {getNumeroConta()}
+               Saldo: {getSaldo()}
                 ";
         }
 
 
         //método que cria Contas e adiciona a uma Lista de Contas
-        public List<Conta> CriarConta(List<Conta> minhasContas)
+        public static List<Conta> CriarConta(List<Conta> minhasContas)
         {
-            
+
             String banco = null, agencia = null, numeroConta = null;
             double saldo = 0;
             int id = 0;
-            List<Transacao> minhasTransacoes = null;
+            List<Transacao> minhasTransacoes;
 
             //input usuario p/ criacao objeto
             Console.WriteLine("Para criar uma conta adicione as informacoes solicitadas abaixo:");
@@ -126,17 +125,18 @@ namespace Sistema_Gerenciamento_Despesas
 
             id = criaId(minhasContas);
 
-            Conta c = new Conta(id, banco, agencia, numeroConta, saldo, minhasTransacoes);
+            Conta c = new Conta(id, banco, agencia, numeroConta, saldo); //criacao objeto conta
 
-            minhasContas.Add(c);
+            minhasContas.Add(c); // adiciona na lista de contas do usuario
 
             return minhasContas;
 
         }
 
         //método que cria um id conforme a quantidade de contas existentes na lista de contas 
-        public int criaId(List<Conta> minhasContas)
+        public static int criaId(List<Conta> minhasContas)
         {
+            int id;
 
             if (minhasContas == null)
             {
@@ -145,47 +145,38 @@ namespace Sistema_Gerenciamento_Despesas
 
             else
             {
-                id = minhasContas.Count + 1;
+                id = minhasContas.Count + 1; //id é dada conforme ao numero de contas existentes
             }
             return id;
         }
 
         //método que remove a conta selecionada pelo usuario
-        public List<Conta> RemoverConta(List<Conta> minhasContas)
+        public static List<Conta> RemoverConta(List<Conta> minhasContas)
         {
-            Console.WriteLine("Estas são suas contas ativas:");
+            ImprimirContasAtivas(minhasContas); // Imprime as contas ativas
 
-            foreach (Conta c in minhasContas)
-            {
-                c.ToString();
-            }
-
-            Console.WriteLine("Lembre-se ao remover sua conta você irá perder todos os dados relacionados a ela");
-            Console.WriteLine("Digite o Id da conta que deseja remover:");
+            Console.WriteLine("Lembre-se ao remover sua conta você ira perder todos os dados relacionados a ela");
+            Console.WriteLine("Digite a Id da conta que deseja remover:");
             int contaRemover = int.Parse(Console.ReadLine());
 
-            minhasContas.RemoveAt(contaRemover);
+            minhasContas.RemoveAt(contaRemover); //remove a conta da lista conforme id fornecida == posicao na lista
 
-            Console.WriteLine($" Conta: {getId} - {getBanco} removida com sucesso!");
+            Console.WriteLine($" Conta: {minhasContas[contaRemover].getId} - {minhasContas[contaRemover].getBanco} removida com sucesso!");
 
             return minhasContas;
         }
 
         //metodo que uni as transações da conta 2 na conta 1
-        public List<Conta> mesclarContas(List<Conta> minhasContas) 
+        public static List<Conta> MesclarContas(List<Conta> minhasContas) 
         {
-            Console.WriteLine("Estas são suas contas ativas:");
-
-            foreach (Conta c in minhasContas)
-            {
-                c.ToString();
-            }
-
-            Console.WriteLine("Digite a id da conta que receberá as transações da outra conta:");
+            ImprimirContasAtivas(minhasContas);
+           
+            Console.WriteLine("Digite a id da conta que recebera as transacoes da outra conta:");
             int idConta1 = int.Parse(Console.ReadLine());
 
             Console.WriteLine("Digite a id da conta que deseja unificar as transacoes com a primeira:");
             int idConta2 = int.Parse(Console.ReadLine());
+           
 
             List<Transacao> lista1 = minhasContas[idConta1].getTransacoes(); //listas recebem as transações de cada conta especificada
             List<Transacao> lista2 = minhasContas[idConta2].getTransacoes();
@@ -195,9 +186,19 @@ namespace Sistema_Gerenciamento_Despesas
 
             minhasContas[idConta1].setTransacoes(lista1); //aqui a conta 1 recebera a uniao de transações da conta 1 e 2
 
-
             return minhasContas;
         }
-    }
 
+        public static void ImprimirContasAtivas(List<Conta> minhasContas)
+        {
+            Console.WriteLine("Estas são suas contas ativas:");
+
+            foreach (Conta c in minhasContas)
+            {
+                Console.WriteLine(c.ToString());
+            }
+        }
+    }
 }
+
+
