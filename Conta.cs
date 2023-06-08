@@ -101,7 +101,6 @@ namespace Sistema_Gerenciamento_Despesas
                 ";
         }
 
-
         //método que cria Contas e adiciona a uma Lista de Contas
         public static List<Conta> CriarConta(List<Conta> minhasContas)
         {
@@ -147,7 +146,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             else
             {
-                id = minhasContas.Count + 1; //id é dada conforme ao numero de contas existentes
+                id = minhasContas.Count + 1; 
             }
             return id;
         }
@@ -165,9 +164,11 @@ namespace Sistema_Gerenciamento_Despesas
 
             if (minhasContas == null)
             {
+                Console.WriteLine();
                 Console.WriteLine(".----------------------------------------.");
                 Console.WriteLine("|VOCE NAO POSSUI NENHUMA CONTA CADASTRADA|");
                 Console.WriteLine(".----------------------------------------.");
+                Console.WriteLine();
 
             } else {
 
@@ -201,14 +202,18 @@ namespace Sistema_Gerenciamento_Despesas
 
             if (lista1 == null)
             {
+                Console.WriteLine();
                 Console.WriteLine(".--------------------------------------------------------.");
                 Console.WriteLine($"|A conta do banco de ID: {idConta1} nao possui transacoes|");
                 Console.WriteLine(".--------------------------------------------------------.");
+                Console.WriteLine();
 
             } else if (lista2 == null) {
-                Console.WriteLine(".--------------------------------------------------------.");
+                Console.WriteLine();
+                Console.WriteLine(".---------------------------------------------------------.");
                 Console.WriteLine($"|A conta do banco de ID: {idConta2} nao possui transacoes|");
-                Console.WriteLine(".--------------------------------------------------------.");
+                Console.WriteLine(".---------------------------------------------------------.");
+                Console.WriteLine();
 
             } else {
                 List<Transacao> mesclada = lista1.Concat(lista2).ToList(); //as transacoes da lista 2 são unidas com as da lista 1 
@@ -227,6 +232,28 @@ namespace Sistema_Gerenciamento_Despesas
             foreach (Conta c in minhasContas)
             {
                 Console.WriteLine(c.ToString());
+            }
+        }
+
+        public static void CalculaSaldoConta(List<Conta> minhasContas)
+        {
+
+            foreach (Conta c in minhasContas) {
+
+                foreach (Transacao t in c.getTransacoes()) {
+
+                    if (t.getCategoria().Equals("Despesa"))
+                    {
+
+                        c.saldo = Math.Abs(c.saldo - t.getValor());
+                    }
+
+                    else {
+
+                        c.saldo =c.saldo + t.getValor();
+                    }
+
+                }       
             }
         }
     }

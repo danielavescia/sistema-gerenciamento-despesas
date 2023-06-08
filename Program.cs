@@ -200,6 +200,7 @@ internal class Program
 
                     //sair p/ menu inicial
                     case 4:
+                        Console.WriteLine();
                         Console.WriteLine("Retornando ao menu inicial...");
                         return;
 
