@@ -1,0 +1,243 @@
+﻿using Sistema_Gerenciamento_Despesas;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Sistema_Gerenciamento_Despesas
+{
+    internal class Menu
+    {
+
+        private bool menuEstaAtivo;
+        private int opcaoMenu;
+        List<Conta> minhasContas;
+
+        public Menu(List<Conta> minhasContasVirtual)
+        {
+            minhasContas = minhasContasVirtual;
+            menuEstaAtivo = true;
+            int opcaoMenu = 0;
+            Iniciar();
+        }
+
+        public void Iniciar()
+        {
+            while (menuEstaAtivo)
+            {
+                ImprimeMenuInicial();
+                opcaoMenu = int.Parse(Console.ReadLine());
+                
+
+
+                switch (opcaoMenu)
+                {
+                    case 1:
+                        ImprimeMenuCase1();
+                        int opcaoMenu1 = int.Parse(Console.ReadLine());
+                        GerenciarConta(opcaoMenu1, minhasContas);
+                        break;
+                    case 2:
+
+                        ImprimeMenuCase2();
+                        int opcaoMenu2 = int.Parse(Console.ReadLine());
+                        GerenciarTransacoes(opcaoMenu2, minhasContas);
+
+                        break;
+
+                    case 3:
+
+                        ImprimeMenuCase3();
+                        int opcaoMenu3 = int.Parse(Console.ReadLine());
+                        PainelControle(opcaoMenu3, minhasContas);
+
+                        break;
+                    case 4:
+
+                        menuEstaAtivo = false;
+                        Console.WriteLine("Encerrando o sistema...");
+                        break;
+
+                    default:
+                        Console.WriteLine("Digite uma opcao valida!");
+                        break;
+                }
+            }
+        }
+
+        public void ImprimeMenuInicial()
+        {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("    SISTEMA DE GERENCIAMENTO DE DESPESAS    ");
+            Console.WriteLine();
+            Console.WriteLine("____________________________________________");
+            Console.WriteLine("|                MENU INICIAL               |");
+            Console.WriteLine("|___________________________________________|");
+            Console.WriteLine("|1. Gerenciar Contas                        |");
+            Console.WriteLine("|2. Gerenciar Transações                    |");
+            Console.WriteLine("|3. Painel Geral                            |");
+            Console.WriteLine("|___________________________________________|");
+            Console.WriteLine();
+            Console.WriteLine("Digite a opção desejada:");
+        }
+
+        public  void ImprimeMenuCase1()
+        {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("____________________________________________");
+            Console.WriteLine("|              GERENCIAR CONTA              |");
+            Console.WriteLine("|___________________________________________|");
+            Console.WriteLine("|1. Cadastrar conta                         |");
+            Console.WriteLine("|2. Remover conta                           |");
+            Console.WriteLine("|3. Mesclar contas                          |");
+            Console.WriteLine("|4. Voltar ao menu inicial                  |");
+            Console.WriteLine("|___________________________________________|");
+            Console.WriteLine();
+            Console.WriteLine("Digite a opção desejada:");
+
+        }
+
+        public  void ImprimeMenuCase2()
+        {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("____________________________________________");
+            Console.WriteLine("|            GERENCIAR TRANSACOES           |");
+            Console.WriteLine("|___________________________________________|");
+            Console.WriteLine("|1. Extrato da conta                        |");
+            Console.WriteLine("|2. Incluir transação                       |");
+            Console.WriteLine("|3. Editar a última transação               |");
+            Console.WriteLine("|4. Transferir fundos                       |");
+            Console.WriteLine("|5. Voltar ao menu inicial                  |");
+            Console.WriteLine("|___________________________________________|");
+            Console.WriteLine();
+            Console.WriteLine("Digite a opção desejada:");
+
+        }
+
+        public  void ImprimeMenuCase3()
+        {
+            Console.Clear();
+            Console.WriteLine();
+            Console.WriteLine("____________________________________________");
+            Console.WriteLine("|               PAINEL GERAL                |");
+            Console.WriteLine("|___________________________________________|");
+            Console.WriteLine("|1. Resumo das contas                       |");
+            Console.WriteLine("|2. Resumo de receitas e despesas do mês    |");
+            Console.WriteLine("|3. Saldo geral dos últimos 6 meses         |");
+            Console.WriteLine("|4. FUNCIONALIDADE                          |");
+            Console.WriteLine("|5. Voltar ao menu inicial                  |");
+            Console.WriteLine("|___________________________________________|");
+            Console.WriteLine();
+            Console.WriteLine("Digite a opção desejada:");
+
+        }
+
+        public  void GerenciarConta(int opcaoMenu1, List<Conta> minhasContas)
+        {
+            switch (opcaoMenu1)
+            {
+                // Cadastrar conta
+                case 1:
+                    Conta.CriarConta(minhasContas);
+                    break;
+
+                // Remover conta;
+                case 2:
+                    Conta.RemoverConta(minhasContas);
+                    break;
+
+                // Mesclar contas
+                case 3:
+                    Conta.MesclarContas(minhasContas);
+                    break;
+
+                //sair p/ menu inicial
+                case 4:
+                    Console.WriteLine();
+                    Console.WriteLine("Retornando ao menu inicial...");
+                    return;
+
+                default:
+                    Console.WriteLine("Digite uma opcao valida!");
+                    break;
+
+            }
+        }
+
+        public  void GerenciarTransacoes(int opcaoMenu2, List<Conta> minhasContas)
+        {
+
+            switch (opcaoMenu2)
+            {
+                // Extrato da conta
+                case 1:
+
+                    break;
+
+                // Incluir transação
+                case 2:
+
+                    break;
+
+                // Editar a última transação
+                case 3:
+
+                    break;
+
+                // Transferir fundos
+                case 4:
+
+
+                //sair p/ menu inicial
+                case 5:
+                    Console.WriteLine("Retornando ao menu inicial...");
+                    return;
+
+                default:
+                    Console.WriteLine("Digite uma opcao valida!");
+                    break;
+
+            }
+        }
+
+        public void PainelControle(int opcaoMenu3, List<Conta> minhasContas)
+        {
+            switch (opcaoMenu3)
+            {
+                // Resumo das contas
+                case 1:
+
+                    break;
+
+                // Resumo de receitas e despesas do mês
+                case 2:
+
+                    break;
+
+                // Saldo geral dos últimos 6 meses
+                case 3:
+
+                    break;
+
+                // MINHA FUNCIONALIDADE
+                case 4:
+
+
+                //sair p/ menu inicial
+                case 5:
+                    Console.WriteLine("Retornando ao menu inicial...");
+                    return;
+
+                default:
+                    Console.WriteLine("Digite uma opcao valida!");
+                    break;
+            }
+        }
+    }
+}
+
+   

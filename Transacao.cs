@@ -72,10 +72,9 @@ namespace Sistema_Gerenciamento_Despesas
             this.descricao = descricao;
             this.valor = valor;
         }
-
         public override string ToString()
         {
-            return 
+            return
                $@"
                Data {getData}
                Tipo: {getTipo}
@@ -84,7 +83,6 @@ namespace Sistema_Gerenciamento_Despesas
                Valor: {getValor}
                 ";
         }
-
 
         public Transacao CriarTransacao() 
         {
