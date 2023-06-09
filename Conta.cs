@@ -20,7 +20,7 @@ namespace Sistema_Gerenciamento_Despesas
         // Propriedades (getters e setters) 
         public int getId()
         {
-            return id; 
+            return id;
         }
 
         public void setId(int id)
@@ -129,7 +129,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             Conta c = new Conta(id, banco, agencia, numeroConta, saldo); //criacao objeto conta
 
-            minhasContas.Add(c); // adiciona na lista de contas do usuar
+            minhasContas.Add(c); // adiciona na lista de contas do usuario
 
             return minhasContas;
         }
@@ -137,39 +137,22 @@ namespace Sistema_Gerenciamento_Despesas
 
 
         //método que cria um id conforme a quantidade de contas existentes na lista de contas 
-        
-            public static int AtribuiId(List<Conta> minhasContas)
+        public static int AtribuiId(List<Conta> minhasContas)
+        {
+            if (minhasContas == null || minhasContas.Count == 0)
             {
-                if (minhasContas == null || minhasContas.Count == 0)
-                {
-                    return 1;
-                }
-
-                int ultimaId = minhasContas.Count;
-
-                for (int i = 0; i < ultimaId; i++)
-                {
-                    minhasContas[i].setId(i + 1);
-                }
-
-                return ultimaId + 1;
+                return 1;
             }
 
-        /*
-        public static void AlteraId(List<Conta> minhasContas) 
-        {
             int ultimaId = minhasContas.Count;
 
-
-            for (int i =0; i < ultimaId; i++)
+            for (int i = 0; i < ultimaId; i++)
             {
-                
-                minhasContas[i].setId(i+1);
-            
+                minhasContas[i].setId(i + 1);
             }
 
+            return ultimaId + 1;
         }
-        */
 
         //método que remove a conta selecionada pelo usuario
         public static List<Conta> RemoverConta(List<Conta> minhasContas)
@@ -194,8 +177,8 @@ namespace Sistema_Gerenciamento_Despesas
                 Console.WriteLine(".----------------------------------------.");
                 Console.WriteLine();
 
-            } 
-            
+            }
+
             else
             {
                 do
@@ -232,7 +215,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             do
             {
-                Console.WriteLine("Por favor, digite a ID da conta para a qual você deseja receber as transações:"); 
+                Console.WriteLine("Por favor, digite a ID da conta para a qual você deseja receber as transações:");
                 idConta1 = (Console.ReadLine());
                 isValid = isInputValid(minhasContas, idConta1); //validacao do input
 
@@ -246,12 +229,12 @@ namespace Sistema_Gerenciamento_Despesas
 
             } while (isValid);
 
-            numeroConta1 = int.Parse(idConta1) -1; //diminuir -1 para pegar o index correto na lista
-            numeroConta2 = int.Parse(idConta2)-1;
+            numeroConta1 = int.Parse(idConta1) - 1; //diminuir -1 para pegar o index correto na lista
+            numeroConta2 = int.Parse(idConta2) - 1;
 
             //listas recebem as transações de cada conta especificada
             List<Transacao> lista1 = minhasContas[numeroConta1].getTransacoes();
-            List<Transacao> lista2 = minhasContas[numeroConta2].getTransacoes(); 
+            List<Transacao> lista2 = minhasContas[numeroConta2].getTransacoes();
 
             if (lista1 == null)
             {
@@ -277,7 +260,7 @@ namespace Sistema_Gerenciamento_Despesas
                 lista1 = mesclada.OrderBy(Transacao => Transacao.getData()).ToList(); //lista 1 receberá a lista unida e ordenada por data crescente
 
                 minhasContas[numeroConta1].setTransacoes(lista1); //aqui a conta 1 recebera a uniao de transações da conta 1 e 2
-                
+
             }
 
             return minhasContas;
@@ -304,7 +287,7 @@ namespace Sistema_Gerenciamento_Despesas
                     return minhasConta.saldo = (minhasConta.saldo - t.getValor());
                 }
 
-                    return minhasConta.saldo = minhasConta.saldo + t.getValor(); 
+                return minhasConta.saldo = minhasConta.saldo + t.getValor();
             }
 
             return minhasConta.saldo;
@@ -320,7 +303,7 @@ namespace Sistema_Gerenciamento_Despesas
             ImprimirContasAtivas(minhasContas);
 
             Console.WriteLine("Digite a id da conta que voce gostaria de adicionar esta transacao:");
-           
+
             do
             {
                 idConta = Console.ReadLine();
@@ -356,7 +339,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             else
             {
-                int numberInput = int.Parse(input)-1; // corrige para o indice da lista
+                int numberInput = int.Parse(input) - 1; // corrige para o indice da lista
                 int intervaloMaximo = minhasContas.Count;
 
                 if (numberInput < 0 || numberInput > intervaloMaximo)
@@ -366,6 +349,37 @@ namespace Sistema_Gerenciamento_Despesas
             }
 
             return false;
+        }
+
+        public static void ImprimeSaldo(List<Conta> minhasContas)
+        {
+            double saldoTotal;
+
+            foreach (Conta c in minhasContas)
+            {
+                Console.WriteLine(".--------------------------------------------.");
+                Console.WriteLine($"| ID: {c.getId}                             |");
+                Console.WriteLine($"| BANCO: {c.getBanco}                       |");
+                Console.WriteLine($"| SALDO: {c.getSaldo}                       | ");
+                Console.WriteLine(".--------------------------------------------.");
+                Console.WriteLine();
+
+
+            }
+            saldoTotal = CalculaSaldoTotal(minhasContas);
+            Console.WriteLine(".--------------------------------------------.");
+            Console.WriteLine($"|SALDO TOTAL: {saldoTotal}                  | ");
+            Console.WriteLine(".--------------------------------------------.");
+            Console.WriteLine();
+        }
+
+        public static double  CalculaSaldoTotal(List<Conta> minhasContas)
+        {
+            double saldoTotal = 0;
+
+            saldoTotal = minhasContas.Sum(Conta => Conta.getSaldo());
+
+            return saldoTotal;
         }
     }
 }
