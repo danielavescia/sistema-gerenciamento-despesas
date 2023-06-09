@@ -256,6 +256,18 @@ namespace Sistema_Gerenciamento_Despesas
                 }       
             }
         }
+
+        public static void AdicionaTransacaoConta(List<Conta> minhasContas, Transacao t) 
+        {
+            
+            ImprimirContasAtivas(minhasContas);
+
+            Console.WriteLine("Digite a id da conta que voce gostaria de adicionar esta transacao:");
+            int idConta = int.Parse(Console.ReadLine());    
+
+
+
+        }
     }
 }
 
