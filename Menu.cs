@@ -28,9 +28,7 @@ namespace Sistema_Gerenciamento_Despesas
             {
                 ImprimeMenuInicial();
                 opcaoMenu = int.Parse(Console.ReadLine());
-                
-
-
+             
                 switch (opcaoMenu)
                 {
                     case 1:
@@ -68,6 +66,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         public void ImprimeMenuInicial()
         {
+            Wait(600);
             Console.Clear();
             Console.WriteLine();
             Console.WriteLine("    SISTEMA DE GERENCIAMENTO DE DESPESAS    ");
@@ -85,6 +84,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         public  void ImprimeMenuCase1()
         {
+            Wait(600);
             Console.Clear();
             Console.WriteLine();
             Console.WriteLine("____________________________________________");
@@ -102,6 +102,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         public  void ImprimeMenuCase2()
         {
+            Wait(600);
             Console.Clear();
             Console.WriteLine();
             Console.WriteLine("____________________________________________");
@@ -120,6 +121,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         public  void ImprimeMenuCase3()
         {
+            Wait(600);
             Console.Clear();
             Console.WriteLine();
             Console.WriteLine("____________________________________________");
@@ -143,16 +145,22 @@ namespace Sistema_Gerenciamento_Despesas
                 // Cadastrar conta
                 case 1:
                     Conta.CriarConta(minhasContas);
+                    Wait(1000);
+                    Console.WriteLine("Retornando ao menu");
                     break;
 
                 // Remover conta;
                 case 2:
                     Conta.RemoverConta(minhasContas);
+                    Wait(1000);
+                    Console.WriteLine("Retornando ao menu");
                     break;
 
                 // Mesclar contas
                 case 3:
                     Conta.MesclarContas(minhasContas);
+                    Wait(1000);
+                    Console.WriteLine("Retornando ao menu...");
                     break;
 
                 //sair p/ menu inicial
@@ -181,7 +189,10 @@ namespace Sistema_Gerenciamento_Despesas
                 // Incluir transação
                 case 2:
 
-                    break;
+                   Transacao t = null;
+                   t = t.CriarTransacao();
+                   Conta.AdicionaTransacaoConta(minhasContas, t);
+                   break;
 
                 // Editar a última transação
                 case 3:
@@ -211,6 +222,9 @@ namespace Sistema_Gerenciamento_Despesas
                 // Resumo das contas
                 case 1:
 
+                    Conta.ImprimeSaldo(minhasContas);
+                    Console.WriteLine("Retornando ao menu");
+                    Wait(1000);
                     break;
 
                 // Resumo de receitas e despesas do mês
@@ -236,6 +250,20 @@ namespace Sistema_Gerenciamento_Despesas
                     Console.WriteLine("Digite uma opcao valida!");
                     break;
             }
+        }
+
+        //tempo entre cada impressão
+        public static void Wait(int milissegundos)
+        {
+            try
+            {
+                Thread.Sleep(milissegundos);
+            }
+            catch (ThreadInterruptedException e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+            
         }
     }
 }

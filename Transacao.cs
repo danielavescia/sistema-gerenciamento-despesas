@@ -9,9 +9,10 @@ namespace Sistema_Gerenciamento_Despesas
 {
     internal class Transacao
     {
-       private DateOnly data = new DateOnly();
-       private string tipo, categoria, descricao;
-       private double valor;
+        protected DateOnly data = new DateOnly();
+        protected string tipo, categoria, descricao;
+        protected double valor;
+        protected int idBanco;
 
         //propriedades de acesso
         public DateOnly getData() 
@@ -64,6 +65,16 @@ namespace Sistema_Gerenciamento_Despesas
             this.valor = valor;
         }
 
+        public int getidBanco() 
+        {
+            return idBanco;       
+        }
+
+        public void setIdBanco(int idBanco) 
+        {
+            this.idBanco = idBanco;
+        }
+
         public Transacao(DateOnly data, string tipo, string categoria, string descricao, double valor) 
         {
             this.data= data;
@@ -71,16 +82,21 @@ namespace Sistema_Gerenciamento_Despesas
             this.categoria = categoria;
             this.descricao = descricao;
             this.valor = valor;
+            idBanco = 0;
         }
         public override string ToString()
         {
             return
                $@"
+                ------------------------------------------
+                DADOS REFERENTES DA TRANSACAO:
+               -------------------------------------------
                Data {getData}
                Tipo: {getTipo}
                Categoria: {getCategoria}
                Descricao: {getDescricao}
                Valor: {getValor}
+               --------------------------------------------
                 ";
         }
 
@@ -94,7 +110,7 @@ namespace Sistema_Gerenciamento_Despesas
 
 
             //Dados  são obtidos por input para construir objeto Transacao
-            Console.WriteLine("Digite os dados abaixo para cadastrar uma nova transacao:");
+            Console.WriteLine("Digite os dados solicitados abaixo:");
             
             Console.WriteLine("Digite o dia da transacao:");
             dia = int.Parse(Console.ReadLine());
@@ -123,6 +139,26 @@ namespace Sistema_Gerenciamento_Despesas
 
             return t;
         }
+
+        public List<Conta> EditarTransacao(List<Conta> minhasContas, Transacao t) 
+        {
+           
+            Console.WriteLine(t.ToString());
+
+            Console.WriteLine("Para alterar os dados da transacao acima:");
+            t = CriarTransacao();
+
+            Console.WriteLine("TRANSACAO ALTERADA COM SUCESSO!");
+            Console.WriteLine(t.ToString()); //imprime a transação alterada
+
+            Conta.AdicionaTransacaoConta(minhasContas, t); // adiciona a nova transição a alguma outra conta
+            Conta.ImprimeSaldo(minhasContas);
+
+            return minhasContas;
+
+
+        }
+
 
         public string RetornaTipoDespesa() 
         {

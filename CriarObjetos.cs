@@ -11,6 +11,7 @@ namespace Sistema_Gerenciamento_Despesas
         public static List<Conta> CarregarDados()
         {
             //cricao dos dados de exemplo solicitado
+
             List<Transacao> minhasTransacoes = new List<Transacao>();
             List<Conta> minhasContas = new List<Conta>();
 
@@ -29,6 +30,8 @@ namespace Sistema_Gerenciamento_Despesas
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 3, 7), "Despesa", "Transporte", "Uber", 35.50));
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 3, 8), "Despesa", "Lazer", "Ingresso de cinema", 42.00));
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 3, 8), "Despesa", "Saúde", "Consulta médica", 200.00));
+
+           
 
             return minhasContas;
         }
