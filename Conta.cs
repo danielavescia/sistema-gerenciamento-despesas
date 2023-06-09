@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -85,11 +86,11 @@ namespace Sistema_Gerenciamento_Despesas
             this.agencia = agencia;
             this.numeroConta = numeroConta;
             this.saldo = saldo;
-            List<Transacao> t = new List<Transacao>(); 
+            List<Transacao> t = new List<Transacao>();
         }
 
         //override ToString para retornar os dados da Conta
-        public  override string ToString()
+        public override string ToString()
         {
             return
                $@"
@@ -146,7 +147,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             else
             {
-                id = minhasContas.Count + 1; 
+                id = minhasContas.Count + 1;
             }
             return id;
         }
@@ -154,8 +155,12 @@ namespace Sistema_Gerenciamento_Despesas
         //método que remove a conta selecionada pelo usuario
         public static List<Conta> RemoverConta(List<Conta> minhasContas)
         {
+            int contaRemover = 0;
+            string contaInput;
+            bool isValid = true;
+
             ImprimirContasAtivas(minhasContas); // Imprime as contas ativas
-            
+
             Console.WriteLine();
             Console.WriteLine(".------------------------------------------------------------------------------------------.");
             Console.WriteLine("|LEMBRE-SE QUE AO REMOVER SUA CONTA, VOCE IRA PERDER TODAS AS TRANSACOES RELACIONADAS A ELA|");
@@ -170,13 +175,23 @@ namespace Sistema_Gerenciamento_Despesas
                 Console.WriteLine(".----------------------------------------.");
                 Console.WriteLine();
 
-            } else {
+            } 
+            
+            else
+            {
+                do
+                {
+                    Console.WriteLine("Digite a Id da conta que deseja remover:");
+                    contaInput = Console.ReadLine();
+                    isValid = isInputValid(minhasContas, contaInput); //validacao do input
 
-                Console.WriteLine("Digite a Id da conta que deseja remover:");
-                int contaRemover = int.Parse(Console.ReadLine()) - 1; //id fornecida -1 == posicao na lista pq lista começa 0
+                } while (!isValid);
+
+                contaRemover = int.Parse(contaInput) - 1;  //id fornecida -1 == posicao na lista pq lista começa 0
+
+
                 Console.WriteLine();
 
-             
                 Console.WriteLine($"| Conta: {minhasContas[contaRemover].getId()} - {minhasContas[contaRemover].getBanco()} removida com sucesso!");
                 Console.WriteLine();
                 minhasContas.RemoveAt(contaRemover); //remove a conta da lista conforme
@@ -186,19 +201,36 @@ namespace Sistema_Gerenciamento_Despesas
         }
 
         //metodo que uni as transações da conta 2 na conta 1
-        public static List<Conta> MesclarContas(List<Conta> minhasContas) 
+        public static List<Conta> MesclarContas(List<Conta> minhasContas)
         {
-            ImprimirContasAtivas(minhasContas);
-           
-            Console.WriteLine("Digite a id da conta que recebera as transacoes da outra conta:");
-            int idConta1 = int.Parse(Console.ReadLine()); 
+            bool isValid = true;
+            string idConta1 = " ", idConta2 = " ";
+            int numeroConta1 = 0, numeroConta2 = 0;
 
-            Console.WriteLine("Digite a id da conta que deseja unificar as transacoes com a primeira:");
-            int idConta2 = int.Parse(Console.ReadLine());
+            ImprimirContasAtivas(minhasContas);
+
+            do
+            {
+                Console.WriteLine("Por favor, digite a ID da conta para a qual você deseja receber as transações:"); 
+                idConta1 = (Console.ReadLine());
+                isValid = isInputValid(minhasContas, idConta1); //validacao do input
+
+            } while (!isValid);
+
+            do
+            {
+                Console.WriteLine("Agora, digite a segunda ID da conta para a qual você deseja unificar as transações:");
+                idConta2 = Console.ReadLine();
+                isValid = isInputValid(minhasContas, idConta1); //validacao do input
+
+            } while (!isValid);
+
+            numeroConta1 = int.Parse(idConta1) -1; //diminuir -1 para pegar o index correto na lista
+            numeroConta2 = int.Parse(idConta2)-1;
 
             //listas recebem as transações de cada conta especificada
-            List<Transacao> lista1 = minhasContas[idConta1 - 1].getTransacoes(); 
-            List<Transacao> lista2 = minhasContas[idConta2 - 1].getTransacoes(); //diminuir -1 para pegar o index correto na lista
+            List<Transacao> lista1 = minhasContas[numeroConta1].getTransacoes();
+            List<Transacao> lista2 = minhasContas[numeroConta2].getTransacoes(); 
 
             if (lista1 == null)
             {
@@ -208,18 +240,22 @@ namespace Sistema_Gerenciamento_Despesas
                 Console.WriteLine(".--------------------------------------------------------.");
                 Console.WriteLine();
 
-            } else if (lista2 == null) {
+            }
+            else if (lista2 == null)
+            {
                 Console.WriteLine();
                 Console.WriteLine(".---------------------------------------------------------.");
                 Console.WriteLine($"|A conta do banco de ID: {idConta2} nao possui transacoes|");
                 Console.WriteLine(".---------------------------------------------------------.");
                 Console.WriteLine();
 
-            } else {
+            }
+            else
+            {
                 List<Transacao> mesclada = lista1.Concat(lista2).ToList(); //as transacoes da lista 2 são unidas com as da lista 1 
                 lista1 = mesclada.OrderBy(Transacao => Transacao.getData()).ToList(); //lista 1 receberá a lista unida e ordenada por data crescente
 
-                minhasContas[idConta1].setTransacoes(lista1); //aqui a conta 1 recebera a uniao de transações da conta 1 e 2
+                minhasContas[numeroConta1].setTransacoes(lista1); //aqui a conta 1 recebera a uniao de transações da conta 1 e 2
             }
 
             return minhasContas;
@@ -238,35 +274,70 @@ namespace Sistema_Gerenciamento_Despesas
         public static void CalculaSaldoConta(List<Conta> minhasContas)
         {
 
-            foreach (Conta c in minhasContas) {
+            foreach (Conta c in minhasContas)
+            {
 
-                foreach (Transacao t in c.getTransacoes()) {
+                foreach (Transacao t in c.getTransacoes())
+                {
 
                     if (t.getCategoria().Equals("Despesa"))
                     {
-
-                        c.saldo = Math.Abs(c.saldo - t.getValor());
+                        c.saldo = (c.saldo - t.getValor());
                     }
 
-                    else {
-
-                        c.saldo =c.saldo + t.getValor();
+                    else
+                    { 
+                        c.saldo = c.saldo + t.getValor();
                     }
 
-                }       
+                }
             }
         }
 
-        public static void AdicionaTransacaoConta(List<Conta> minhasContas, Transacao t) 
+        public static void AdicionaTransacaoConta(List<Conta> minhasContas, Transacao t)
         {
-            
+            string idConta = " ";
+            bool isValid = true;
             ImprimirContasAtivas(minhasContas);
 
             Console.WriteLine("Digite a id da conta que voce gostaria de adicionar esta transacao:");
-            int idConta = int.Parse(Console.ReadLine());    
+           
+            do
+            {
+                idConta = Console.ReadLine();
+                isValid = isInputValid(minhasContas, idConta);
 
+            } while (!isValid);
 
+            minhasContas[int.Parse(idConta)-1].getTransacoes().Add(t);
 
+            Console.WriteLine($"A transacao foi adicionada com sucesso a conta de id = {idConta}");
+
+        }
+
+        //método que verifica o input
+        public static bool isInputValid(List<Conta> minhasContas, string input)
+        {
+
+            string regex = "[^0-9]"; // regex que permite qualquer caracter exceto numeros
+
+            if (Regex.IsMatch(regex, input))
+            {
+                return false;
+            }
+
+            else
+            {
+                int numberInput = int.Parse(input)-1; // corrige para o indice da lista
+                int intervaloMaximo = minhasContas.Count;
+
+                if (numberInput < 0 || numberInput > intervaloMaximo)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
