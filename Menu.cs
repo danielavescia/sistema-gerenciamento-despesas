@@ -28,6 +28,7 @@ namespace Sistema_Gerenciamento_Despesas
             {
                 ImprimeMenuInicial();
                 opcaoMenu = int.Parse(Console.ReadLine());
+                Console.WriteLine("Direcionando para a opcao desejada..");
              
                 switch (opcaoMenu)
                 {
@@ -145,21 +146,21 @@ namespace Sistema_Gerenciamento_Despesas
                 // Cadastrar conta
                 case 1:
                     Conta.CriarConta(minhasContas);
-                    Wait(1000);
+                    Wait(5000);
                     Console.WriteLine("Retornando ao menu");
                     break;
 
                 // Remover conta;
                 case 2:
                     Conta.RemoverConta(minhasContas);
-                    Wait(1000);
+                    Wait(5000);
                     Console.WriteLine("Retornando ao menu");
                     break;
 
                 // Mesclar contas
                 case 3:
                     Conta.MesclarContas(minhasContas);
-                    Wait(1000);
+                    Wait(5000);
                     Console.WriteLine("Retornando ao menu...");
                     break;
 
@@ -191,12 +192,13 @@ namespace Sistema_Gerenciamento_Despesas
 
                    Transacao t = null;
                    t = t.CriarTransacao();
-                   Conta.AdicionaTransacaoConta(minhasContas, t);
+                   int conta = Conta.CapturaNumeroConta(minhasContas);
+                   Conta.AdicionaTransacaoConta(minhasContas, t, conta);
                    break;
 
                 // Editar a última transação
                 case 3:
-
+                    
                     break;
 
                 // Transferir fundos
@@ -224,7 +226,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                     Conta.ImprimeSaldo(minhasContas);
                     Console.WriteLine("Retornando ao menu");
-                    Wait(1000);
+                    Wait(5000);
                     break;
 
                 // Resumo de receitas e despesas do mês

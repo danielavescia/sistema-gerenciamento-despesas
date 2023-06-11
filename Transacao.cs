@@ -88,14 +88,14 @@ namespace Sistema_Gerenciamento_Despesas
         {
             return
                $@"
-                ------------------------------------------
+               -------------------------------------------
                 DADOS REFERENTES DA TRANSACAO:
                -------------------------------------------
-               Data {getData}
-               Tipo: {getTipo}
-               Categoria: {getCategoria}
-               Descricao: {getDescricao}
-               Valor: {getValor}
+               Data {getData().ToString()}
+               Tipo: {getTipo().ToString()}
+               Categoria: {getCategoria().ToString()}
+               Descricao: {getDescricao().ToString()}
+               Valor: {getValor().ToString()}
                --------------------------------------------
                 ";
         }
@@ -142,7 +142,8 @@ namespace Sistema_Gerenciamento_Despesas
 
         public List<Conta> EditarTransacao(List<Conta> minhasContas, Transacao t) 
         {
-           
+            int conta;
+
             Console.WriteLine(t.ToString());
 
             Console.WriteLine("Para alterar os dados da transacao acima:");
@@ -151,14 +152,13 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine("TRANSACAO ALTERADA COM SUCESSO!");
             Console.WriteLine(t.ToString()); //imprime a transação alterada
 
-            Conta.AdicionaTransacaoConta(minhasContas, t); // adiciona a nova transição a alguma outra conta
+            conta = Conta.CapturaNumeroConta(minhasContas);
+            Conta.AdicionaTransacaoConta(minhasContas, t, conta); // adiciona a nova transição a alguma outra conta
             Conta.ImprimeSaldo(minhasContas);
 
             return minhasContas;
 
-
         }
-
 
         public string RetornaTipoDespesa() 
         {
