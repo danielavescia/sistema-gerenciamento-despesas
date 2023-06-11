@@ -166,8 +166,6 @@ namespace Sistema_Gerenciamento_Despesas
         public static List<Conta> RemoverConta(List<Conta> minhasContas)
         {
             int contaRemover = 0;
-            string contaInput;
-            bool isValid = false;
 
             ImprimirContasAtivas(minhasContas); // Imprime as contas ativas
 
@@ -191,11 +189,11 @@ namespace Sistema_Gerenciamento_Despesas
             {
                 
                 Console.WriteLine("Digite a Id da conta que deseja remover:");
-                CapturaNumeroConta(minhasContas);
+                contaRemover = CapturaNumeroConta(minhasContas);
 
                 Console.WriteLine();
                 Console.WriteLine(".---------------------------------------------------------------------------------------------------------------.");
-                Console.WriteLine($"| CONTA: {minhasContas[contaRemover].GetId().ToString()} - {minhasContas[contaRemover].GetBanco().ToString()} REMOVIDA COM SUCESSO!");
+                Console.WriteLine($"| CONTA: {minhasContas[contaRemover].id.ToString()} - {minhasContas[contaRemover].banco.ToString()} REMOVIDA COM SUCESSO!");
                 Console.WriteLine(".---------------------------------------------------------------------------------------------------------------.");
                 Console.WriteLine();
                 minhasContas.RemoveAt(contaRemover); //remove a conta da lista conforme
@@ -221,7 +219,7 @@ namespace Sistema_Gerenciamento_Despesas
             {
                 Console.WriteLine();
                 Console.WriteLine(".---------------------------------------------------------------------------------.");
-                Console.WriteLine($"|A conta do banco de ID: {minhasContas[numeroContaRecebe].GetId().ToString()} nao possui transacoes|");
+                Console.WriteLine($"|A conta do banco de ID: {minhasContas[numeroContaRecebe].id.ToString()} nao possui transacoes|");
                 Console.WriteLine(".--------------------------------------------------------------------------------.");
                 Console.WriteLine();
             }
@@ -229,8 +227,8 @@ namespace Sistema_Gerenciamento_Despesas
             else if (minhasContas[numeroContaTransfere].GetTransacoes() == null)
             {
                 Console.WriteLine();
-                Console.WriteLine(".---------------------------------------------------------.");
-                Console.WriteLine($"|A conta do banco de ID: {minhasContas[numeroContaTransfere].GetId().ToString()} nao possui transacoes|");
+                Console.WriteLine(".----------------------------------------------------------.");
+                Console.WriteLine($"|A conta do banco de ID: {minhasContas[numeroContaTransfere].id.ToString()} nao possui transacoes|");
                 Console.WriteLine(".---------------------------------------------------------.");
                 Console.WriteLine();
             }
@@ -303,13 +301,12 @@ namespace Sistema_Gerenciamento_Despesas
 
         public static Transacao AdicionaTransacaoConta(List<Conta> minhasContas, Transacao t, int numeroConta)
         {
-           
          
             minhasContas[numeroConta].SetTransacao(t); //adiciona transacao na conta desejada
-
             
-            minhasContas[numeroConta].GetTransacoes().OrderBy(t => t.getData()).ToList(); //ordena a lista de transacoes
-            CalculaSaldoConta(minhasContas);
+            minhasContas[numeroConta].GetTransacoes().OrderBy(t => t.getData()); //ordena a lista de transacoes
+             CalculaSaldoConta(minhasContas);
+            
 
             Console.WriteLine(numeroConta.ToString());
             Console.WriteLine(minhasContas[numeroConta].ToString());
@@ -317,9 +314,9 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine(t.ToString());
             Console.WriteLine($"ESTA TRANSAÇÃO FOI ADICIONADA COM SUCESSO!");
             Console.WriteLine();
-            Console.WriteLine(".------------------------------------------------------------.");
+            Console.WriteLine(".-------------------------------------------------.");
             Console.WriteLine($"|Seu novo saldo na conta de ID: {minhasContas[numeroConta].id} é de R$ {minhasContas[numeroConta].saldo}|");
-            Console.WriteLine(".------------------------------------------------------------.");
+            Console.WriteLine(".-------------------------------------------------.");
             
             return t;
 
@@ -367,7 +364,6 @@ namespace Sistema_Gerenciamento_Despesas
                 Console.WriteLine(".--------------------------------------------.");
                 Console.WriteLine();
 
-
             }
             
             Console.WriteLine(".--------------------------------------------.");
@@ -376,13 +372,27 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine();
         }
 
-        public static double  CalculaSaldoTotal(List<Conta> minhasContas)
+        public static double CalculaSaldoTotal(List<Conta> minhasContas)
         {
             double saldoTotal = 0;
 
             saldoTotal = minhasContas.Sum(Conta => Conta.GetSaldo());
 
             return saldoTotal;
+        }
+
+        public static void ExtratoConta(List<Conta> minhasContas)
+        {
+            foreach (Conta c in minhasContas)
+            {
+                Console.WriteLine($"A CONTA DE ID:{c.id} DO BANCO {c.banco} POSSUI SALDO ATUAL DE R$:{c.saldo}");
+                
+                foreach (Transacao t in c.GetTransacoes())
+                {
+                   Console.WriteLine(t.ToString());
+                }
+                Console.WriteLine();
+            }
         }
     }
 }

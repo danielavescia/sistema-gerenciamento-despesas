@@ -72,7 +72,7 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine();
             Console.WriteLine("    SISTEMA DE GERENCIAMENTO DE DESPESAS    ");
             Console.WriteLine();
-            Console.WriteLine("____________________________________________");
+            Console.WriteLine(".___________________________________________.");
             Console.WriteLine("|                MENU INICIAL               |");
             Console.WriteLine("|___________________________________________|");
             Console.WriteLine("|1. Gerenciar Contas                        |");
@@ -106,7 +106,7 @@ namespace Sistema_Gerenciamento_Despesas
             Wait(600);
             Console.Clear();
             Console.WriteLine();
-            Console.WriteLine("____________________________________________");
+            Console.WriteLine(".___________________________________________.");
             Console.WriteLine("|            GERENCIAR TRANSACOES           |");
             Console.WriteLine("|___________________________________________|");
             Console.WriteLine("|1. Extrato da conta                        |");
@@ -125,7 +125,7 @@ namespace Sistema_Gerenciamento_Despesas
             Wait(600);
             Console.Clear();
             Console.WriteLine();
-            Console.WriteLine("____________________________________________");
+            Console.WriteLine(".___________________________________________.");
             Console.WriteLine("|               PAINEL GERAL                |");
             Console.WriteLine("|___________________________________________|");
             Console.WriteLine("|1. Resumo das contas                       |");
@@ -179,26 +179,36 @@ namespace Sistema_Gerenciamento_Despesas
 
         public  void GerenciarTransacoes(int opcaoMenu2, List<Conta> minhasContas)
         {
+            Transacao t = null;
 
             switch (opcaoMenu2)
             {
                 // Extrato da conta
                 case 1:
-
+                    Conta.ExtratoConta(minhasContas);
+                    Wait(5000);
                     break;
 
                 // Incluir transação
                 case 2:
 
-                   Transacao t = null;
-                   t = t.CriarTransacao();
+                   t = Transacao.CriarTransacao();
+                   Console.WriteLine("Digite a id da conta que voce deseja adicionar esta transacao:");
                    int conta = Conta.CapturaNumeroConta(minhasContas);
                    Conta.AdicionaTransacaoConta(minhasContas, t, conta);
+                   Wait(5000);
+
                    break;
 
                 // Editar a última transação
                 case 3:
-                    
+                    if (t == null) 
+                    {
+                        Console.WriteLine("Primeiro cadastre uma transacao!");
+                        return;
+                    }
+
+                    minhasContas =  Transacao.EditarTransacao(minhasContas, t);
                     break;
 
                 // Transferir fundos

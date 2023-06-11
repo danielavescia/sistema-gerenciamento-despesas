@@ -9,7 +9,7 @@ namespace Sistema_Gerenciamento_Despesas
 {
     internal class Transacao
     {
-        protected DateOnly data = new DateOnly();
+        protected DateOnly data = new ();
         protected string tipo, categoria, descricao;
         protected double valor;
         protected int idBanco;
@@ -91,24 +91,22 @@ namespace Sistema_Gerenciamento_Despesas
                -------------------------------------------
                 DADOS REFERENTES DA TRANSACAO:
                -------------------------------------------
-               Data {getData().ToString()}
-               Tipo: {getTipo().ToString()}
-               Categoria: {getCategoria().ToString()}
-               Descricao: {getDescricao().ToString()}
-               Valor: {getValor().ToString()}
+               Data {data.ToString()}
+               Tipo: {tipo.ToString()}
+               Categoria: {categoria.ToString()}
+               Descricao: {descricao.ToString()}
+               Valor: {valor.ToString()}
                --------------------------------------------
                 ";
         }
 
-        public Transacao CriarTransacao() 
+        public static Transacao CriarTransacao() 
         {
 
-            string tipo = null, categoria = null, descricao = null;
-            double valor =0;
-            int dia = 0, mes = 0, ano = 0;
-            Transacao t = null;
-
-
+            string tipo, categoria, descricao;
+            double valor;
+            int dia, mes, ano;
+            
             //Dados  são obtidos por input para construir objeto Transacao
             Console.WriteLine("Digite os dados solicitados abaixo:");
             
@@ -122,25 +120,25 @@ namespace Sistema_Gerenciamento_Despesas
             ano = int.Parse(Console.ReadLine());
 
             // objeto data é construido
-            DateOnly data = new DateOnly(dia, mes, ano);
+            DateOnly data = new(ano, mes, dia);
 
             tipo = RetornaTipoDespesa();
 
             Console.WriteLine("Digite o categoria da transacao:");
             categoria = Console.ReadLine();
 
-            Console.WriteLine("Digite o categoria da transacao:");
+            Console.WriteLine("Digite o descricao da transacao:");
             descricao = Console.ReadLine();
 
             valor = RetornaValorDespesa();
 
             //objeto transacao é construido
-            t = new Transacao(data, tipo, categoria, descricao, valor);
+            Transacao t = new Transacao(data, tipo, categoria, descricao, valor);
 
             return t;
         }
 
-        public List<Conta> EditarTransacao(List<Conta> minhasContas, Transacao t) 
+        public static List<Conta> EditarTransacao(List<Conta> minhasContas, Transacao t) 
         {
             int conta;
 
@@ -153,28 +151,29 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine(t.ToString()); //imprime a transação alterada
 
             conta = Conta.CapturaNumeroConta(minhasContas);
-            Conta.AdicionaTransacaoConta(minhasContas, t, conta); // adiciona a nova transição a alguma outra conta
+            Conta.AdicionaTransacaoConta(minhasContas, t, conta); // adiciona a nova transição a conta desejada
             Conta.ImprimeSaldo(minhasContas);
 
             return minhasContas;
 
         }
 
-        public string RetornaTipoDespesa() 
+        public static string RetornaTipoDespesa() 
         {
 
-            int opcaoTipo = 0;
+            int opcaoTipo=0;
             string tipo = " ";
 
             Console.WriteLine("Digite o numero correspondete ao tipo de transacao que deseja cadastrar:");
             Console.WriteLine("1 - Despesa       2 - Receita  ");
 
             //loop repete solicitacao de input enquanto o numero nao é 1 ou 2
-            do
+
+            while (opcaoTipo == 1 || opcaoTipo == 2)
             {
                 opcaoTipo = int.Parse(Console.ReadLine());
-
-            } while (opcaoTipo != 1 || opcaoTipo != 2); 
+            }
+           
 
             //verificao para designar categoria
             if (opcaoTipo == 1)
@@ -191,9 +190,9 @@ namespace Sistema_Gerenciamento_Despesas
         }
 
 
-        public double RetornaValorDespesa() 
+        public static double RetornaValorDespesa() 
         {
-            string regex = @"^[0 - 9] + (\.[0 - 9]+)?$";
+            string regex = @"^\d+(\.\d+)?$";
             string input;
             bool isValid = true;
             double valor = 0;
@@ -207,7 +206,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             } while (!isValid);
 
-            return valor = int.Parse(input);
+            return valor = double.Parse(input);
         }
     }
 }

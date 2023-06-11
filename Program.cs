@@ -9,7 +9,7 @@ internal class Program
     {
 
         List<Conta> minhasContas = CriarObjetos.CarregarDados();
-        Menu menu = new Menu(minhasContas);
+        Menu menu = new (minhasContas);
 
     }
 }

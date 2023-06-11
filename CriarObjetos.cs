@@ -12,8 +12,8 @@ namespace Sistema_Gerenciamento_Despesas
         {
 
             //cricao dos dados de exemplo solicitado
-            List<Transacao> minhasTransacoes = new List<Transacao>();
-            List<Conta> minhasContas = new List<Conta>();
+            List<Transacao> minhasTransacoes = new();
+            List<Conta> minhasContas = new();
 
             // Criando a contas     
             minhasContas.Add(new Conta(1, "Banco AZB", "5900", "54489-6", 0.0));
@@ -30,12 +30,12 @@ namespace Sistema_Gerenciamento_Despesas
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 3, 8), "Despesa", "Saúde", "Consulta médica", 200.00));
 
             //adiciona as transações de 0-3 na minhasContas[0] e as transações de 4 - 7 na minhasContas[1]
-            for (int i = 0; i < 4; i++) 
+            for (int i = 0; i <= 3; i++) 
             {
                 Conta.AdicionaTransacaoConta(minhasContas, minhasTransacoes[i], 0); 
             }
 
-            for(int i = 4; i < 7; i++) 
+            for(int i = 4; i <= 7; i++) 
             {
                 Conta.AdicionaTransacaoConta(minhasContas, minhasTransacoes[i], 1);
             }
