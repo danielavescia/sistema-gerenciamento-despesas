@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Sistema_Gerenciamento_Despesas
 {
@@ -306,16 +307,15 @@ namespace Sistema_Gerenciamento_Despesas
             CalculaSaldoConta(minhasContas);
             minhasContas[numeroConta].GetTransacoes().OrderBy(t => t.GetData()); //ordena a lista de transacoes
 
+           //criação da mensagem 
+            String mensagem1 = $"Esta {t.GetTipo()} no valor de {t.GetValor().ToString("N2")} foi adicionada com sucesso!";
+            String mensagem2 = $"Seu novo saldo na conta de ID: {minhasContas[numeroConta].id.ToString()}  é de R$ {minhasContas[numeroConta].saldo.ToString("N2")}";
+            StringBuilder sb = new();
 
-            Console.WriteLine(numeroConta.ToString());
-            Console.WriteLine(minhasContas[numeroConta].ToString());
+            sb = Utils.RetornaMensagem(mensagem2);
+            sb.Insert(0, mensagem1);
 
-            Console.WriteLine(t.ToString());
-            Console.WriteLine($"ESTA TRANSAÇÃO FOI ADICIONADA COM SUCESSO!");
-            Console.WriteLine();
-            Console.WriteLine(".-------------------------------------------------.");
-            Console.WriteLine($"|Seu novo saldo na conta de ID: {minhasContas[numeroConta].id} é de R$ {minhasContas[numeroConta].saldo}|");
-            Console.WriteLine(".-------------------------------------------------.");
+            Console.WriteLine(sb.ToString());
 
             return t;
 

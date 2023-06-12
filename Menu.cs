@@ -295,7 +295,7 @@
 
                 Console.WriteLine("Gostaria de adicionar mais transações? Digite: ");
                 Console.WriteLine("1 - SIM     2 - NÃO");
-                opcao = Transacao.RetornaInt(regex);
+                opcao = Utils.RetornaInt(regex);
 
             } while (opcao == 1);
 

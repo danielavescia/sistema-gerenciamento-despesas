@@ -8,8 +8,7 @@ namespace Sistema_Gerenciamento_Despesas
         protected DateOnly data = new();
         protected string tipo, categoria, descricao;
         protected double valor;
-        protected int idBanco;
-
+      
         //propriedades de acesso
         public DateOnly GetData()
         {
@@ -172,7 +171,7 @@ namespace Sistema_Gerenciamento_Despesas
             do
             {
                 input = Console.ReadLine();
-                isValid = IsRegexValid(input, regex);
+                isValid = Utils.IsRegexValid(input, regex);
 
             } while (!isValid);
 
@@ -187,51 +186,19 @@ namespace Sistema_Gerenciamento_Despesas
 
 
             Console.WriteLine("Digite o dia da transacao (formato: XX):");
-            int dia = RetornaInt(regexDia);
+            int dia = Utils.RetornaInt(regexDia);
 
             Console.WriteLine("Digite o mes da transacao (formato: XX):");
-            int mes = RetornaInt(regexMes);
+            int mes = Utils.RetornaInt(regexMes);
 
             Console.WriteLine("Digite o ano da transacao (formato: XXXX):");
-            int ano = RetornaInt(regexAno);
+            int ano = Utils.RetornaInt(regexAno);
 
             // objeto data é construido
             return new DateOnly(ano, mes, dia);
         }
 
-        public static int RetornaInt(string regex)
-        {
-            string input;
-            bool isValid;
-
-            do
-            {
-                input = (Console.ReadLine());
-                isValid = Regex.IsMatch(input, regex);
-
-                if (!isValid)
-                {
-                    Console.WriteLine("Formato incorreto! Tente novamente...");
-                }
-
-            } while (!isValid);
-
-            return int.Parse(input);
-
-        }
-
-        public static bool IsRegexValid(string regex, string input)
-        {
-
-            if (Regex.IsMatch(regex, input))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+       
     }
 }
 
