@@ -116,31 +116,41 @@ namespace Sistema_Gerenciamento_Despesas
             double saldo = 0;
             int id;
             List<Transacao> minhasTransacoes;
+            StringBuilder sb = new();
 
             //input usuario p/ criacao objeto
-            Console.WriteLine();
-            Console.WriteLine("Para criar uma conta adicione as informacoes solicitadas abaixo:");
-            Console.WriteLine();
+            try
+            {
+                Console.WriteLine("Para criar uma conta adicione as informacoes solicitadas abaixo:");
+                Console.WriteLine();
 
-            Console.WriteLine("Digite o nome do seu banco:");
-            banco = Console.ReadLine();
+                Console.WriteLine("Digite o nome do seu banco:");
+                banco = Console.ReadLine();
 
-            Console.WriteLine("Agencia:");
-            agencia = Console.ReadLine();
+                Console.WriteLine("Agencia:");
+                agencia = Console.ReadLine();
 
-            Console.WriteLine("Numero da conta:");
-            numeroConta = Console.ReadLine();
+                Console.WriteLine("Numero da conta:");
+                numeroConta = Console.ReadLine();
 
-            id = AtribuiId(minhasContas);
+                id = AtribuiId(minhasContas);
 
-            Conta c = new(id, banco, agencia, numeroConta, saldo); //criacao objeto conta
+                Conta c = new(id, banco, agencia, numeroConta, saldo); //criacao objeto conta
 
-            minhasContas.Add(c); // adiciona na lista de contas do usuario
+                minhasContas.Add(c); // adiciona na lista de contas do usuario
 
-            Console.WriteLine($"CONTA CRIADA COM SUCESSO!");
-            ImprimirContasAtivas(minhasContas);
+                //construcao da mensagem de criação da conta
+                string mensagem = $"A conta do {c.GetBanco()} foi criada com sucesso!";
+                sb = Utils.RetornaMensagem(mensagem);
+                Console.WriteLine(sb);
 
-            return minhasContas;
+                return minhasContas;
+            }
+
+            catch (Exception e) 
+            {
+                throw new Exception("Ocorreu um erro. Tente novamente!");
+            }
         }
 
         //método que cria um id conforme a quantidade de contas existentes na lista de contas 
@@ -165,44 +175,41 @@ namespace Sistema_Gerenciamento_Despesas
         public static List<Conta> RemoverConta(List<Conta> minhasContas)
         {
             int contaRemover;
+            StringBuilder sb = new();
+            string mensagem1 = "LEMBRE-SE QUE AO REMOVER SUA CONTA, VOCE IRA PERDER TODAS AS TRANSACOES RELACIONADAS A ELA";
+            string mensagem2 = "VOCE NAO POSSUI NENHUMA CONTA CADASTRADA";
 
-            ImprimirContasAtivas(minhasContas); // Imprime as contas ativas
+            
+            sb = Utils.RetornaMensagem(mensagem1);
 
-            Console.WriteLine();
-            Console.WriteLine(".------------------------------------------------------------------------------------------.");
-            Console.WriteLine("|LEMBRE-SE QUE AO REMOVER SUA CONTA, VOCE IRA PERDER TODAS AS TRANSACOES RELACIONADAS A ELA|");
-            Console.WriteLine(".------------------------------------------------------------------------------------------.");
-            Console.WriteLine();
 
             if (minhasContas == null)
             {
-                Console.WriteLine();
-                Console.WriteLine(".----------------------------------------.");
-                Console.WriteLine("|VOCE NAO POSSUI NENHUMA CONTA CADASTRADA|");
-                Console.WriteLine(".----------------------------------------.");
-                Console.WriteLine();
+                sb = Utils.RetornaMensagem(mensagem2);
+                Console.WriteLine(sb);
 
             }
 
             else
             {
-
+                // Imprime as contas ativas p/ usuario decidir pro input qual deseja remover
                 Console.WriteLine("Digite a Id da conta que deseja remover:");
                 contaRemover = RetornaNumeroConta(minhasContas);
 
-                Console.WriteLine();
-                Console.WriteLine(".---------------------------------------------------------------------------------------------------------------.");
-                Console.WriteLine($"|CONTA: {minhasContas[contaRemover].id.ToString()} - {minhasContas[contaRemover].banco.ToString()} REMOVIDA COM SUCESSO!");
-                Console.WriteLine(".---------------------------------------------------------------------------------------------------------------.");
-                Console.WriteLine();
-                minhasContas.RemoveAt(contaRemover); //remove a conta da lista conforme
+                //construção mensagem impressa em tela
+                string mensagem3 = $"{minhasContas[contaRemover].id.ToString()} - {minhasContas[contaRemover].banco.ToString()} REMOVIDA COM SUCESSO!";
+                sb = Utils.RetornaMensagem(mensagem3);
+                Console.WriteLine(sb);
+
+                //remove a conta da lista e reatribui as ids as contas existentes
+                minhasContas.RemoveAt(contaRemover); 
                 AtribuiId(minhasContas);
             }
 
             return minhasContas;
         }
 
-        //metodo que uni as transações da conta 2 na conta 1
+        //metodo que une as transações da conta x na conta y
         public static List<Conta> MesclarContas(List<Conta> minhasContas)
         {
 
@@ -250,6 +257,7 @@ namespace Sistema_Gerenciamento_Despesas
             return minhasContas;
         }
 
+        //método que imprime contas ativas
         public static void ImprimirContasAtivas(List<Conta> minhasContas)
 
         {
@@ -283,6 +291,7 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
+        //metodo que retorna
         public static int RetornaNumeroConta(List<Conta> minhasContas)
         {
             string idConta;
@@ -408,13 +417,12 @@ namespace Sistema_Gerenciamento_Despesas
                 c.SetSaldo(c.GetSaldo() + t.GetValor());
             }
 
-            return
-
+            return 
                 $@"                SALDO: {c.GetSaldo().ToString("N2")}
                -------------------------------------------";
         }
 
-        public static void ResumoReceitasDespesas(List<Conta> minhasContas)
+        public static void ExtratoMensal(List<Conta> minhasContas)
         {
             DateTime dataHoje = DateTime.Now;
             int mesAtual = dataHoje.Month;

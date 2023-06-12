@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -49,7 +50,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             } while (!isValid);
 
-            return double.Parse(input);
+            return double.Parse(input, CultureInfo.InvariantCulture);
 
         }
 

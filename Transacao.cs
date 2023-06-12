@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Xml.Xsl;
 
 namespace Sistema_Gerenciamento_Despesas
 {
@@ -90,28 +91,35 @@ namespace Sistema_Gerenciamento_Despesas
             double valor;
             DateOnly data;
 
-            //Dados  são obtidos por input para construir objeto Transacao
-            Console.WriteLine("Digite os dados solicitados abaixo:");
-            Console.WriteLine();
+            try
+            {
+                //Dados  são obtidos por input para construir objeto Transacao
+                Console.WriteLine("Digite os dados solicitados abaixo:");
+                Console.WriteLine();
 
-            data = RetornaData();
+                data = RetornaData();
 
-            tipo = RetornaTipoDespesa();
+                tipo = RetornaTipoDespesa();
 
-            Console.WriteLine("Digite o categoria da transacao:");
-            categoria = Console.ReadLine();
+                Console.WriteLine("Digite o categoria da transacao:");
+                categoria = Console.ReadLine();
 
-            Console.WriteLine("Digite o descricao da transacao:");
-            descricao = Console.ReadLine();
+                Console.WriteLine("Digite o descricao da transacao:");
+                descricao = Console.ReadLine();
 
-            valor = RetornaValorDespesa();
+                valor = RetornaValorDespesa();
 
-            //objeto transacao é construido
-            Transacao t = new(data, tipo, categoria, descricao, valor);
+                //objeto transacao é construido
+                Transacao t = new(data, tipo, categoria, descricao, valor);
 
-            t.ToString();
+                t.ToString();
 
-            return t;
+                return t;
+            }
+            catch (Exception e) 
+            {
+                throw new Exception("Ocorreu um erro...");
+            }
         }
 
         public static List<Conta> EditarTransacao(List<Conta> minhasContas, Transacao t)
@@ -136,46 +144,46 @@ namespace Sistema_Gerenciamento_Despesas
 
         public static string RetornaTipoDespesa()
         {
-
-            int opcaoTipo = 0;
-
+            int opcaoTipo;
+            string regex = "^(1|2)$";
             Console.WriteLine("Digite o numero correspondete ao tipo de transacao que deseja cadastrar:");
             Console.WriteLine("1 - Despesa       2 - Receita  ");
 
             //loop repete solicitacao de input enquanto o numero nao é 1 ou 2
 
-            while (opcaoTipo == 1 || opcaoTipo == 2)
+            opcaoTipo = Utils.RetornaInt(regex);
+
+            //Conforme o input um case é de3terminado
+            switch (opcaoTipo)
             {
-                opcaoTipo = int.Parse(Console.ReadLine());
+
+                case 1:
+
+                    return "Despesa";
+
+                case 2:
+
+                    return "Receita";
+
+                default:
+
+                    Console.WriteLine("Esta opção não é válida!");
+                    return RetornaTipoDespesa();
             }
-
-            //verificao para designar categoria
-            if (opcaoTipo == 1)
-            {
-                return "Despesa";
-            }
-
-            else
-                return "Receita";
-
+            
         }
+        
+ 
 
         public static double RetornaValorDespesa()
         {
             string regex = @"^\d+(\.\d+)?$";
-            string input;
-            bool isValid;
-
+            double despesa;
 
             Console.WriteLine("Digite o valor da transaçao:");
-            do
-            {
-                input = Console.ReadLine();
-                isValid = Utils.IsRegexValid(input, regex);
+            despesa = Utils.RetornaDouble(regex);
 
-            } while (!isValid);
-
-            return double.Parse(input, CultureInfo.InvariantCulture);
+            return despesa;
         }
 
         public static DateOnly RetornaData()

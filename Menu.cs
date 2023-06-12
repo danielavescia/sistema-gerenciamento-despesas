@@ -240,7 +240,7 @@
 
                 // Resumo de receitas e despesas do mês
                 case 2:
-                    Conta.ResumoReceitasDespesas(minhasContas);
+                    Conta.ExtratoMensal(minhasContas);
                     Wait(5000);
                     Console.WriteLine("Retornando ao menu...");
                     break;
