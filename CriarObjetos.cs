@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sistema_Gerenciamento_Despesas
+﻿namespace Sistema_Gerenciamento_Despesas
 {
     internal class CriarObjetos
     {
@@ -43,18 +37,18 @@ namespace Sistema_Gerenciamento_Despesas
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 6, 14), "Despesa", "Educação", "Cursos online", 150.00));
 
             //adiciona as transações de 0-9 na minhasContas[0] e as transações de 10 - 19 na minhasContas[1]
-            for (int i = 0; i <= 9; i++) 
+            for (int i = 0; i <= 9; i++)
             {
-                Conta.AdicionaTransacaoConta(minhasContas, minhasTransacoes[i], 0); 
+                Conta.AdicionaTransacaoConta(minhasContas, minhasTransacoes[i], 0);
             }
 
-            for(int i = 10; i <= 19; i++) 
+            for (int i = 10; i <= 19; i++)
             {
                 Conta.AdicionaTransacaoConta(minhasContas, minhasTransacoes[i], 1);
             }
 
-            return minhasContas; 
+            return minhasContas;
         }
-       
+
     }
 }

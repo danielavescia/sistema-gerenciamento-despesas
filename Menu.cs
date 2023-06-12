@@ -1,11 +1,4 @@
-﻿using Sistema_Gerenciamento_Despesas;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sistema_Gerenciamento_Despesas
+﻿namespace Sistema_Gerenciamento_Despesas
 {
     internal class Menu
     {
@@ -22,16 +15,16 @@ namespace Sistema_Gerenciamento_Despesas
             Iniciar();
         }
 
-        public  void Iniciar()
+        public void Iniciar()
         {
-            
+
             while (menuEstaAtivo)
             {
-              
+
                 ImprimeMenuInicial();
                 opcaoMenu = int.Parse(Console.ReadLine());
                 Console.WriteLine("Direcionando para a opcao desejada..");
-             
+
                 switch (opcaoMenu)
                 {
                     case 1:
@@ -40,7 +33,7 @@ namespace Sistema_Gerenciamento_Despesas
                         GerenciarConta(opcaoMenu1, minhasContas);
                         break;
                     case 2:
-                        Transacao t =null;
+                        Transacao t = null;
                         ImprimeMenuCase2();
                         int opcaoMenu2 = int.Parse(Console.ReadLine());
                         GerenciarTransacoes(opcaoMenu2, minhasContas, t);
@@ -180,10 +173,10 @@ namespace Sistema_Gerenciamento_Despesas
 
         public void GerenciarTransacoes(int opcaoMenu2, List<Conta> minhasContas, Transacao t)
         {
- 
+
             switch (opcaoMenu2)
             {
-                
+
                 // Extrato da conta
                 case 1:
 
@@ -210,10 +203,10 @@ namespace Sistema_Gerenciamento_Despesas
                     }
                     else
                     {
-                        
+
                         minhasContas = Transacao.EditarTransacao(minhasContas, t);
                         Console.WriteLine("Retornando ao menu inicial...");
-                        
+
                     }
                     break;
 
@@ -283,7 +276,7 @@ namespace Sistema_Gerenciamento_Despesas
             {
                 Console.WriteLine(e.StackTrace);
             }
-            
+
         }
         public Transacao AdicionarTransacao(List<Conta> minhasContas)
         {
@@ -311,4 +304,4 @@ namespace Sistema_Gerenciamento_Despesas
     }
 }
 
-   
+

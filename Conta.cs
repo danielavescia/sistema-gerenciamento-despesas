@@ -1,12 +1,4 @@
-﻿using NUnit.Framework.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Transactions;
+﻿using System.Text.RegularExpressions;
 
 namespace Sistema_Gerenciamento_Despesas
 {
@@ -427,11 +419,11 @@ namespace Sistema_Gerenciamento_Despesas
             DateTime dataHoje = DateTime.Now;
             int mesAtual = dataHoje.Month;
             int despesa = 0, receita = 0;
-            double saldoDespesa = 0, saldoReceita =0;
+            double saldoDespesa = 0, saldoReceita = 0;
 
             foreach (Conta c in minhasContas)
             {
-                
+
                 foreach (Transacao t in c.GetTransacoes())
                 {
                     if (t.GetData().Month == mesAtual)
@@ -445,8 +437,8 @@ namespace Sistema_Gerenciamento_Despesas
 
                         else if (t.GetTipo() == "Receita")
                         {
-                           saldoReceita = (saldoReceita + t.GetValor());
-                           receita++;
+                            saldoReceita = (saldoReceita + t.GetValor());
+                            receita++;
                         }
                     }
                 }

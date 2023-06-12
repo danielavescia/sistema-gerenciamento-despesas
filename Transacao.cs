@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Globalization;
-using System.Security.Cryptography;
-using System.Drawing;
 
 namespace Sistema_Gerenciamento_Despesas
 {
@@ -75,7 +68,7 @@ namespace Sistema_Gerenciamento_Despesas
             this.categoria = categoria;
             this.descricao = descricao;
             this.valor = valor;
-            
+
         }
         public override string ToString()
         {
@@ -115,7 +108,7 @@ namespace Sistema_Gerenciamento_Despesas
             valor = RetornaValorDespesa();
 
             //objeto transacao é construido
-            Transacao t = new (data, tipo, categoria, descricao, valor);
+            Transacao t = new(data, tipo, categoria, descricao, valor);
 
             t.ToString();
 
@@ -173,7 +166,7 @@ namespace Sistema_Gerenciamento_Despesas
             string regex = @"^\d+(\.\d+)?$";
             string input;
             bool isValid;
-           
+
 
             Console.WriteLine("Digite o valor da transaçao:");
             do
@@ -192,13 +185,13 @@ namespace Sistema_Gerenciamento_Despesas
             string regexMes = @"^(0[1-9]|1[0-2])$"; //mes - só aceita numeros positivos com 2 digitos entre 1-12
             string regexAno = @"^\d{4}$"; // ano só aceita numeros com 4 digitos
 
-  
+
             Console.WriteLine("Digite o dia da transacao (formato: XX):");
             int dia = RetornaInt(regexDia);
 
             Console.WriteLine("Digite o mes da transacao (formato: XX):");
             int mes = RetornaInt(regexMes);
- 
+
             Console.WriteLine("Digite o ano da transacao (formato: XXXX):");
             int ano = RetornaInt(regexAno);
 
@@ -213,10 +206,10 @@ namespace Sistema_Gerenciamento_Despesas
 
             do
             {
-               input = (Console.ReadLine());
-               isValid = Regex.IsMatch(input, regex);
+                input = (Console.ReadLine());
+                isValid = Regex.IsMatch(input, regex);
 
-                if (!isValid) 
+                if (!isValid)
                 {
                     Console.WriteLine("Formato incorreto! Tente novamente...");
                 }

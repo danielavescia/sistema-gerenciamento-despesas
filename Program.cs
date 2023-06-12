@@ -1,6 +1,5 @@
 ﻿
 using Sistema_Gerenciamento_Despesas;
-using System.Collections.Generic;
 
 internal class Program
 {
@@ -9,7 +8,7 @@ internal class Program
     {
 
         List<Conta> minhasContas = CriarObjetos.CarregarDados();
-        Menu menu = new (minhasContas);
+        Menu menu = new(minhasContas);
 
     }
 }
