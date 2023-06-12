@@ -83,7 +83,6 @@ namespace Sistema_Gerenciamento_Despesas
             minhastransacoes.Add(mt);
         }
 
-
         //Construtor objeto Conta
         public Conta(int id, string banco, string agencia, string numeroConta, double saldo)
         {
@@ -183,7 +182,7 @@ namespace Sistema_Gerenciamento_Despesas
             sb = Utils.RetornaMensagem(mensagem1);
 
 
-            if (minhasContas == null)
+            if (minhasContas.Count == 0)
             {
                 sb = Utils.RetornaMensagem(mensagem2);
                 Console.WriteLine(sb);
@@ -358,23 +357,21 @@ namespace Sistema_Gerenciamento_Despesas
 
         public static void ImprimeSaldo(List<Conta> minhasContas)
         {
+            StringBuilder sb = new ();
             double saldoTotal = CalculaSaldoTotal(minhasContas);
+            
             foreach (Conta c in minhasContas)
             {
-
-                Console.WriteLine(".----------------------------------.");
-                Console.WriteLine($"| ID: {c.id.ToString()}           |");
-                Console.WriteLine($"| BANCO: {c.banco.ToString()}     |");
-                Console.WriteLine($"| SALDO: {c.saldo.ToString("N2")} |");
-                Console.WriteLine(".----------------------------------.");
-                Console.WriteLine();
-
+                string mensangem1 = $"ID: {c.id.ToString()} {"\n"}|BANCO: {c.banco.ToString()} {"\n"}SALDO: {c.saldo.ToString("N2")}";
+                sb = Utils.RetornaMensagem(mensangem1);
+                Console.WriteLine(sb);
+                sb.Clear();
             }
 
-            Console.WriteLine(".-----------------------------------------------.");
-            Console.WriteLine($"|  SALDO TOTAL: {saldoTotal.ToString("N2")}    |");
-            Console.WriteLine(".-----------------------------------------------.");
-            Console.WriteLine();
+            string mensangem2 = $"SALDO TOTAL: {saldoTotal.ToString("N2")}";
+            sb = Utils.RetornaMensagem(mensangem2);
+            Console.WriteLine (sb.ToString());
+           
         }
 
         public static double CalculaSaldoTotal(List<Conta> minhasContas)
@@ -388,6 +385,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         public static void ExtratoConta(List<Conta> minhasContas)
         {
+            StringBuilder sb = new();
             foreach (Conta c in minhasContas)
             {
                 c.SetSaldo(0);
@@ -396,8 +394,9 @@ namespace Sistema_Gerenciamento_Despesas
                 foreach (Transacao t in c.GetTransacoes())
                 {
                     string saldo = CalculaSaldo(t, c);
-                    Console.WriteLine(t.ToString() + "\n" + saldo);
-                    Console.WriteLine();
+                    Console.WriteLine(t.ToString());
+                    sb.Append($"SALDO: {saldo}");
+                    Console.WriteLine(sb);
 
                 }
 

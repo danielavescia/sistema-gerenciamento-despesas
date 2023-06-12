@@ -139,23 +139,25 @@
             {
                 // Cadastrar conta
                 case 1:
+
                     Conta.CriarConta(minhasContas);
-                    Wait(5000);
                     Console.WriteLine("Retornando ao menu...");
+                    Wait(5000);  
                     break;
 
                 // Remover conta;
                 case 2:
+
                     Conta.RemoverConta(minhasContas);
-                    Wait(5000);
                     Console.WriteLine("Retornando ao menu...");
+                    Wait(5000);
                     break;
 
                 // Mesclar contas
                 case 3:
                     Conta.MesclarContas(minhasContas);
-                    Wait(5000);
                     Console.WriteLine("Retornando ao menu...");
+                    Wait(5000);
                     break;
 
                 //sair p/ menu inicial
