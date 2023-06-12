@@ -18,11 +18,11 @@ namespace Sistema_Gerenciamento_Despesas
         {
             minhasContas = minhasContasVirtual;
             menuEstaAtivo = true;
-            int opcaoMenu = 0;
+            int opcaoMenu;
             Iniciar();
         }
 
-        public void Iniciar()
+        public  void Iniciar()
         {
             while (menuEstaAtivo)
             {
@@ -65,7 +65,7 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
-        public void ImprimeMenuInicial()
+        public static void ImprimeMenuInicial()
         {
             Wait(600);
             Console.Clear();
@@ -83,7 +83,7 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine("Digite a opção desejada:");
         }
 
-        public  void ImprimeMenuCase1()
+        public static void ImprimeMenuCase1()
         {
             Wait(600);
             Console.Clear();
@@ -101,7 +101,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
-        public  void ImprimeMenuCase2()
+        public static void ImprimeMenuCase2()
         {
             Wait(600);
             Console.Clear();
@@ -120,7 +120,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
-        public  void ImprimeMenuCase3()
+        public static void ImprimeMenuCase3()
         {
             Wait(600);
             Console.Clear();
@@ -139,7 +139,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
-        public  void GerenciarConta(int opcaoMenu1, List<Conta> minhasContas)
+        public void GerenciarConta(int opcaoMenu1, List<Conta> minhasContas)
         {
             switch (opcaoMenu1)
             {
@@ -147,14 +147,14 @@ namespace Sistema_Gerenciamento_Despesas
                 case 1:
                     Conta.CriarConta(minhasContas);
                     Wait(5000);
-                    Console.WriteLine("Retornando ao menu");
+                    Console.WriteLine("Retornando ao menu...");
                     break;
 
                 // Remover conta;
                 case 2:
                     Conta.RemoverConta(minhasContas);
                     Wait(5000);
-                    Console.WriteLine("Retornando ao menu");
+                    Console.WriteLine("Retornando ao menu...");
                     break;
 
                 // Mesclar contas
@@ -177,38 +177,63 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
-        public  void GerenciarTransacoes(int opcaoMenu2, List<Conta> minhasContas)
+        public void GerenciarTransacoes(int opcaoMenu2, List<Conta> minhasContas)
         {
-            Transacao t = null;
+            Transacao tCadastrada = null;
+
 
             switch (opcaoMenu2)
             {
+                
+
                 // Extrato da conta
                 case 1:
+
                     Conta.ExtratoConta(minhasContas);
+                    Console.WriteLine("Retornando ao menu inicial...");
                     Wait(5000);
                     break;
 
                 // Incluir transação
                 case 2:
 
-                   t = Transacao.CriarTransacao();
-                   Console.WriteLine("Digite a id da conta que voce deseja adicionar esta transacao:");
-                   int conta = Conta.CapturaNumeroConta(minhasContas);
-                   Conta.AdicionaTransacaoConta(minhasContas, t, conta);
-                   Wait(5000);
+                    String regex = "^(1|2)$";
+                    int opcao;
 
-                   break;
+                    do
+                    {
+                        Transacao t = Transacao.CriarTransacao();
+
+                        Console.WriteLine("Digite a id da conta que voce deseja adicionar esta transação:");
+                        int conta = Conta.RetornaNumeroConta(minhasContas);
+
+                        Conta.AdicionaTransacaoConta(minhasContas, t, conta);
+
+                        Console.WriteLine("Gostaria de adicionar mais transações? Digite: ");
+                        Console.WriteLine("1 - SIM     2 - NÃO");
+                        opcao = Transacao.RetornaInt(regex);
+                        tCadastrada = t;
+
+                    } while (opcao == 1);
+
+                    
+                    Console.WriteLine("Retornando ao menu inicial...");
+                    Wait(5000);
+                    break;
 
                 // Editar a última transação
                 case 3:
-                    if (t == null) 
+
+                    if (tCadastrada == null)
                     {
-                        Console.WriteLine("Primeiro cadastre uma transacao!");
-                        return;
+                        Console.WriteLine("Primeiro cadastre uma transação");
                     }
 
-                    minhasContas =  Transacao.EditarTransacao(minhasContas, t);
+                    else
+                    {
+                        minhasContas = Transacao.EditarTransacao(minhasContas, tCadastrada);
+                        Console.WriteLine("Retornando ao menu inicial...");
+                    }
                     break;
 
                 // Transferir fundos
@@ -227,7 +252,7 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
-        public void PainelControle(int opcaoMenu3, List<Conta> minhasContas)
+        public static void PainelControle(int opcaoMenu3, List<Conta> minhasContas)
         {
             switch (opcaoMenu3)
             {
@@ -235,7 +260,7 @@ namespace Sistema_Gerenciamento_Despesas
                 case 1:
 
                     Conta.ImprimeSaldo(minhasContas);
-                    Console.WriteLine("Retornando ao menu");
+                    Console.WriteLine("Retornando ao menu...");
                     Wait(5000);
                     break;
 

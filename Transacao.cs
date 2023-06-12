@@ -4,85 +4,78 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Drawing;
 
 namespace Sistema_Gerenciamento_Despesas
 {
     internal class Transacao
     {
-        protected DateOnly data = new ();
+        protected DateOnly data = new();
         protected string tipo, categoria, descricao;
         protected double valor;
         protected int idBanco;
 
         //propriedades de acesso
-        public DateOnly getData() 
-        { 
+        public DateOnly GetData()
+        {
             return data;
         }
 
-        public void setDate(DateOnly data) 
-        { 
+        public void SetDate(DateOnly data)
+        {
             this.data = data;
         }
 
-        public string getTipo() 
+        public string GetTipo()
         {
             return tipo;
         }
 
-        public void setTipo(string tipo) 
-        { 
+        public void SetTipo(string tipo)
+        {
             this.tipo = tipo;
         }
 
-        public string getCategoria() 
-        { 
+        public string GetCategoria()
+        {
             return categoria;
         }
 
-        public void setCategoria(string categoria) 
-        { 
+        public void SetCategoria(string categoria)
+        {
             this.categoria = categoria;
         }
 
-        public string getDescricao() 
+        public string GetDescricao()
         {
             return descricao;
         }
 
-        public void setDescricao(string descricao) 
-        { 
+        public void SetDescricao(string descricao)
+        {
             this.descricao = descricao;
         }
 
-        public double getValor() 
+        public double GetValor()
         {
             return valor;
         }
 
-        public void setValor(double valor) 
+        public void SetValor(double valor)
         {
             this.valor = valor;
         }
 
-        public int getidBanco() 
+        public Transacao(DateOnly data, string tipo, string categoria, string descricao, double valor)
         {
-            return idBanco;       
-        }
-
-        public void setIdBanco(int idBanco) 
-        {
-            this.idBanco = idBanco;
-        }
-
-        public Transacao(DateOnly data, string tipo, string categoria, string descricao, double valor) 
-        {
-            this.data= data;
+            this.data = data;
             this.tipo = tipo;
             this.categoria = categoria;
             this.descricao = descricao;
             this.valor = valor;
-            idBanco = 0;
+            
         }
         public override string ToString()
         {
@@ -91,36 +84,25 @@ namespace Sistema_Gerenciamento_Despesas
                -------------------------------------------
                 DADOS REFERENTES DA TRANSACAO:
                -------------------------------------------
-               Data {data.ToString()}
-               Tipo: {tipo.ToString()}
-               Categoria: {categoria.ToString()}
-               Descricao: {descricao.ToString()}
-               Valor: {valor.ToString()}
-               --------------------------------------------
-                ";
+               Data {GetData()}
+               Tipo: {GetTipo()}
+               Categoria: {GetCategoria()}
+               Descricao: {GetDescricao()}
+               Valor: {GetValor().ToString("N2")}
+               --------------------------------------------";
         }
 
-        public static Transacao CriarTransacao() 
+        public static Transacao CriarTransacao()
         {
-
             string tipo, categoria, descricao;
             double valor;
-            int dia, mes, ano;
-            
+            DateOnly data;
+
             //Dados  são obtidos por input para construir objeto Transacao
             Console.WriteLine("Digite os dados solicitados abaixo:");
-            
-            Console.WriteLine("Digite o dia da transacao:");
-            dia = int.Parse(Console.ReadLine());
+            Console.WriteLine();
 
-            Console.WriteLine("Digite o mes da transacao:");
-            mes = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Digite o ano da transacao:");
-            ano = int.Parse(Console.ReadLine());
-
-            // objeto data é construido
-            DateOnly data = new(ano, mes, dia);
+            data = RetornaData();
 
             tipo = RetornaTipoDespesa();
 
@@ -133,12 +115,14 @@ namespace Sistema_Gerenciamento_Despesas
             valor = RetornaValorDespesa();
 
             //objeto transacao é construido
-            Transacao t = new Transacao(data, tipo, categoria, descricao, valor);
+            Transacao t = new (data, tipo, categoria, descricao, valor);
+
+            t.ToString();
 
             return t;
         }
 
-        public static List<Conta> EditarTransacao(List<Conta> minhasContas, Transacao t) 
+        public static List<Conta> EditarTransacao(List<Conta> minhasContas, Transacao t)
         {
             int conta;
 
@@ -150,7 +134,7 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine("TRANSACAO ALTERADA COM SUCESSO!");
             Console.WriteLine(t.ToString()); //imprime a transação alterada
 
-            conta = Conta.CapturaNumeroConta(minhasContas);
+            conta = Conta.RetornaNumeroConta(minhasContas);
             Conta.AdicionaTransacaoConta(minhasContas, t, conta); // adiciona a nova transição a conta desejada
             Conta.ImprimeSaldo(minhasContas);
 
@@ -158,11 +142,10 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
-        public static string RetornaTipoDespesa() 
+        public static string RetornaTipoDespesa()
         {
 
-            int opcaoTipo=0;
-            string tipo = " ";
+            int opcaoTipo = 0;
 
             Console.WriteLine("Digite o numero correspondete ao tipo de transacao que deseja cadastrar:");
             Console.WriteLine("1 - Despesa       2 - Receita  ");
@@ -173,40 +156,90 @@ namespace Sistema_Gerenciamento_Despesas
             {
                 opcaoTipo = int.Parse(Console.ReadLine());
             }
-           
 
             //verificao para designar categoria
             if (opcaoTipo == 1)
             {
-                return tipo = "Despesa";
+                return "Despesa";
             }
 
-            if (opcaoTipo == 2)
-            {
-                return tipo = "Receita";
-            }
+            else
+                return "Receita";
 
-            return tipo;
         }
 
-
-        public static double RetornaValorDespesa() 
+        public static double RetornaValorDespesa()
         {
             string regex = @"^\d+(\.\d+)?$";
             string input;
-            bool isValid = true;
-            double valor = 0;
+            bool isValid;
+           
 
             Console.WriteLine("Digite o valor da transaçao:");
-
             do
             {
                 input = Console.ReadLine();
-                isValid = Regex.IsMatch(input, regex);
+                isValid = IsRegexValid(input, regex);
 
             } while (!isValid);
 
-            return valor = double.Parse(input);
+            return double.Parse(input, CultureInfo.InvariantCulture);
+        }
+
+        public static DateOnly RetornaData()
+        {
+            string regexDia = @"^(0[1-9]|[1-2]\d|3[0-1])$"; // dia - só aceita numeros positivos com 2 digitos entre 1-31
+            string regexMes = @"^(0[1-9]|1[0-2])$"; //mes - só aceita numeros positivos com 2 digitos entre 1-12
+            string regexAno = @"^\d{4}$"; // ano só aceita numeros com 4 digitos
+
+  
+            Console.WriteLine("Digite o dia da transacao (formato: XX):");
+            int dia = RetornaInt(regexDia);
+
+            Console.WriteLine("Digite o mes da transacao (formato: XX):");
+            int mes = RetornaInt(regexMes);
+ 
+            Console.WriteLine("Digite o ano da transacao (formato: XXXX):");
+            int ano = RetornaInt(regexAno);
+
+            // objeto data é construido
+            return new DateOnly(ano, mes, dia);
+        }
+
+
+        public static int RetornaInt(string regex)
+        {
+            string input;
+            bool isValid;
+
+            do
+            {
+               input = (Console.ReadLine());
+               isValid = Regex.IsMatch(input, regex);
+
+                if (!isValid) 
+                {
+                    Console.WriteLine("Formato incorreto! Tente novamente...");
+                }
+
+            } while (!isValid);
+
+            return int.Parse(input);
+
+        }
+
+        public static bool IsRegexValid(string regex, string input)
+        {
+
+            if (Regex.IsMatch(regex, input))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
+
