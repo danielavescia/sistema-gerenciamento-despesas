@@ -24,8 +24,10 @@ namespace Sistema_Gerenciamento_Despesas
 
         public  void Iniciar()
         {
+            
             while (menuEstaAtivo)
             {
+              
                 ImprimeMenuInicial();
                 opcaoMenu = int.Parse(Console.ReadLine());
                 Console.WriteLine("Direcionando para a opcao desejada..");
@@ -38,11 +40,10 @@ namespace Sistema_Gerenciamento_Despesas
                         GerenciarConta(opcaoMenu1, minhasContas);
                         break;
                     case 2:
-
+                        Transacao t =null;
                         ImprimeMenuCase2();
                         int opcaoMenu2 = int.Parse(Console.ReadLine());
-                        GerenciarTransacoes(opcaoMenu2, minhasContas);
-
+                        GerenciarTransacoes(opcaoMenu2, minhasContas, t);
                         break;
 
                     case 3:
@@ -177,62 +178,42 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
-        public void GerenciarTransacoes(int opcaoMenu2, List<Conta> minhasContas)
+        public void GerenciarTransacoes(int opcaoMenu2, List<Conta> minhasContas, Transacao t)
         {
-            Transacao tCadastrada = null;
-
-
+ 
             switch (opcaoMenu2)
             {
                 
-
                 // Extrato da conta
                 case 1:
 
                     Conta.ExtratoConta(minhasContas);
                     Console.WriteLine("Retornando ao menu inicial...");
-                    Wait(5000);
+                    Wait(1000);
                     break;
 
                 // Incluir transação
                 case 2:
 
-                    String regex = "^(1|2)$";
-                    int opcao;
-
-                    do
-                    {
-                        Transacao t = Transacao.CriarTransacao();
-
-                        Console.WriteLine("Digite a id da conta que voce deseja adicionar esta transação:");
-                        int conta = Conta.RetornaNumeroConta(minhasContas);
-
-                        Conta.AdicionaTransacaoConta(minhasContas, t, conta);
-
-                        Console.WriteLine("Gostaria de adicionar mais transações? Digite: ");
-                        Console.WriteLine("1 - SIM     2 - NÃO");
-                        opcao = Transacao.RetornaInt(regex);
-                        tCadastrada = t;
-
-                    } while (opcao == 1);
-
-                    
+                    t = AdicionarTransacao(minhasContas);
+                    t.ToString();
                     Console.WriteLine("Retornando ao menu inicial...");
-                    Wait(5000);
+                    Wait(1000);
                     break;
 
                 // Editar a última transação
                 case 3:
 
-                    if (tCadastrada == null)
+                    if (t == null)
                     {
                         Console.WriteLine("Primeiro cadastre uma transação");
                     }
-
                     else
                     {
-                        minhasContas = Transacao.EditarTransacao(minhasContas, tCadastrada);
+                        
+                        minhasContas = Transacao.EditarTransacao(minhasContas, t);
                         Console.WriteLine("Retornando ao menu inicial...");
+                        
                     }
                     break;
 
@@ -243,7 +224,7 @@ namespace Sistema_Gerenciamento_Despesas
                 //sair p/ menu inicial
                 case 5:
                     Console.WriteLine("Retornando ao menu inicial...");
-                    return;
+                    break;
 
                 default:
                     Console.WriteLine("Digite uma opcao valida!");
@@ -266,7 +247,9 @@ namespace Sistema_Gerenciamento_Despesas
 
                 // Resumo de receitas e despesas do mês
                 case 2:
-
+                    Conta.ResumoReceitasDespesas(minhasContas);
+                    Wait(5000);
+                    Console.WriteLine("Retornando ao menu...");
                     break;
 
                 // Saldo geral dos últimos 6 meses
@@ -281,7 +264,7 @@ namespace Sistema_Gerenciamento_Despesas
                 //sair p/ menu inicial
                 case 5:
                     Console.WriteLine("Retornando ao menu inicial...");
-                    return;
+                    break;
 
                 default:
                     Console.WriteLine("Digite uma opcao valida!");
@@ -301,6 +284,29 @@ namespace Sistema_Gerenciamento_Despesas
                 Console.WriteLine(e.StackTrace);
             }
             
+        }
+        public Transacao AdicionarTransacao(List<Conta> minhasContas)
+        {
+            String regex = "^(1|2)$";
+            int opcao;
+            Transacao t;
+
+            do
+            {
+                t = Transacao.CriarTransacao();
+
+                Console.WriteLine("Digite a id da conta que voce deseja adicionar esta transação:");
+                int conta = Conta.RetornaNumeroConta(minhasContas);
+
+                Conta.AdicionaTransacaoConta(minhasContas, t, conta);
+
+                Console.WriteLine("Gostaria de adicionar mais transações? Digite: ");
+                Console.WriteLine("1 - SIM     2 - NÃO");
+                opcao = Transacao.RetornaInt(regex);
+
+            } while (opcao == 1);
+
+            return t;
         }
     }
 }

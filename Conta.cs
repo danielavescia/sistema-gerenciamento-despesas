@@ -19,7 +19,7 @@ namespace Sistema_Gerenciamento_Despesas
         protected double saldoTotal; // relacionado ao saldo de todas as contas
         protected List<Transacao> minhastransacoes = new();
         protected Transacao trans;
-        
+
 
         // Propriedades (getters e setters) 
         public int GetId()
@@ -81,7 +81,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         public void SetTransacoes(List<Transacao> mt)
         {
-           minhastransacoes = mt;
+            minhastransacoes = mt;
         }
 
         public void SetTransacao(Transacao mt)
@@ -89,7 +89,7 @@ namespace Sistema_Gerenciamento_Despesas
             trans = mt;
             minhastransacoes.Add(mt);
         }
-        
+
 
         //Construtor objeto Conta
         public Conta(int id, string banco, string agencia, string numeroConta, double saldo)
@@ -140,7 +140,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             id = AtribuiId(minhasContas);
 
-            Conta c = new (id, banco, agencia, numeroConta, saldo); //criacao objeto conta
+            Conta c = new(id, banco, agencia, numeroConta, saldo); //criacao objeto conta
 
             minhasContas.Add(c); // adiciona na lista de contas do usuario
 
@@ -193,7 +193,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             else
             {
-                
+
                 Console.WriteLine("Digite a Id da conta que deseja remover:");
                 contaRemover = RetornaNumeroConta(minhasContas);
 
@@ -212,7 +212,7 @@ namespace Sistema_Gerenciamento_Despesas
         //metodo que uni as transações da conta 2 na conta 1
         public static List<Conta> MesclarContas(List<Conta> minhasContas)
         {
-           
+
             int numeroContaRecebe = 0, numeroContaTransfere = 0;
 
             Console.WriteLine("Por favor, digite a ID da conta que irá receber as transações:");
@@ -242,7 +242,8 @@ namespace Sistema_Gerenciamento_Despesas
             else
             {
                 //conta 1 recebera a uniao de transações da conta 2
-                foreach (Transacao t in minhasContas[numeroContaTransfere].GetTransacoes()) {
+                foreach (Transacao t in minhasContas[numeroContaTransfere].GetTransacoes())
+                {
 
                     AdicionaTransacaoConta(minhasContas, t, numeroContaRecebe);
                 }
@@ -269,7 +270,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         public static void CalculaSaldoConta(List<Conta> minhasContas)
         {
-            
+
             foreach (Conta c in minhasContas)
             {
                 c.SetSaldo(0);
@@ -303,17 +304,17 @@ namespace Sistema_Gerenciamento_Despesas
 
             } while (isValid);
 
-            return int.Parse(idConta)-1; // pegar a posicao na lista corretamente
+            return int.Parse(idConta) - 1; // pegar a posicao na lista corretamente
         }
 
         public static Transacao AdicionaTransacaoConta(List<Conta> minhasContas, Transacao t, int numeroConta)
         {
-         
+
             minhasContas[numeroConta].SetTransacao(t); //adiciona transacao na conta desejada
             CalculaSaldoConta(minhasContas);
             minhasContas[numeroConta].GetTransacoes().OrderBy(t => t.GetData()); //ordena a lista de transacoes
-            
-            
+
+
             Console.WriteLine(numeroConta.ToString());
             Console.WriteLine(minhasContas[numeroConta].ToString());
 
@@ -323,7 +324,7 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine(".-------------------------------------------------.");
             Console.WriteLine($"|Seu novo saldo na conta de ID: {minhasContas[numeroConta].id} é de R$ {minhasContas[numeroConta].saldo}|");
             Console.WriteLine(".-------------------------------------------------.");
-            
+
             return t;
 
         }
@@ -359,7 +360,7 @@ namespace Sistema_Gerenciamento_Despesas
             double saldoTotal = CalculaSaldoTotal(minhasContas);
             foreach (Conta c in minhasContas)
             {
-  
+
                 Console.WriteLine(".----------------------------------.");
                 Console.WriteLine($"| ID: {c.id.ToString()}           |");
                 Console.WriteLine($"| BANCO: {c.banco.ToString()}     |");
@@ -368,7 +369,7 @@ namespace Sistema_Gerenciamento_Despesas
                 Console.WriteLine();
 
             }
-            
+
             Console.WriteLine(".-----------------------------------------------.");
             Console.WriteLine($"|  SALDO TOTAL: {saldoTotal.ToString("N2")}    |");
             Console.WriteLine(".-----------------------------------------------.");
@@ -381,7 +382,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             saldoTotal = (minhasContas.Sum(Conta => Conta.GetSaldo()));
 
-           return saldoTotal;
+            return saldoTotal;
         }
 
         public static void ExtratoConta(List<Conta> minhasContas)
@@ -393,12 +394,12 @@ namespace Sistema_Gerenciamento_Despesas
 
                 foreach (Transacao t in c.GetTransacoes())
                 {
-                   string saldo = CalculaSaldo(t, c);
-                   Console.WriteLine(t.ToString() + "\n" + saldo);
-                   Console.WriteLine();
-                    
+                    string saldo = CalculaSaldo(t, c);
+                    Console.WriteLine(t.ToString() + "\n" + saldo);
+                    Console.WriteLine();
+
                 }
-                
+
                 Console.WriteLine();
             }
         }
@@ -418,9 +419,42 @@ namespace Sistema_Gerenciamento_Despesas
             return
 
                 $@"                SALDO: {c.GetSaldo().ToString("N2")}
-               -------------------------------------------";                 
+               -------------------------------------------";
+        }
+
+        public static void ResumoReceitasDespesas(List<Conta> minhasContas)
+        {
+            DateTime dataHoje = DateTime.Now;
+            int mesAtual = dataHoje.Month;
+            int despesa = 0, receita = 0;
+            double saldoDespesa = 0, saldoReceita =0;
+
+            foreach (Conta c in minhasContas)
+            {
+                
+                foreach (Transacao t in c.GetTransacoes())
+                {
+                    if (t.GetData().Month == mesAtual)
+                    {
+
+                        if (t.GetTipo() == "Despesa")
+                        {
+                            saldoDespesa = Math.Abs(saldoDespesa + t.GetValor());
+                            despesa++;
+                        }
+
+                        else if (t.GetTipo() == "Receita")
+                        {
+                           saldoReceita = (saldoReceita + t.GetValor());
+                           receita++;
+                        }
+                    }
+                }
+            }
+            Console.WriteLine($"O mês atual tem:{"\n"}Total de {despesa} despesa(s):{saldoDespesa}{"\n"}Total de {receita} receita(s):{saldoReceita}");
         }
     }
 }
+
 
 

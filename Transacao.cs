@@ -206,7 +206,6 @@ namespace Sistema_Gerenciamento_Despesas
             return new DateOnly(ano, mes, dia);
         }
 
-
         public static int RetornaInt(string regex)
         {
             string input;
