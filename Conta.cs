@@ -113,7 +113,7 @@ namespace Sistema_Gerenciamento_Despesas
         public static List<Conta> CriarConta(List<Conta> minhasContas)
         {
 
-            string banco, agencia, numeroConta, regex = "^(? !$).*"; //regex = não pode ser string vazia
+            string banco, agencia, numeroConta, regex = "^^(?!$).*"; //regex = não pode ser string vazia
             double saldo = 0;
             int id;
             List<Transacao> minhasTransacoes;
@@ -122,6 +122,8 @@ namespace Sistema_Gerenciamento_Despesas
             //input usuario p/ criacao objeto
             try
             {
+                sb = Utilidades.RetornaMensagem("     CRIAR CONTA     ");
+                Console.WriteLine(sb.ToString());   
                 Console.WriteLine("Para criar uma conta adicione as informacoes solicitadas abaixo:");
 
                 Console.WriteLine($"{"\n"}Digite o nome do seu banco:");
@@ -130,7 +132,7 @@ namespace Sistema_Gerenciamento_Despesas
                 Console.WriteLine($"{"\n"}Número da agência:");
                 agencia = Utilidades.RetornaString(regex);
 
-                Console.WriteLine($"({"\n"}Número da conta:");
+                Console.WriteLine($"{"\n"}Número da conta:");
                 numeroConta = Utilidades.RetornaString(regex);
 
                 id = AtribuiId(minhasContas);
@@ -145,9 +147,8 @@ namespace Sistema_Gerenciamento_Despesas
                 Console.WriteLine(sb);
 
                 return minhasContas;
-            }
 
-            catch (Exception)
+            } catch (Exception)
             {
                 throw new NullReferenceException("Ocorreu um erro na criação da sua conta. Tente novamente!");
             }
@@ -179,6 +180,8 @@ namespace Sistema_Gerenciamento_Despesas
             string mensagem1 = "LEMBRE-SE QUE AO REMOVER SUA CONTA, VOCE IRA PERDER TODAS AS TRANSACOES RELACIONADAS A ELA";
             string mensagem2 = "VOCE NAO POSSUI NENHUMA CONTA CADASTRADA";
 
+            sb = Utilidades.RetornaMensagem("     REMOVER CONTA     ");
+            Console.WriteLine(sb.ToString());
             sb = Utilidades.RetornaMensagem(mensagem1);
 
             //verificação se lista de contas está vazia
@@ -289,16 +292,22 @@ namespace Sistema_Gerenciamento_Despesas
         public static int RetornaNumeroConta(List<Conta> minhasContas)
         {
             string idConta;
-            bool isValid = false;
+            int intervaloMaximo = minhasContas.Count;
+            int numeroId;
 
             do
             {
-                idConta = Console.ReadLine();
-                isValid = IsInputValid(minhasContas, idConta);
+                string regex = "^^[0-9]+$"; // regex que permite qualquer caracter exceto numeros
+                numeroId = Utilidades.RetornaInt(regex);
 
-            } while (!isValid);
+                if (numeroId < 0 || numeroId > intervaloMaximo)
+                {
+                    Console.WriteLine("O número se encontra fora do intervalo das IDs de contas existentes");
+                }
 
-            return int.Parse(idConta) - 1; // pegar a posicao na lista corretamente
+            } while (numeroId < 0 || numeroId > intervaloMaximo) ;
+
+                return numeroId - 1; // pegar a posicao na lista corretamente 
         }
 
         public static Transacao AdicionaTransacaoConta(List<Conta> minhasContas, Transacao t, int numeroConta)
@@ -322,31 +331,6 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
-        //método que verifica o input
-        public static bool IsInputValid(List<Conta> minhasContas, string input)
-        {
-            string regex = "[^0-9]"; // regex que permite qualquer caracter exceto numeros
-           
-            if (Regex.IsMatch(regex, input))
-            {
-                Console.WriteLine("Só são aceitos numeros!");
-                return false;
-            }
-
-            else
-            {
-                int numberInput = int.Parse(input) - 1; // corrige para o indice da lista
-                int intervaloMaximo = minhasContas.Count;
-
-                if (numberInput < 0 || numberInput > intervaloMaximo)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         public static void ImprimeSaldo(List<Conta> minhasContas)
         {
             StringBuilder sb = new();
@@ -357,7 +341,6 @@ namespace Sistema_Gerenciamento_Despesas
                 string mensangem1 = $"ID: {c.id.ToString()} {"\n"}|BANCO: {c.banco.ToString()} {"\n"}SALDO: {c.saldo.ToString("N2")}";
                 sb = Utilidades.RetornaMensagem(mensangem1);
                 Console.WriteLine(sb);
-                sb.Clear();
             }
 
             string mensangem2 = $"SALDO TOTAL: {saldoTotal.ToString("N2")}";
@@ -466,7 +449,7 @@ namespace Sistema_Gerenciamento_Despesas
             string regex = @"^\d+(\.\d+)?$";
             DateOnly dataHoje = DateOnly.FromDateTime(DateTime.Now);
 
-            sb = Utilidades.RetornaMensagem("TRANSFERÊNCIA DE FUNDOS"); 
+            sb = Utilidades.RetornaMensagem("     TRANSFERÊNCIA DE FUNDOS     "); 
             Console.WriteLine(sb.ToString());
             ImprimirContasAtivas(minhasContas);
 
@@ -480,10 +463,11 @@ namespace Sistema_Gerenciamento_Despesas
             valor = Utilidades.RetornaDouble(regex);
 
 
-            if (valor > minhasContas[numeroContaTransfere].GetSaldo())
+            if (valor > minhasContas[numeroContaTransfere].GetSaldo() || minhasContas[numeroContaTransfere].GetSaldo() == 0)
             {
                 sb = Utilidades.RetornaMensagem($"Sua conta de ID: {numeroContaTransfere.ToString()} não possui fundos suficientes! Tente novamente...");
-                TransferirFundos(minhasContas);
+                Console.WriteLine(sb.ToString());
+                return;
             }
 
             else
