@@ -19,10 +19,10 @@ namespace Sistema_Gerenciamento_Despesas
 
         public void Iniciar()
         {
-
+            
             while (menuEstaAtivo)
             {
-
+                Transacao t = null;
                 ImprimeMenuInicial();
                 string regex = "^[1-9][0-9]*$";
                 opcaoMenu = Utilidades.RetornaInt(regex);
@@ -37,7 +37,6 @@ namespace Sistema_Gerenciamento_Despesas
 
                         break;
                     case 2:
-                        Transacao t = null;
                         ImprimeMenuCase2();
                         int opcaoMenu2 = Utilidades.RetornaInt(regex);
                         GerenciarTransacoes(opcaoMenu2, minhasContas, t);
@@ -271,19 +270,6 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
-        //tempo entre cada impressão
-        public static void Wait(int milissegundos)
-        {
-            try
-            {
-                Thread.Sleep(milissegundos);
-            }
-            catch (ThreadInterruptedException e)
-            {
-                Console.WriteLine(e.StackTrace);
-            }
-
-        }
         public Transacao AdicionarTransacao(List<Conta> minhasContas)
         {
             String regex = "^(1|2)$";
@@ -306,6 +292,20 @@ namespace Sistema_Gerenciamento_Despesas
             } while (opcao == 1);
 
             return t;
+        }
+
+        //tempo entre cada impressão
+        public static void Wait(int milissegundos)
+        {
+            try
+            {
+                Thread.Sleep(milissegundos);
+            }
+            catch (ThreadInterruptedException e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+
         }
     }
 }

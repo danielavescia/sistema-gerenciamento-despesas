@@ -87,7 +87,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         public static Transacao CriarTransacao()
         {
-            string tipo, categoria, descricao;
+            string tipo, categoria, descricao, regex = "^(? !$).*"; //regex = não pode ser string vazia;
             double valor;
             DateOnly data;
 
@@ -102,12 +102,12 @@ namespace Sistema_Gerenciamento_Despesas
                 tipo = RetornaTipoDespesa();
 
                 Console.WriteLine("Digite o categoria da transacao:");
-                categoria = Console.ReadLine();
+                categoria = Utilidades.RetornaString(regex);
 
                 Console.WriteLine("Digite o descricao da transacao:");
-                descricao = Console.ReadLine();
+                descricao = Utilidades.RetornaString(regex);
 
-                valor = RetornaValorDespesa();
+                valor = RetornaValorTransacao();
 
                 //objeto transacao é construido
                 Transacao t = new(data, tipo, categoria, descricao, valor);
@@ -116,9 +116,9 @@ namespace Sistema_Gerenciamento_Despesas
 
                 return t;
             }
-            catch (Exception e) 
+            catch (Exception) 
             {
-                throw new Exception("Ocorreu um erro...");
+                throw new NullReferenceException("Ocorreu um erro na criação da transação! Por favor, tente novamente!");
             }
         }
 
@@ -172,18 +172,16 @@ namespace Sistema_Gerenciamento_Despesas
             }
             
         }
-        
- 
 
-        public static double RetornaValorDespesa()
+        public static double RetornaValorTransacao()
         {
             string regex = @"^\d+(\.\d+)?$";
-            double despesa;
+            double valorTransacao;
 
             Console.WriteLine("Digite o valor da transaçao:");
-            despesa = Utilidades.RetornaDouble(regex);
+            valorTransacao = Utilidades.RetornaDouble(regex);
 
-            return despesa;
+            return valorTransacao;
         }
 
         public static DateOnly RetornaData()
@@ -191,7 +189,6 @@ namespace Sistema_Gerenciamento_Despesas
             string regexDia = @"^(0[1-9]|[1-2]\d|3[0-1])$"; // dia - só aceita numeros positivos com 2 digitos entre 1-31
             string regexMes = @"^(0[1-9]|1[0-2])$"; //mes - só aceita numeros positivos com 2 digitos entre 1-12
             string regexAno = @"^\d{4}$"; // ano só aceita numeros com 4 digitos
-
 
             Console.WriteLine("Digite o dia da transacao (formato: XX):");
             int dia = Utilidades.RetornaInt(regexDia);
@@ -204,9 +201,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             // objeto data é construido
             return new DateOnly(ano, mes, dia);
-        }
-
-       
+        } 
     }
 }
 

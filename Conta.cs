@@ -113,26 +113,25 @@ namespace Sistema_Gerenciamento_Despesas
         public static List<Conta> CriarConta(List<Conta> minhasContas)
         {
 
-            String banco, agencia, numeroConta;
+            string banco, agencia, numeroConta, regex = "^(? !$).*"; //regex = não pode ser string vazia
             double saldo = 0;
             int id;
             List<Transacao> minhasTransacoes;
-            StringBuilder sb = new();
+            StringBuilder sb;
 
             //input usuario p/ criacao objeto
             try
             {
                 Console.WriteLine("Para criar uma conta adicione as informacoes solicitadas abaixo:");
-                Console.WriteLine();
 
-                Console.WriteLine("Digite o nome do seu banco:");
-                banco = Console.ReadLine();
+                Console.WriteLine($"{"\n"}Digite o nome do seu banco:");
+                banco = Utilidades.RetornaString(regex);
 
-                Console.WriteLine("Agencia:");
-                agencia = Console.ReadLine();
+                Console.WriteLine($"{"\n"}Número da agência:");
+                agencia = Utilidades.RetornaString(regex);
 
-                Console.WriteLine("Numero da conta:");
-                numeroConta = Console.ReadLine();
+                Console.WriteLine($"({"\n"}Número da conta:");
+                numeroConta = Utilidades.RetornaString(regex);
 
                 id = AtribuiId(minhasContas);
 
@@ -148,9 +147,9 @@ namespace Sistema_Gerenciamento_Despesas
                 return minhasContas;
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                throw new Exception("Ocorreu um erro. Tente novamente!");
+                throw new NullReferenceException("Ocorreu um erro na criação da sua conta. Tente novamente!");
             }
         }
 
@@ -180,15 +179,13 @@ namespace Sistema_Gerenciamento_Despesas
             string mensagem1 = "LEMBRE-SE QUE AO REMOVER SUA CONTA, VOCE IRA PERDER TODAS AS TRANSACOES RELACIONADAS A ELA";
             string mensagem2 = "VOCE NAO POSSUI NENHUMA CONTA CADASTRADA";
 
-
             sb = Utilidades.RetornaMensagem(mensagem1);
 
-
+            //verificação se lista de contas está vazia
             if (minhasContas.Count == 0)
             {
                 sb = Utilidades.RetornaMensagem(mensagem2);
                 Console.WriteLine(sb);
-
             }
 
             else
@@ -217,22 +214,23 @@ namespace Sistema_Gerenciamento_Despesas
             StringBuilder sb = new();
             int numeroContaRecebe = 0, numeroContaTransfere = 0;
 
+            //bloco que solicita e captura as posições na lista de contas
             ImprimirContasAtivas(minhasContas);
-
             Console.WriteLine("Por favor, digite a ID da conta que irá receber as transações:");
             numeroContaRecebe = RetornaNumeroConta(minhasContas);
 
             Console.WriteLine("Agora, digite a ID da conta que irá transferir as transações:");
             numeroContaTransfere = RetornaNumeroConta(minhasContas);
 
-            if (minhasContas[numeroContaRecebe].GetTransacoes() == null)
+
+            if (minhasContas[numeroContaRecebe].GetTransacoes() == null && minhasContas[numeroContaTransfere].GetTransacoes() == null)
             {
-                sb = Utilidades.RetornaMensagem($"|A conta do banco de ID: {minhasContas[numeroContaRecebe].id.ToString()} nao possui transações");
+                sb = Utilidades.RetornaMensagem($"As duas conta não possuem transações");
             }
 
             else if (minhasContas[numeroContaTransfere].GetTransacoes() == null)
             {
-                sb = Utilidades.RetornaMensagem($"A conta do banco de ID: {minhasContas[numeroContaTransfere].id.ToString()} nao possui transações");
+                sb = Utilidades.RetornaMensagem($"A conta do banco de ID: {minhasContas[numeroContaTransfere].id} nao possui transações");
             }
 
             else
@@ -327,9 +325,8 @@ namespace Sistema_Gerenciamento_Despesas
         //método que verifica o input
         public static bool IsInputValid(List<Conta> minhasContas, string input)
         {
-
             string regex = "[^0-9]"; // regex que permite qualquer caracter exceto numeros
-
+           
             if (Regex.IsMatch(regex, input))
             {
                 Console.WriteLine("Só são aceitos numeros!");
@@ -401,24 +398,29 @@ namespace Sistema_Gerenciamento_Despesas
 
         public static string CalculaSaldo(Transacao t, Conta c)
         {
+            StringBuilder sb;
+            
             if (t.GetTipo() == "Despesa")
+
             {
-                c.SetSaldo(c.GetSaldo() - Math.Abs(t.GetValor()));
+                double despesa = - t.GetValor();
+                c.SetSaldo(c.GetSaldo() + despesa);
             }
 
             if (t.GetTipo() == "Receita")
             {
                 c.SetSaldo(c.GetSaldo() + t.GetValor());
             }
+          
+            sb = Utilidades.RetornaMensagem($@"SALDO: {c.GetSaldo().ToString("N2")}");
 
-            return
-                $@"                SALDO: {c.GetSaldo().ToString("N2")}
-               -------------------------------------------";
+            return sb.ToString();
+
         }
 
         public static void ExtratoMensal(List<Conta> minhasContas)
         {
-            StringBuilder sb = new();
+            StringBuilder sb;
             int despesa = 0, receita = 0;
             double saldoDespesa = 0, saldoReceita = 0;
             DateTime dataHoje = DateTime.Now;

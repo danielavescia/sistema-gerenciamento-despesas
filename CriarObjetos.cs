@@ -14,6 +14,7 @@
             minhasContas.Add(new Conta(2, "Banco OAOA", "001", "9000-8", 0.0));
 
             // Criando e adicionado set de transações na lista minhasTransacoes
+            //Set 1 - Saldo Total R$ = 3841,4
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 5, 3), "Receita", "Salário", "Salário ref. Fevereiro/2023", 3200.00));
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 5, 3), "Despesa", "Alimentação", "Restaurante", 24.70));
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 6, 6), "Despesa", "Casa", "Conserto geladeira", 272.90)); 
@@ -25,6 +26,7 @@
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 3, 9), "Despesa", "Alimentação", "Supermercado", 120.00));
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 3, 9), "Despesa", "Educação", "Livros didáticos", 85.50));
 
+            //Set 2 - Saldo Total R$ = 2395
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 2, 10), "Receita", "Venda", "Objeto usado", 2550.00));
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 3, 10), "Despesa", "Casa", "Aluguel", 800.00));
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 3, 11), "Despesa", "Telecomunicações", "Telefone celular", 60.00));

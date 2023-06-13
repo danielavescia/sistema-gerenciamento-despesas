@@ -54,6 +54,26 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
+        public static string RetornaString(string regex)
+        {
+            string input;
+            bool isValid;
+
+            do
+            {
+                input = (Console.ReadLine());
+                isValid = Regex.IsMatch(input, regex);
+
+                if (!isValid)
+                {
+                    Console.WriteLine("Formato incorreto! Tente novamente...");
+                }
+
+            } while (!isValid);
+
+            return input;
+
+        }
         //recebe um padrão de regex e uma string(input) para verificar se o input está no formato solicitado.
         public static bool IsRegexValid(string regex, string input)
         {
