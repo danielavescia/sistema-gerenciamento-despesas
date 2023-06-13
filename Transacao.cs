@@ -151,7 +151,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             //loop repete solicitacao de input enquanto o numero nao é 1 ou 2
 
-            opcaoTipo = Utils.RetornaInt(regex);
+            opcaoTipo = Utilidades.RetornaInt(regex);
 
             //Conforme o input um case é de3terminado
             switch (opcaoTipo)
@@ -181,7 +181,7 @@ namespace Sistema_Gerenciamento_Despesas
             double despesa;
 
             Console.WriteLine("Digite o valor da transaçao:");
-            despesa = Utils.RetornaDouble(regex);
+            despesa = Utilidades.RetornaDouble(regex);
 
             return despesa;
         }
@@ -194,13 +194,13 @@ namespace Sistema_Gerenciamento_Despesas
 
 
             Console.WriteLine("Digite o dia da transacao (formato: XX):");
-            int dia = Utils.RetornaInt(regexDia);
+            int dia = Utilidades.RetornaInt(regexDia);
 
             Console.WriteLine("Digite o mes da transacao (formato: XX):");
-            int mes = Utils.RetornaInt(regexMes);
+            int mes = Utilidades.RetornaInt(regexMes);
 
             Console.WriteLine("Digite o ano da transacao (formato: XXXX):");
-            int ano = Utils.RetornaInt(regexAno);
+            int ano = Utilidades.RetornaInt(regexAno);
 
             // objeto data é construido
             return new DateOnly(ano, mes, dia);

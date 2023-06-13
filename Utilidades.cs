@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Sistema_Gerenciamento_Despesas
 {
-    internal class Utils
+    internal class Utilidades
     {
         //recebe uma string verifica se ela é válida conforme o padrão de regex determinado e retorna um int
         public static int RetornaInt(string regex)
@@ -23,7 +23,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                 if (!isValid)
                 {
-                    Console.WriteLine("Formato incorreto! Tente novamente...");
+                    Console.WriteLine("Formato incorreto! Digite novamente:");
                 }
 
             } while (!isValid);

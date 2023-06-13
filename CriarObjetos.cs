@@ -16,7 +16,7 @@
             // Criando e adicionado set de transações na lista minhasTransacoes
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 5, 3), "Receita", "Salário", "Salário ref. Fevereiro/2023", 3200.00));
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 5, 3), "Despesa", "Alimentação", "Restaurante", 24.70));
-            minhasTransacoes.Add(new Transacao(new DateOnly(2023, 6, 6), "Despesa", "Casa", "Conserto geladeira", 272.90));
+            minhasTransacoes.Add(new Transacao(new DateOnly(2023, 6, 6), "Despesa", "Casa", "Conserto geladeira", 272.90)); 
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 6, 6), "Despesa", "Energia", "Energia Elétrica", 78.00));
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 6, 7), "Receita", "Freelance", "Serviços de consultoria", 1500.00));
             minhasTransacoes.Add(new Transacao(new DateOnly(2023, 2, 7), "Despesa", "Transporte", "Uber", 35.50));

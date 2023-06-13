@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using Microsoft.VisualBasic;
+using System.Drawing;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Sistema_Gerenciamento_Despesas
@@ -140,13 +142,13 @@ namespace Sistema_Gerenciamento_Despesas
 
                 //construcao da mensagem de criação da conta
                 string mensagem = $"A conta do {c.GetBanco()} foi criada com sucesso!";
-                sb = Utils.RetornaMensagem(mensagem);
+                sb = Utilidades.RetornaMensagem(mensagem);
                 Console.WriteLine(sb);
 
                 return minhasContas;
             }
 
-            catch (Exception e) 
+            catch (Exception e)
             {
                 throw new Exception("Ocorreu um erro. Tente novamente!");
             }
@@ -178,13 +180,13 @@ namespace Sistema_Gerenciamento_Despesas
             string mensagem1 = "LEMBRE-SE QUE AO REMOVER SUA CONTA, VOCE IRA PERDER TODAS AS TRANSACOES RELACIONADAS A ELA";
             string mensagem2 = "VOCE NAO POSSUI NENHUMA CONTA CADASTRADA";
 
-            
-            sb = Utils.RetornaMensagem(mensagem1);
+
+            sb = Utilidades.RetornaMensagem(mensagem1);
 
 
             if (minhasContas.Count == 0)
             {
-                sb = Utils.RetornaMensagem(mensagem2);
+                sb = Utilidades.RetornaMensagem(mensagem2);
                 Console.WriteLine(sb);
 
             }
@@ -192,16 +194,17 @@ namespace Sistema_Gerenciamento_Despesas
             else
             {
                 // Imprime as contas ativas p/ usuario decidir pro input qual deseja remover
+                ImprimirContasAtivas(minhasContas);
                 Console.WriteLine("Digite a Id da conta que deseja remover:");
                 contaRemover = RetornaNumeroConta(minhasContas);
 
                 //construção mensagem impressa em tela
                 string mensagem3 = $"{minhasContas[contaRemover].id.ToString()} - {minhasContas[contaRemover].banco.ToString()} REMOVIDA COM SUCESSO!";
-                sb = Utils.RetornaMensagem(mensagem3);
+                sb = Utilidades.RetornaMensagem(mensagem3);
                 Console.WriteLine(sb);
 
                 //remove a conta da lista e reatribui as ids as contas existentes
-                minhasContas.RemoveAt(contaRemover); 
+                minhasContas.RemoveAt(contaRemover);
                 AtribuiId(minhasContas);
             }
 
@@ -211,31 +214,25 @@ namespace Sistema_Gerenciamento_Despesas
         //metodo que une as transações da conta x na conta y
         public static List<Conta> MesclarContas(List<Conta> minhasContas)
         {
-
+            StringBuilder sb = new();
             int numeroContaRecebe = 0, numeroContaTransfere = 0;
+
+            ImprimirContasAtivas(minhasContas);
 
             Console.WriteLine("Por favor, digite a ID da conta que irá receber as transações:");
             numeroContaRecebe = RetornaNumeroConta(minhasContas);
 
-            Console.WriteLine("Agora, digite a ID da conta para a qual você transferir as transações:");
+            Console.WriteLine("Agora, digite a ID da conta que irá transferir as transações:");
             numeroContaTransfere = RetornaNumeroConta(minhasContas);
 
             if (minhasContas[numeroContaRecebe].GetTransacoes() == null)
             {
-                Console.WriteLine();
-                Console.WriteLine(".---------------------------------------------------------------------------------.");
-                Console.WriteLine($"|A conta do banco de ID: {minhasContas[numeroContaRecebe].id.ToString()} nao possui transacoes|");
-                Console.WriteLine(".--------------------------------------------------------------------------------.");
-                Console.WriteLine();
+                sb = Utilidades.RetornaMensagem($"|A conta do banco de ID: {minhasContas[numeroContaRecebe].id.ToString()} nao possui transações");
             }
 
             else if (minhasContas[numeroContaTransfere].GetTransacoes() == null)
             {
-                Console.WriteLine();
-                Console.WriteLine(".----------------------------------------------------------.");
-                Console.WriteLine($"|A conta do banco de ID: {minhasContas[numeroContaTransfere].id.ToString()} nao possui transacoes|");
-                Console.WriteLine(".---------------------------------------------------------.");
-                Console.WriteLine();
+                sb = Utilidades.RetornaMensagem($"A conta do banco de ID: {minhasContas[numeroContaTransfere].id.ToString()} nao possui transações");
             }
 
             else
@@ -243,12 +240,12 @@ namespace Sistema_Gerenciamento_Despesas
                 //conta 1 recebera a uniao de transações da conta 2
                 foreach (Transacao t in minhasContas[numeroContaTransfere].GetTransacoes())
                 {
-
                     AdicionaTransacaoConta(minhasContas, t, numeroContaRecebe);
                 }
 
                 //remove todas transacoes referentes a conta 1
                 minhasContas[numeroContaTransfere].GetTransacoes().Clear();
+                minhasContas[numeroContaTransfere].SetSaldo(0);
                 ImprimirContasAtivas(minhasContas);
 
             }
@@ -296,8 +293,6 @@ namespace Sistema_Gerenciamento_Despesas
             string idConta;
             bool isValid = false;
 
-            ImprimirContasAtivas(minhasContas);
-
             do
             {
                 idConta = Console.ReadLine();
@@ -315,12 +310,12 @@ namespace Sistema_Gerenciamento_Despesas
             CalculaSaldoConta(minhasContas);
             minhasContas[numeroConta].GetTransacoes().OrderBy(t => t.GetData()); //ordena a lista de transacoes
 
-           //criação da mensagem 
+            //criação da mensagem 
             String mensagem1 = $"Esta {t.GetTipo()} no valor de {t.GetValor().ToString("N2")} foi adicionada com sucesso!";
             String mensagem2 = $"Seu novo saldo na conta de ID: {minhasContas[numeroConta].id.ToString()}  é de R$ {minhasContas[numeroConta].saldo.ToString("N2")}";
             StringBuilder sb = new();
 
-            sb = Utils.RetornaMensagem(mensagem2);
+            sb = Utilidades.RetornaMensagem(mensagem2);
             sb.Insert(0, mensagem1);
 
             Console.WriteLine(sb.ToString());
@@ -357,21 +352,21 @@ namespace Sistema_Gerenciamento_Despesas
 
         public static void ImprimeSaldo(List<Conta> minhasContas)
         {
-            StringBuilder sb = new ();
+            StringBuilder sb = new();
             double saldoTotal = CalculaSaldoTotal(minhasContas);
-            
+
             foreach (Conta c in minhasContas)
             {
                 string mensangem1 = $"ID: {c.id.ToString()} {"\n"}|BANCO: {c.banco.ToString()} {"\n"}SALDO: {c.saldo.ToString("N2")}";
-                sb = Utils.RetornaMensagem(mensangem1);
+                sb = Utilidades.RetornaMensagem(mensangem1);
                 Console.WriteLine(sb);
                 sb.Clear();
             }
 
             string mensangem2 = $"SALDO TOTAL: {saldoTotal.ToString("N2")}";
-            sb = Utils.RetornaMensagem(mensangem2);
-            Console.WriteLine (sb.ToString());
-           
+            sb = Utilidades.RetornaMensagem(mensangem2);
+            Console.WriteLine(sb.ToString());
+
         }
 
         public static double CalculaSaldoTotal(List<Conta> minhasContas)
@@ -416,17 +411,19 @@ namespace Sistema_Gerenciamento_Despesas
                 c.SetSaldo(c.GetSaldo() + t.GetValor());
             }
 
-            return 
+            return
                 $@"                SALDO: {c.GetSaldo().ToString("N2")}
                -------------------------------------------";
         }
 
         public static void ExtratoMensal(List<Conta> minhasContas)
         {
-            DateTime dataHoje = DateTime.Now;
-            int mesAtual = dataHoje.Month;
+            StringBuilder sb = new();
             int despesa = 0, receita = 0;
             double saldoDespesa = 0, saldoReceita = 0;
+            DateTime dataHoje = DateTime.Now;
+            int mesAtual = dataHoje.Month;
+
 
             foreach (Conta c in minhasContas)
             {
@@ -438,7 +435,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                         if (t.GetTipo() == "Despesa")
                         {
-                            saldoDespesa = Math.Abs(saldoDespesa + t.GetValor());
+                            saldoDespesa = saldoDespesa + t.GetValor();
                             despesa++;
                         }
 
@@ -449,8 +446,14 @@ namespace Sistema_Gerenciamento_Despesas
                         }
                     }
                 }
+
             }
-            Console.WriteLine($"O mês atual tem:{"\n"}Total de {despesa} despesa(s):{saldoDespesa}{"\n"}Total de {receita} receita(s):{saldoReceita}");
+            Console.WriteLine();
+            Console.WriteLine($"O MÊS ATUAL: {mesAtual}/{dataHoje.Year} POSSUI UM TOTAL DE:");
+            sb = Utilidades.RetornaMensagem($"{receita} TRANSAÇÕES DE RECEITA(S) RESULTANDO NO VALOR DE: R$ {saldoReceita}");
+            Console.WriteLine(sb.ToString());
+            sb = Utilidades.RetornaMensagem($"{despesa} TRANSAÇÕES DE DESPESA(S) RESULTANDO NO VALOR DE: R$ {saldoDespesa}");
+            Console.WriteLine(sb.ToString());
         }
     }
 }

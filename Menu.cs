@@ -1,4 +1,6 @@
-﻿namespace Sistema_Gerenciamento_Despesas
+﻿using System.Runtime.InteropServices;
+
+namespace Sistema_Gerenciamento_Despesas
 {
     internal class Menu
     {
@@ -22,27 +24,29 @@
             {
 
                 ImprimeMenuInicial();
-                opcaoMenu = int.Parse(Console.ReadLine());
+                string regex = "^[1-9][0-9]*$";
+                opcaoMenu = Utilidades.RetornaInt(regex);
                 Console.WriteLine("Direcionando para a opcao desejada..");
 
                 switch (opcaoMenu)
                 {
                     case 1:
                         ImprimeMenuCase1();
-                        int opcaoMenu1 = int.Parse(Console.ReadLine());
+                        int opcaoMenu1 = Utilidades.RetornaInt(regex);
                         GerenciarConta(opcaoMenu1, minhasContas);
+
                         break;
                     case 2:
                         Transacao t = null;
                         ImprimeMenuCase2();
-                        int opcaoMenu2 = int.Parse(Console.ReadLine());
+                        int opcaoMenu2 = Utilidades.RetornaInt(regex);
                         GerenciarTransacoes(opcaoMenu2, minhasContas, t);
                         break;
 
                     case 3:
 
                         ImprimeMenuCase3();
-                        int opcaoMenu3 = int.Parse(Console.ReadLine());
+                        int opcaoMenu3 = Utilidades.RetornaInt(regex);
                         PainelControle(opcaoMenu3, minhasContas);
 
                         break;
@@ -62,7 +66,7 @@
         public static void ImprimeMenuInicial()
         {
             Wait(600);
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine();
             Console.WriteLine("    SISTEMA DE GERENCIAMENTO DE DESPESAS    ");
             Console.WriteLine();
@@ -80,7 +84,7 @@
         public static void ImprimeMenuCase1()
         {
             Wait(600);
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine();
             Console.WriteLine("____________________________________________");
             Console.WriteLine("|              GERENCIAR CONTA              |");
@@ -98,7 +102,7 @@
         public static void ImprimeMenuCase2()
         {
             Wait(600);
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine();
             Console.WriteLine(".___________________________________________.");
             Console.WriteLine("|            GERENCIAR TRANSACOES           |");
@@ -117,7 +121,7 @@
         public static void ImprimeMenuCase3()
         {
             Wait(600);
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine();
             Console.WriteLine(".___________________________________________.");
             Console.WriteLine("|               PAINEL GERAL                |");
@@ -205,11 +209,11 @@
                     }
                     else
                     {
-
                         minhasContas = Transacao.EditarTransacao(minhasContas, t);
                         Console.WriteLine("Retornando ao menu inicial...");
-
                     }
+
+                    Wait(5000);
                     break;
 
                 // Transferir fundos
@@ -297,7 +301,7 @@
 
                 Console.WriteLine("Gostaria de adicionar mais transações? Digite: ");
                 Console.WriteLine("1 - SIM     2 - NÃO");
-                opcao = Utils.RetornaInt(regex);
+                opcao = Utilidades.RetornaInt(regex);
 
             } while (opcao == 1);
 
