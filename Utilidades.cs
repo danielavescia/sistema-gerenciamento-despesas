@@ -58,7 +58,7 @@ namespace Sistema_Gerenciamento_Despesas
         public static string RetornaString(string regex)
         {
             string input;
-            bool isValid = false;
+            bool isValid;
 
             do
             {

@@ -271,19 +271,13 @@ namespace Sistema_Gerenciamento_Despesas
 
             foreach (Conta c in minhasContas)
             {
+                Console.WriteLine(c.GetSaldo().ToString());
                 c.SetSaldo(0);
+
+
                 foreach (Transacao t in c.GetTransacoes())
                 {
-
-                    if (t.GetTipo() == "Despesa")
-                    {
-                        c.SetSaldo(c.GetSaldo() - Math.Abs(t.GetValor()));
-                    }
-
-                    if (t.GetTipo() == "Receita")
-                    {
-                        c.SetSaldo(c.GetSaldo() + t.GetValor());
-                    }
+                    CalculaSaldoTransacao(t, c);
                 }
             }
         }
@@ -312,20 +306,17 @@ namespace Sistema_Gerenciamento_Despesas
 
         public static Transacao AdicionaTransacaoConta(List<Conta> minhasContas, Transacao t, int numeroConta)
         {
+            StringBuilder sb = new();
+            String mensagem2 = $"          Esta {t.GetTipo()} foi adicionada com sucesso!          ";
 
             minhasContas[numeroConta].SetTransacao(t); //adiciona transacao na conta desejada
-            CalculaSaldoConta(minhasContas);
             minhasContas[numeroConta].GetTransacoes().OrderBy(t => t.GetData()); //ordena a lista de transacoes
 
-            //criação da mensagem 
-            String mensagem1 = $"Esta {t.GetTipo()} no valor de {t.GetValor().ToString("N2")} foi adicionada com sucesso!";
-            String mensagem2 = $"Seu novo saldo na conta de ID: {minhasContas[numeroConta].id.ToString()}  é de R$ {minhasContas[numeroConta].saldo.ToString("N2")}";
-            StringBuilder sb = new();
-
+            //criação da mensagem
+            Console.WriteLine(t.ToString());
             sb = Utilidades.RetornaMensagem(mensagem2);
-            sb.Insert(0, mensagem1);
-
             Console.WriteLine(sb.ToString());
+            CalculaSaldoTransacao(t, minhasContas[numeroConta]);
 
             return t;
 
@@ -368,9 +359,9 @@ namespace Sistema_Gerenciamento_Despesas
 
                 foreach (Transacao t in c.GetTransacoes())
                 {
-                    string saldo = CalculaSaldo(t, c);
+                    CalculaSaldoTransacao(t, c);
                     Console.WriteLine(t.ToString());
-                    sb.Append($"SALDO: {saldo}");
+                    sb.Append($"SALDO: {c.saldo.ToString()}");
                     Console.WriteLine(sb);
 
                 }
@@ -379,7 +370,7 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
-        public static string CalculaSaldo(Transacao t, Conta c)
+        public static void CalculaSaldoTransacao(Transacao t, Conta c)
         {
             StringBuilder sb;
             
@@ -395,9 +386,9 @@ namespace Sistema_Gerenciamento_Despesas
                 c.SetSaldo(c.GetSaldo() + t.GetValor());
             }
           
-            sb = Utilidades.RetornaMensagem($@"SALDO: {c.GetSaldo().ToString("N2")}");
+            sb = Utilidades.RetornaMensagem($@"SALDO DA CONTA ID {c.GetId()}: {c.GetSaldo().ToString("N2")}");
 
-            return sb.ToString();
+            Console.WriteLine(sb.ToString());
 
         }
 
@@ -480,6 +471,12 @@ namespace Sistema_Gerenciamento_Despesas
 
             }
         }
+
+        public static void ExtratoSemestral(List<Conta> minhasContas) 
+        { 
+
+        }
+
     }
 }
 
