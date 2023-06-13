@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using System;
 using System.Drawing;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -67,7 +68,6 @@ namespace Sistema_Gerenciamento_Despesas
         {
             this.saldo = saldo;
         }
-
 
         public List<Transacao> GetTransacoes()
         {
@@ -285,7 +285,7 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
-        //metodo que retorna
+        //metodo que retorna um número da conta válido
         public static int RetornaNumeroConta(List<Conta> minhasContas)
         {
             string idConta;
@@ -296,7 +296,7 @@ namespace Sistema_Gerenciamento_Despesas
                 idConta = Console.ReadLine();
                 isValid = IsInputValid(minhasContas, idConta);
 
-            } while (isValid);
+            } while (!isValid);
 
             return int.Parse(idConta) - 1; // pegar a posicao na lista corretamente
         }
@@ -340,11 +340,11 @@ namespace Sistema_Gerenciamento_Despesas
 
                 if (numberInput < 0 || numberInput > intervaloMaximo)
                 {
-                    return true;
+                    return false;
                 }
             }
 
-            return false;
+            return true;
         }
 
         public static void ImprimeSaldo(List<Conta> minhasContas)
@@ -456,6 +456,45 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine(sb.ToString());
             sb = Utilidades.RetornaMensagem($"{despesa} TRANSAÇÕES DE DESPESA(S) RESULTANDO NO VALOR DE: R$ {saldoDespesa}");
             Console.WriteLine(sb.ToString());
+        }
+
+        public static void TransferirFundos(List<Conta> minhasContas) {
+
+            StringBuilder sb;
+            int numeroContaRecebe, numeroContaTransfere;
+            double valor;
+            string regex = @"^\d+(\.\d+)?$";
+            DateOnly dataHoje = DateOnly.FromDateTime(DateTime.Now);
+
+            sb = Utilidades.RetornaMensagem("TRANSFERÊNCIA DE FUNDOS"); 
+            Console.WriteLine(sb.ToString());
+            ImprimirContasAtivas(minhasContas);
+
+            Console.WriteLine($"{"\n"} Digite a ID da conta que gostaria de RECEBER os fundos");
+            numeroContaRecebe = RetornaNumeroConta(minhasContas);
+
+            Console.WriteLine($"{"\n"} Digite a ID da conta que gostaria de TRANSFERIR os fundos");
+            numeroContaTransfere = RetornaNumeroConta(minhasContas);
+
+            Console.WriteLine($"{"\n"} Digite o VALOR que gostaria de transferir");
+            valor = Utilidades.RetornaDouble(regex);
+
+
+            if (valor > minhasContas[numeroContaTransfere].GetSaldo())
+            {
+                sb = Utilidades.RetornaMensagem($"Sua conta de ID: {numeroContaTransfere.ToString()} não possui fundos suficientes! Tente novamente...");
+                TransferirFundos(minhasContas);
+            }
+
+            else
+            {
+                Transacao tReceber = new(dataHoje, "Receita", "Transferência entre Contas", $"Transferência de valor da conta ID:{numeroContaTransfere.ToString()}", valor);
+                Transacao tTransferir = new(dataHoje, "Despesa","Transferência entre Contas", $"Transferência de valor para a conta ID:{numeroContaRecebe.ToString() }", valor);
+
+                AdicionaTransacaoConta(minhasContas, tReceber, numeroContaRecebe);
+                AdicionaTransacaoConta(minhasContas, tTransferir, numeroContaTransfere);
+
+            }
         }
     }
 }

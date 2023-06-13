@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Sistema_Gerenciamento_Despesas
 {
@@ -194,7 +195,7 @@ namespace Sistema_Gerenciamento_Despesas
                 case 2:
 
                     t = AdicionarTransacao(minhasContas);
-                    t.ToString();
+
                     Console.WriteLine("Retornando ao menu inicial...");
                     Wait(1000);
                     break;
@@ -205,19 +206,23 @@ namespace Sistema_Gerenciamento_Despesas
                     if (t == null)
                     {
                         Console.WriteLine("Primeiro cadastre uma transação");
+                        Wait(1000);
+                        break;
                     }
                     else
                     {
                         minhasContas = Transacao.EditarTransacao(minhasContas, t);
                         Console.WriteLine("Retornando ao menu inicial...");
+                        Wait(5000);
+                        break;
                     }
 
-                    Wait(5000);
-                    break;
 
                 // Transferir fundos
                 case 4:
-
+                    Conta.TransferirFundos(minhasContas);
+                    Console.WriteLine("Retornando ao menu inicial...");
+                    break;
 
                 //sair p/ menu inicial
                 case 5:
@@ -285,7 +290,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                 Conta.AdicionaTransacaoConta(minhasContas, t, conta);
 
-                Console.WriteLine("Gostaria de adicionar mais transações? Digite: ");
+                Console.WriteLine("Gostaria de adicionar mais transações? Digite:");
                 Console.WriteLine("1 - SIM     2 - NÃO");
                 opcao = Utilidades.RetornaInt(regex);
 

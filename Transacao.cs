@@ -87,24 +87,24 @@ namespace Sistema_Gerenciamento_Despesas
 
         public static Transacao CriarTransacao()
         {
-            string tipo, categoria, descricao, regex = "^(? !$).*"; //regex = não pode ser string vazia;
+            string tipo, categoria, descricao, regex = "^(?!\\s*$).+"; //regex = não pode ser string vazia;
             double valor;
             DateOnly data;
 
             try
             {
                 //Dados  são obtidos por input para construir objeto Transacao
-                Console.WriteLine("Digite os dados solicitados abaixo:");
+                Console.WriteLine($"{"\n"}Digite os dados solicitados abaixo:");
                 Console.WriteLine();
 
                 data = RetornaData();
 
                 tipo = RetornaTipoDespesa();
 
-                Console.WriteLine("Digite o categoria da transacao:");
+                Console.WriteLine($"{"\n"}Digite a CATEGORIA da transação:");
                 categoria = Utilidades.RetornaString(regex);
 
-                Console.WriteLine("Digite o descricao da transacao:");
+                Console.WriteLine($"{"\n"} Digite o DESCRIÇÃO da transação:");
                 descricao = Utilidades.RetornaString(regex);
 
                 valor = RetornaValorTransacao();
@@ -190,13 +190,13 @@ namespace Sistema_Gerenciamento_Despesas
             string regexMes = @"^(0[1-9]|1[0-2])$"; //mes - só aceita numeros positivos com 2 digitos entre 1-12
             string regexAno = @"^\d{4}$"; // ano só aceita numeros com 4 digitos
 
-            Console.WriteLine("Digite o dia da transacao (formato: XX):");
+            Console.WriteLine("Digite o DIA da transacao (FORMATO: XX):");
             int dia = Utilidades.RetornaInt(regexDia);
 
-            Console.WriteLine("Digite o mes da transacao (formato: XX):");
+            Console.WriteLine("Digite o MES da transacao (FORMATO: XX):");
             int mes = Utilidades.RetornaInt(regexMes);
 
-            Console.WriteLine("Digite o ano da transacao (formato: XXXX):");
+            Console.WriteLine("Digite o ANO da transacao (FORMATO: XXXX):");
             int ano = Utilidades.RetornaInt(regexAno);
 
             // objeto data é construido

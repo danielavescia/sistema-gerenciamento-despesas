@@ -54,6 +54,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
+        //recebe uma string verifica se ela é válida conforme o padrão de regex determinado e retorna uma string
         public static string RetornaString(string regex)
         {
             string input;
@@ -74,6 +75,7 @@ namespace Sistema_Gerenciamento_Despesas
             return input;
 
         }
+
         //recebe um padrão de regex e uma string(input) para verificar se o input está no formato solicitado.
         public static bool IsRegexValid(string regex, string input)
         {
