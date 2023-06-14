@@ -253,6 +253,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                 // Resumo de receitas e despesas do mês
                 case 2:
+
                     Conta.ExtratoMensal(minhasContas);
                     Wait(5000);
                     Console.WriteLine("Retornando ao menu...");
@@ -261,6 +262,9 @@ namespace Sistema_Gerenciamento_Despesas
                 // Saldo geral dos últimos 6 meses
                 case 3:
 
+                    Conta.ExtratoSemestral(minhasContas);
+                    Wait(5000);
+                    Console.WriteLine("Retornando ao menu...");
                     break;
 
                 // MINHA FUNCIONALIDADE

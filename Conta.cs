@@ -266,21 +266,6 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
-        public static void CalculaSaldoConta(List<Conta> minhasContas)
-        {
-
-            foreach (Conta c in minhasContas)
-            {
-                Console.WriteLine(c.GetSaldo().ToString());
-                c.SetSaldo(0);
-
-
-                foreach (Transacao t in c.GetTransacoes())
-                {
-                    CalculaSaldoTransacao(t, c);
-                }
-            }
-        }
 
         //metodo que retorna um número da conta válido
         public static int RetornaNumeroConta(List<Conta> minhasContas)
@@ -340,6 +325,22 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
+        public static void CalculaSaldoConta(List<Conta> minhasContas)
+        {
+
+            foreach (Conta c in minhasContas)
+            {
+                Console.WriteLine(c.GetSaldo().ToString());
+                c.SetSaldo(0);
+
+
+                foreach (Transacao t in c.GetTransacoes())
+                {
+                    CalculaSaldoTransacao(t, c);
+                }
+            }
+        }
+
         public static double CalculaSaldoTotal(List<Conta> minhasContas)
         {
             double saldoTotal;
@@ -351,7 +352,10 @@ namespace Sistema_Gerenciamento_Despesas
 
         public static void ExtratoConta(List<Conta> minhasContas)
         {
+
             StringBuilder sb = new();
+            sb = Utilidades.RetornaMensagem("     EXTRATO DAS SUAS CONTAS     ");
+
             foreach (Conta c in minhasContas)
             {
                 c.SetSaldo(0);
@@ -392,21 +396,26 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
-        public static void ExtratoMensal(List<Conta> minhasContas)
+        public static void ExtratoSemestral(List<Conta> minhasContas)
         {
             StringBuilder sb;
             int despesa = 0, receita = 0;
+            bool comparadorDataMaxima, comparadorDataMinima;
             double saldoDespesa = 0, saldoReceita = 0;
-            DateTime dataHoje = DateTime.Now;
-            int mesAtual = dataHoje.Month;
+            DateOnly dataAtual = DateOnly.FromDateTime(DateTime.Today);
+            DateOnly dataLimiteInferior = dataAtual.AddMonths(-6);
 
+            sb = Utilidades.RetornaMensagem("     EXTRATO MENSAL     ");
 
             foreach (Conta c in minhasContas)
             {
 
                 foreach (Transacao t in c.GetTransacoes())
                 {
-                    if (t.GetData().Month == mesAtual)
+                    comparadorDataMaxima = t.GetData().CompareTo(dataAtual) <= 0;
+                    comparadorDataMinima = t.GetData().CompareTo(dataLimiteInferior) >= 0;
+
+                    if (comparadorDataMaxima && comparadorDataMinima)
                     {
 
                         if (t.GetTipo() == "Despesa")
@@ -422,10 +431,10 @@ namespace Sistema_Gerenciamento_Despesas
                         }
                     }
                 }
-
             }
+
             Console.WriteLine();
-            Console.WriteLine($"O MÊS ATUAL: {mesAtual}/{dataHoje.Year} POSSUI UM TOTAL DE:");
+            Console.WriteLine($"O INTERVALO DE: {dataLimiteInferior.ToString()} À {dataAtual.ToString()} POSSUI UM TOTAL DE:");
             sb = Utilidades.RetornaMensagem($"{receita} TRANSAÇÕES DE RECEITA(S) RESULTANDO NO VALOR DE: R$ {saldoReceita}");
             Console.WriteLine(sb.ToString());
             sb = Utilidades.RetornaMensagem($"{despesa} TRANSAÇÕES DE DESPESA(S) RESULTANDO NO VALOR DE: R$ {saldoDespesa}");
@@ -456,15 +465,15 @@ namespace Sistema_Gerenciamento_Despesas
 
             if (valor > minhasContas[numeroContaTransfere].GetSaldo() || minhasContas[numeroContaTransfere].GetSaldo() == 0)
             {
-                sb = Utilidades.RetornaMensagem($"Sua conta de ID: {numeroContaTransfere.ToString()} não possui fundos suficientes! Tente novamente...");
+                sb = Utilidades.RetornaMensagem($"Sua conta de ID: {numeroContaTransfere+1.ToString()} não possui fundos suficientes! Tente novamente...");
                 Console.WriteLine(sb.ToString());
                 return;
             }
 
             else
             {
-                Transacao tReceber = new(dataHoje, "Receita", "Transferência entre Contas", $"Transferência de valor da conta ID:{numeroContaTransfere.ToString()}", valor);
-                Transacao tTransferir = new(dataHoje, "Despesa","Transferência entre Contas", $"Transferência de valor para a conta ID:{numeroContaRecebe.ToString() }", valor);
+                Transacao tReceber = new(dataHoje, "Receita", "Transferência entre Contas", $"Transferência de valor da conta ID:{numeroContaTransfere+1.ToString()}", valor);
+                Transacao tTransferir = new(dataHoje, "Despesa","Transferência entre Contas", $"Transferência de valor para a conta ID:{numeroContaRecebe+1.ToString() }", valor);
 
                 AdicionaTransacaoConta(minhasContas, tReceber, numeroContaRecebe);
                 AdicionaTransacaoConta(minhasContas, tTransferir, numeroContaTransfere);
@@ -472,9 +481,46 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
-        public static void ExtratoSemestral(List<Conta> minhasContas) 
-        { 
+        public static void ExtratoMensal(List<Conta> minhasContas) 
+        {
+            StringBuilder sb;
+            int despesa = 0, receita = 0;
+            double saldoDespesa = 0, saldoReceita = 0;
+            DateOnly dataHoje = DateOnly.FromDateTime(DateTime.Today);
+            int mesAtual = dataHoje.Month;
 
+            sb = Utilidades.RetornaMensagem("     EXTRATO MENSAL     ");
+
+            foreach (Conta c in minhasContas)
+            {
+
+                foreach (Transacao t in c.GetTransacoes())
+                {
+                    if (t.GetData().Month == mesAtual)
+                    {
+
+                        if (t.GetTipo() == "Despesa")
+                        {
+                            saldoDespesa = saldoDespesa + t.GetValor();
+                            despesa++;
+                        }
+
+                        else if (t.GetTipo() == "Receita")
+                        {
+                            saldoReceita = (saldoReceita + t.GetValor());
+                            receita++;
+                        }
+                    }
+                }
+
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("O MÊS ATUAL POSSUI UM TOTAL DE:");
+            sb = Utilidades.RetornaMensagem($"{receita} TRANSAÇÕES DE RECEITA(S) RESULTANDO NO VALOR DE: R$ {saldoReceita}");
+            Console.WriteLine(sb.ToString());
+            sb = Utilidades.RetornaMensagem($"{despesa} TRANSAÇÕES DE DESPESA(S) RESULTANDO NO VALOR DE: R$ {saldoDespesa}");
+            Console.WriteLine(sb.ToString());
         }
 
     }

@@ -74,6 +74,7 @@ namespace Sistema_Gerenciamento_Despesas
             this.valor = valor;
 
         }
+
         public override string ToString()
         {
             return
@@ -157,7 +158,6 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
-        
         public static int RetornaIdTransacao(List<Conta> minhasContas, Transacao minhaTransacao) 
         {
             string descricao = minhaTransacao.GetDescricao();
