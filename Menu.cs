@@ -33,12 +33,13 @@ namespace Sistema_Gerenciamento_Despesas
                 switch (opcaoMenu)
                 {
                     case 1:
+
                         ImprimeMenuCase1();
                         int opcaoMenu1 = Utilidades.RetornaInt(regex);
                         GerenciarConta(opcaoMenu1, minhasContas);
-
                         break;
                     case 2:
+
                         ImprimeMenuCase2();
                         int opcaoMenu2 = Utilidades.RetornaInt(regex);
                         GerenciarTransacoes(opcaoMenu2, minhasContas, t);
@@ -140,11 +141,13 @@ namespace Sistema_Gerenciamento_Despesas
 
         public void GerenciarConta(int opcaoMenu1, List<Conta> minhasContas)
         {
+            bool isValid;
+
             switch (opcaoMenu1)
             {
                 // Cadastrar conta
                 case 1:
-
+              
                     Conta.CriarConta(minhasContas);
                     Console.WriteLine("Retornando ao menu...");
                     Wait(5000);  
@@ -153,14 +156,36 @@ namespace Sistema_Gerenciamento_Despesas
                 // Remover conta;
                 case 2:
 
-                    Conta.RemoverConta(minhasContas);
+                    isValid = VerificaQuantidadesContas(minhasContas,1);
+                    
+                    if (isValid)
+                    {
+                        Conta.RemoverConta(minhasContas);
+                    }
+
+                    else 
+                    {
+                        Console.WriteLine("Primeiramente cadastre UMA conta!");
+                    }
+
                     Console.WriteLine("Retornando ao menu...");
                     Wait(5000);
                     break;
 
                 // Mesclar contas
                 case 3:
-                    Conta.MesclarContas(minhasContas);
+                    isValid = VerificaQuantidadesContas(minhasContas, 2);
+
+                    if (isValid)
+                    {
+                        Conta.MesclarContas(minhasContas);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Primeiramente cadastre DUAS conta!");
+                    }
+
                     Console.WriteLine("Retornando ao menu...");
                     Wait(5000);
                     break;
@@ -180,6 +205,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         public void GerenciarTransacoes(int opcaoMenu2, List<Conta> minhasContas, Transacao t)
         {
+            bool isValid;
 
             switch (opcaoMenu2)
             {
@@ -187,7 +213,17 @@ namespace Sistema_Gerenciamento_Despesas
                 // Extrato da conta
                 case 1:
 
-                    Conta.ExtratoConta(minhasContas);
+                    isValid = VerificaQuantidadesContas(minhasContas, 1);
+
+                    if (isValid)
+                    {
+                        Conta.ExtratoConta(minhasContas);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Primeiramente cadastre UMA conta!");
+                    }
+
                     Console.WriteLine("Retornando ao menu inicial...");
                     Wait(1000);
                     break;
@@ -195,10 +231,19 @@ namespace Sistema_Gerenciamento_Despesas
                 // Incluir transação
                 case 2:
 
-                    t = AdicionarTransacao(minhasContas);
-                    ultimaTransacao = new Transacao();
-                    ultimaTransacao = t;
+                    isValid = VerificaQuantidadesContas(minhasContas, 1);
 
+                    if (isValid)
+                    {
+                        t = AdicionarTransacao(minhasContas);
+                        ultimaTransacao = new Transacao();
+                        ultimaTransacao = t;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Primeiramente cadastre UMA conta!");
+                    }
                     Console.WriteLine("Retornando ao menu inicial...");
                     Wait(1000);
                     break;
@@ -223,7 +268,16 @@ namespace Sistema_Gerenciamento_Despesas
 
                 // Transferir fundos
                 case 4:
-                    Conta.TransferirFundos(minhasContas);
+                    isValid = VerificaQuantidadesContas(minhasContas, 2);
+                    if (isValid)
+                    {
+                        Conta.TransferirFundos(minhasContas);
+                    }
+                    else 
+                    {
+                        Console.WriteLine("Primeiramente cadastre DUAS conta!");
+                    }
+
                     Console.WriteLine("Retornando ao menu inicial...");
                     break;
 
@@ -241,12 +295,25 @@ namespace Sistema_Gerenciamento_Despesas
 
         public static void PainelControle(int opcaoMenu3, List<Conta> minhasContas)
         {
+            bool isValid;
+
             switch (opcaoMenu3)
             {
                 // Resumo das contas
                 case 1:
 
-                    Conta.ImprimeSaldo(minhasContas);
+                    isValid = VerificaQuantidadesContas(minhasContas, 1);
+
+                    if (isValid)
+                    {
+                        Conta.ImprimeSaldo(minhasContas);
+                    }
+
+                    else 
+                    {
+                        Console.WriteLine("Primeiramente cadastre UMA conta!");
+                    }
+
                     Console.WriteLine("Retornando ao menu...");
                     Wait(5000);
                     break;
@@ -254,7 +321,18 @@ namespace Sistema_Gerenciamento_Despesas
                 // Resumo de receitas e despesas do mês
                 case 2:
 
-                    Conta.ExtratoMensal(minhasContas);
+                    isValid = VerificaQuantidadesContas(minhasContas, 1);
+
+                    if (isValid)
+                    {
+                        Conta.ExtratoMensal(minhasContas);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Primeiramente cadastre UMA conta!");
+                    }
+
                     Wait(5000);
                     Console.WriteLine("Retornando ao menu...");
                     break;
@@ -262,7 +340,17 @@ namespace Sistema_Gerenciamento_Despesas
                 // Saldo geral dos últimos 6 meses
                 case 3:
 
-                    Conta.ExtratoSemestral(minhasContas);
+                    isValid = VerificaQuantidadesContas(minhasContas, 1);
+                    if (isValid)
+                    {
+                        Conta.ExtratoSemestral(minhasContas);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Primeiramente cadastre UMA conta!");
+                    }
+
                     Wait(5000);
                     Console.WriteLine("Retornando ao menu...");
                     break;
@@ -318,6 +406,18 @@ namespace Sistema_Gerenciamento_Despesas
                 Console.WriteLine(e.StackTrace);
             }
 
+        }
+
+        //método que verifica se o número mínimo de contas é satisfeito
+        public static bool VerificaQuantidadesContas(List<Conta> minhasContas, int qntMinimaContas) 
+        {
+
+            if (minhasContas.Count < qntMinimaContas)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

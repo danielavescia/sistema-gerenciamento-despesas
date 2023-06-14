@@ -226,7 +226,7 @@ namespace Sistema_Gerenciamento_Despesas
             numeroContaTransfere = RetornaNumeroConta(minhasContas);
 
 
-            if (minhasContas[numeroContaRecebe].GetTransacoes() == null && minhasContas[numeroContaTransfere].GetTransacoes() == null)
+            if (minhasContas[numeroContaRecebe].GetTransacoes().Count == null && minhasContas[numeroContaTransfere].GetTransacoes() == null)
             {
                 sb = Utilidades.RetornaMensagem($"As duas conta não possuem transações");
             }
