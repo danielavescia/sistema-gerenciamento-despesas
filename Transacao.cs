@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Xsl;
 
@@ -62,6 +63,8 @@ namespace Sistema_Gerenciamento_Despesas
             this.valor = valor;
         }
 
+        public Transacao() { }
+
         public Transacao(DateOnly data, string tipo, string categoria, string descricao, double valor)
         {
             this.data = data;
@@ -112,8 +115,6 @@ namespace Sistema_Gerenciamento_Despesas
                 //objeto transacao é construido
                 Transacao t = new(data, tipo, categoria, descricao, valor);
 
-                Console.WriteLine(t.ToString());
-
                 return t;
             }
             catch (Exception) 
@@ -122,31 +123,65 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
-        public static List<Conta> EditarTransacao(List<Conta> minhasContas, Transacao t)
+        public static List<Conta> EditarTransacao(List<Conta> minhasContas, Transacao minhaTransacao)
         {
-            int conta;
+            
+            int conta, posicaoConta;
+            List<Transacao> trans;
+            StringBuilder sb;
 
-            Console.WriteLine(t.ToString());
+            posicaoConta = RetornaIdTransacao(minhasContas,minhaTransacao);
+
+          
+            sb = Utilidades.RetornaMensagem("     EDITAR ÚLTIMA TRANSAÇÃO     ");
+            Console.WriteLine(sb.ToString());
+            Console.WriteLine(minhaTransacao.ToString());
 
             Console.WriteLine("Para alterar os dados da transacao acima:");
-            t = CriarTransacao();
+            minhaTransacao = CriarTransacao();
+            
+            Conta.ImprimirContasAtivas(minhasContas);
+            Console.WriteLine($"{"\n"}Por favor, digite a ID da conta que irá receber as transações:");
+            conta = Conta.RetornaNumeroConta(minhasContas);
+
+            int posicaoUltimaTransacao = minhasContas[posicaoConta].GetTransacoes().Count()-1;
+            minhasContas[posicaoConta].GetTransacoes().RemoveAt(posicaoUltimaTransacao);
+            
+
+            Conta.AdicionaTransacaoConta(minhasContas, minhaTransacao, conta); // adiciona a nova transição a conta desejada
+            Conta.ImprimirContasAtivas(minhasContas);
 
             Console.WriteLine("TRANSACAO ALTERADA COM SUCESSO!");
-            Console.WriteLine(t.ToString()); //imprime a transação alterada
-
-            conta = Conta.RetornaNumeroConta(minhasContas);
-            Conta.AdicionaTransacaoConta(minhasContas, t, conta); // adiciona a nova transição a conta desejada
-            Conta.ImprimeSaldo(minhasContas);
 
             return minhasContas;
 
+        }
+
+        
+        public static int RetornaIdTransacao(List<Conta> minhasContas, Transacao minhaTransacao) 
+        {
+            string descricao = minhaTransacao.GetDescricao();
+            double valor= minhaTransacao.GetValor();
+            int idBanco = 0;
+
+            foreach (Conta c in minhasContas) 
+            {
+                foreach (Transacao t in c.GetTransacoes()) 
+                {
+                    if (t.GetDescricao().Equals(descricao) && (t.GetValor() == valor))
+                    { 
+                        return idBanco = c.GetId();
+                    }
+                }
+            }
+            return idBanco-1;
         }
 
         public static string RetornaTipoDespesa()
         {
             int opcaoTipo;
             string regex = "^(1|2)$";
-            Console.WriteLine("Digite o numero correspondete ao tipo de transacao que deseja cadastrar:");
+            Console.WriteLine($"{"\n"}Digite o numero correspondete ao tipo de transacao que deseja cadastrar:");
             Console.WriteLine("1 - Despesa       2 - Receita  ");
 
             //loop repete solicitacao de input enquanto o numero nao é 1 ou 2

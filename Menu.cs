@@ -9,6 +9,7 @@ namespace Sistema_Gerenciamento_Despesas
         private bool menuEstaAtivo;
         private int opcaoMenu;
         List<Conta> minhasContas;
+        Transacao ultimaTransacao;
 
         public Menu(List<Conta> minhasContasVirtual)
         {
@@ -195,6 +196,8 @@ namespace Sistema_Gerenciamento_Despesas
                 case 2:
 
                     t = AdicionarTransacao(minhasContas);
+                    ultimaTransacao = new Transacao();
+                    ultimaTransacao = t;
 
                     Console.WriteLine("Retornando ao menu inicial...");
                     Wait(1000);
@@ -203,7 +206,7 @@ namespace Sistema_Gerenciamento_Despesas
                 // Editar a última transação
                 case 3:
 
-                    if (t == null)
+                    if (ultimaTransacao == null)
                     {
                         Console.WriteLine("Primeiro cadastre uma transação");
                         Wait(1000);
@@ -211,7 +214,7 @@ namespace Sistema_Gerenciamento_Despesas
                     }
                     else
                     {
-                        minhasContas = Transacao.EditarTransacao(minhasContas, t);
+                        minhasContas = Transacao.EditarTransacao(minhasContas, ultimaTransacao);
                         Console.WriteLine("Retornando ao menu inicial...");
                         Wait(5000);
                         break;
