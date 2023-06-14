@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Sistema_Gerenciamento_Despesas
 {
@@ -19,6 +20,7 @@ namespace Sistema_Gerenciamento_Despesas
             Iniciar();
         }
 
+        //chamada de todos os métodos para executar o programa
         public void Iniciar()
         {
             
@@ -65,6 +67,7 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
+        //Imprime Menu Inicial
         public static void ImprimeMenuInicial()
         {
             Wait(600);
@@ -83,6 +86,7 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine("Digite a opção desejada:");
         }
 
+        //Imprime Menu da funcionaliade Gerenciar Conta
         public static void ImprimeMenuCase1()
         {
             Wait(600);
@@ -101,6 +105,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
+        //Imprime Menu da funcionaliade Gerenciar Transações
         public static void ImprimeMenuCase2()
         {
             Wait(600);
@@ -120,6 +125,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
+        //Imprime Menu da funcionaliade Painel Geral
         public static void ImprimeMenuCase3()
         {
             Wait(600);
@@ -139,6 +145,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
+        //switch case relacionado as funcionalides de Gerencia Conta
         public void GerenciarConta(int opcaoMenu1, List<Conta> minhasContas)
         {
             bool isValid;
@@ -203,6 +210,7 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
+        //switch case relacionado as funcionalides de Gerenciar Transações
         public void GerenciarTransacoes(int opcaoMenu2, List<Conta> minhasContas, Transacao t)
         {
             bool isValid;
@@ -293,6 +301,7 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
+        //switch case relacionado as funcionalides do Painel Geral
         public static void PainelControle(int opcaoMenu3, List<Conta> minhasContas)
         {
             bool isValid;
@@ -370,21 +379,24 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
+        //loop para a criação de transações
         public Transacao AdicionarTransacao(List<Conta> minhasContas)
         {
-            String regex = "^(1|2)$";
+            string regex = "^(1|2)$";
             int opcao;
             Transacao t;
+          
 
             do
             {
                 t = Transacao.CriarTransacao();
 
+                Conta.ImprimirContasAtivas(minhasContas);
                 Console.WriteLine("Digite a id da conta que voce deseja adicionar esta transação:");
                 int conta = Conta.RetornaNumeroConta(minhasContas);
 
                 Conta.AdicionaTransacaoConta(minhasContas, t, conta);
-
+                
                 Console.WriteLine("Gostaria de adicionar mais transações? Digite:");
                 Console.WriteLine("1 - SIM     2 - NÃO");
                 opcao = Utilidades.RetornaInt(regex);
@@ -408,7 +420,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
-        //método que verifica se o número mínimo de contas é satisfeito
+        //método que verifica se o número mínimo de contas é compatível com a quantidade de contas existentes
         public static bool VerificaQuantidadesContas(List<Conta> minhasContas, int qntMinimaContas) 
         {
 

@@ -176,7 +176,7 @@ namespace Sistema_Gerenciamento_Despesas
         public static List<Conta> RemoverConta(List<Conta> minhasContas)
         {
             int contaRemover;
-            StringBuilder sb = new();
+            StringBuilder sb;
             string mensagem1 = "LEMBRE-SE QUE AO REMOVER SUA CONTA, VOCE IRA PERDER TODAS AS TRANSACOES RELACIONADAS A ELA";
             string mensagem2 = "VOCE NAO POSSUI NENHUMA CONTA CADASTRADA";
 
@@ -214,9 +214,10 @@ namespace Sistema_Gerenciamento_Despesas
         //metodo que une as transações da conta x na conta y
         public static List<Conta> MesclarContas(List<Conta> minhasContas)
         {
-            StringBuilder sb = new();
-            int numeroContaRecebe = 0, numeroContaTransfere = 0;
+            StringBuilder sb;
+            int numeroContaRecebe, numeroContaTransfere;
 
+            sb = Utilidades.RetornaMensagem("     MESCLAR CONTA     ");
             //bloco que solicita e captura as posições na lista de contas
             ImprimirContasAtivas(minhasContas);
             Console.WriteLine("Por favor, digite a ID da conta que irá receber as transações:");
@@ -254,7 +255,7 @@ namespace Sistema_Gerenciamento_Despesas
             return minhasContas;
         }
 
-        //método que imprime contas ativas
+        //Método que imprime contas ativas
         public static void ImprimirContasAtivas(List<Conta> minhasContas)
 
         {
@@ -266,8 +267,7 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
-
-        //metodo que retorna um número da conta válido
+        //Método que retorna um posição válida de uma conta de interesse na lista de contas
         public static int RetornaNumeroConta(List<Conta> minhasContas)
         {
             string idConta;
@@ -289,6 +289,7 @@ namespace Sistema_Gerenciamento_Despesas
                 return numeroId - 1; // pegar a posicao na lista corretamente 
         }
 
+        //Método que adiciona uma transação na Lista de Transações de uma conta específica
         public static Transacao AdicionaTransacaoConta(List<Conta> minhasContas, Transacao t, int numeroConta)
         {
             StringBuilder sb = new();
@@ -307,16 +308,19 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
+        //Método que imprime saldo atual
         public static void ImprimeSaldo(List<Conta> minhasContas)
         {
-            StringBuilder sb = new();
+            StringBuilder sb;
             double saldoTotal = CalculaSaldoTotal(minhasContas);
 
+            sb = Utilidades.RetornaMensagem("     RESUMO CONTA     ");
+            Console.WriteLine(sb);
             foreach (Conta c in minhasContas)
             {
-                string mensangem1 = $"ID: {c.id.ToString()} {"\n"}|BANCO: {c.banco.ToString()} {"\n"}SALDO: {c.saldo.ToString("N2")}";
-                sb = Utilidades.RetornaMensagem(mensangem1);
-                Console.WriteLine(sb);
+                //string mensangem1 = $"ID: {c.id.ToString()} {"\n"}|BANCO: {c.banco.ToString()} {"\n"}SALDO: {c.saldo.ToString("N2")}";
+                // = Utilidades.RetornaMensagem(mensangem1);
+                Console.WriteLine(c.ToString());
             }
 
             string mensangem2 = $"SALDO TOTAL: {saldoTotal.ToString("N2")}";
@@ -325,6 +329,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
+        //Método que calcula o valor do saldo atual
         public static void CalculaSaldoConta(List<Conta> minhasContas)
         {
 
@@ -341,6 +346,7 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
+        //Método que calcula o valor do saldo de todas as contas presentes na lista de contas
         public static double CalculaSaldoTotal(List<Conta> minhasContas)
         {
             double saldoTotal;
@@ -349,12 +355,13 @@ namespace Sistema_Gerenciamento_Despesas
 
             return saldoTotal;
         }
-
+        
+        //Método que exibe o extrato da conta detalhando a transação e o saldo após a adição de cada uma delas. 
         public static void ExtratoConta(List<Conta> minhasContas)
         {
 
-            StringBuilder sb = new();
-            sb = Utilidades.RetornaMensagem("     EXTRATO DAS SUAS CONTAS     ");
+            StringBuilder sb;
+            sb = Utilidades.RetornaMensagem("     EXTRATO DA(S) SUAS CONTA(S)     ");
 
             foreach (Conta c in minhasContas)
             {
@@ -363,17 +370,15 @@ namespace Sistema_Gerenciamento_Despesas
 
                 foreach (Transacao t in c.GetTransacoes())
                 {
-                    CalculaSaldoTransacao(t, c);
                     Console.WriteLine(t.ToString());
-                    sb.Append($"SALDO: {c.saldo.ToString()}");
-                    Console.WriteLine(sb);
-
+                    CalculaSaldoTransacao(t, c);
                 }
 
                 Console.WriteLine();
             }
         }
 
+        //Método que calcula o saldo conforme o tipo de transação
         public static void CalculaSaldoTransacao(Transacao t, Conta c)
         {
             StringBuilder sb;
@@ -396,6 +401,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
+        //Método que exibe um resumo das transações semestrais conforme a data atual
         public static void ExtratoSemestral(List<Conta> minhasContas)
         {
             StringBuilder sb;
@@ -405,7 +411,8 @@ namespace Sistema_Gerenciamento_Despesas
             DateOnly dataAtual = DateOnly.FromDateTime(DateTime.Today);
             DateOnly dataLimiteInferior = dataAtual.AddMonths(-6);
 
-            sb = Utilidades.RetornaMensagem("     EXTRATO MENSAL     ");
+            sb = Utilidades.RetornaMensagem("     EXTRATO SEMESTRAL     ");
+            Console.WriteLine(sb.ToString());
 
             foreach (Conta c in minhasContas)
             {
@@ -441,6 +448,7 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine(sb.ToString());
         }
 
+        //método que realiza a transferência de fundos entre contas
         public static void TransferirFundos(List<Conta> minhasContas) {
 
             StringBuilder sb;
@@ -481,6 +489,7 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
+        //Método que exibe um resumo das transações mensais conforme a data atual
         public static void ExtratoMensal(List<Conta> minhasContas) 
         {
             StringBuilder sb;
@@ -490,6 +499,7 @@ namespace Sistema_Gerenciamento_Despesas
             int mesAtual = dataHoje.Month;
 
             sb = Utilidades.RetornaMensagem("     EXTRATO MENSAL     ");
+            Console.WriteLine(sb.ToString());
 
             foreach (Conta c in minhasContas)
             {

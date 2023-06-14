@@ -63,8 +63,10 @@ namespace Sistema_Gerenciamento_Despesas
             this.valor = valor;
         }
 
+        //método construtor default
         public Transacao() { }
 
+        //método construtor com atributos
         public Transacao(DateOnly data, string tipo, string categoria, string descricao, double valor)
         {
             this.data = data;
@@ -75,6 +77,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
+        //método que retorna uma representação em formato de string dos dados da Transação.
         public override string ToString()
         {
             return
@@ -90,6 +93,7 @@ namespace Sistema_Gerenciamento_Despesas
                --------------------------------------------";
         }
 
+        //método que cria um objeto Transação
         public static Transacao CriarTransacao()
         {
             string tipo, categoria, descricao, regex = "^(?!\\s*$).+"; //regex = não pode ser string vazia;
@@ -103,7 +107,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                 data = RetornaData();
 
-                tipo = RetornaTipoDespesa();
+                tipo = RetornaTipoTransacao();
 
                 Console.WriteLine($"{"\n"}Digite a CATEGORIA da transação:");
                 categoria = Utilidades.RetornaString(regex);
@@ -124,6 +128,7 @@ namespace Sistema_Gerenciamento_Despesas
             }
         }
 
+        //Método responsável por realizar edição da ultima transação cadastrada 
         public static List<Conta> EditarTransacao(List<Conta> minhasContas, Transacao minhaTransacao)
         {
             
@@ -145,11 +150,13 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine($"{"\n"}Por favor, digite a ID da conta que irá receber as transações:");
             conta = Conta.RetornaNumeroConta(minhasContas);
 
-            int posicaoUltimaTransacao = minhasContas[posicaoConta].GetTransacoes().Count()-1;
-            minhasContas[posicaoConta].GetTransacoes().RemoveAt(posicaoUltimaTransacao);
-            
-
             Conta.AdicionaTransacaoConta(minhasContas, minhaTransacao, conta); // adiciona a nova transição a conta desejada
+
+            int posicaoUltimaTransacao = minhasContas[posicaoConta].GetTransacoes().Count();
+            Transacao ultimaTransacao = minhasContas[posicaoConta].GetTransacoes()[posicaoUltimaTransacao];
+            minhasContas[posicaoConta].GetTransacoes().Remove(ultimaTransacao);
+
+             
             Conta.ImprimirContasAtivas(minhasContas);
 
             Console.WriteLine("TRANSACAO ALTERADA COM SUCESSO!");
@@ -158,6 +165,7 @@ namespace Sistema_Gerenciamento_Despesas
 
         }
 
+        //metodo que pesquisa que permite identificar a localização de uma transação especifica numa das Contas
         public static int RetornaIdTransacao(List<Conta> minhasContas, Transacao minhaTransacao) 
         {
             string descricao = minhaTransacao.GetDescricao();
@@ -177,7 +185,8 @@ namespace Sistema_Gerenciamento_Despesas
             return idBanco-1;
         }
 
-        public static string RetornaTipoDespesa()
+        //Método que por meio do input determina qual o tipo da transação 
+        public static string RetornaTipoTransacao()
         {
             int opcaoTipo;
             string regex = "^(1|2)$";
@@ -203,11 +212,11 @@ namespace Sistema_Gerenciamento_Despesas
                 default:
 
                     Console.WriteLine("Esta opção não é válida!");
-                    return RetornaTipoDespesa();
+                    return RetornaTipoTransacao();
             }
             
         }
-
+        //Método que retorna um valor válido como valor da transação
         public static double RetornaValorTransacao()
         {
             string regex = @"^\d+(\.\d+)?$";
@@ -219,6 +228,7 @@ namespace Sistema_Gerenciamento_Despesas
             return valorTransacao;
         }
 
+        //Método que retorna uma data válida como valor da transação
         public static DateOnly RetornaData()
         {
             string regexDia = @"^(0[1-9]|[1-2]\d|3[0-1])$"; // dia - só aceita numeros positivos com 2 digitos entre 1-31
