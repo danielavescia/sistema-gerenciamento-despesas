@@ -123,7 +123,7 @@ namespace Sistema_Gerenciamento_Despesas
             try
             {
                 sb = Utilidades.RetornaMensagem("     CRIAR CONTA     ");
-                Console.WriteLine(sb.ToString());   
+                Console.WriteLine(sb.ToString());
                 Console.WriteLine("Para criar uma conta adicione as informacoes solicitadas abaixo:");
 
                 Console.WriteLine($"{"\n"}Digite o nome do seu banco:");
@@ -148,7 +148,8 @@ namespace Sistema_Gerenciamento_Despesas
 
                 return minhasContas;
 
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 throw new NullReferenceException("Ocorreu um erro na criação da sua conta. Tente novamente!");
             }
@@ -284,9 +285,9 @@ namespace Sistema_Gerenciamento_Despesas
                     Console.WriteLine("O número se encontra fora do intervalo das IDs de contas existentes");
                 }
 
-            } while (numeroId < 0 || numeroId > intervaloMaximo) ;
+            } while (numeroId < 0 || numeroId > intervaloMaximo);
 
-                return numeroId - 1; // pegar a posicao na lista corretamente 
+            return numeroId - 1; // pegar a posicao na lista corretamente 
         }
 
         //Método que adiciona uma transação na Lista de Transações de uma conta específica
@@ -355,7 +356,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             return saldoTotal;
         }
-        
+
         //Método que exibe o extrato da conta detalhando a transação e o saldo após a adição de cada uma delas. 
         public static void ExtratoConta(List<Conta> minhasContas)
         {
@@ -382,11 +383,11 @@ namespace Sistema_Gerenciamento_Despesas
         public static void CalculaSaldoTransacao(Transacao t, Conta c)
         {
             StringBuilder sb;
-            
+
             if (t.GetTipo() == "Despesa")
 
             {
-                double despesa = - t.GetValor();
+                double despesa = -t.GetValor();
                 c.SetSaldo(c.GetSaldo() + despesa);
             }
 
@@ -394,7 +395,7 @@ namespace Sistema_Gerenciamento_Despesas
             {
                 c.SetSaldo(c.GetSaldo() + t.GetValor());
             }
-          
+
             sb = Utilidades.RetornaMensagem($@"SALDO DA CONTA ID {c.GetId()}: {c.GetSaldo().ToString("N2")}");
 
             Console.WriteLine(sb.ToString());
@@ -449,7 +450,8 @@ namespace Sistema_Gerenciamento_Despesas
         }
 
         //método que realiza a transferência de fundos entre contas
-        public static void TransferirFundos(List<Conta> minhasContas) {
+        public static void TransferirFundos(List<Conta> minhasContas)
+        {
 
             StringBuilder sb;
             int numeroContaRecebe, numeroContaTransfere;
@@ -457,7 +459,7 @@ namespace Sistema_Gerenciamento_Despesas
             string regex = @"^\d+(\.\d+)?$";
             DateOnly dataHoje = DateOnly.FromDateTime(DateTime.Now);
 
-            sb = Utilidades.RetornaMensagem("     TRANSFERÊNCIA DE FUNDOS     "); 
+            sb = Utilidades.RetornaMensagem("     TRANSFERÊNCIA DE FUNDOS     ");
             Console.WriteLine(sb.ToString());
             ImprimirContasAtivas(minhasContas);
 
@@ -473,15 +475,15 @@ namespace Sistema_Gerenciamento_Despesas
 
             if (valor > minhasContas[numeroContaTransfere].GetSaldo() || minhasContas[numeroContaTransfere].GetSaldo() == 0)
             {
-                sb = Utilidades.RetornaMensagem($"Sua conta de ID: {numeroContaTransfere+1.ToString()} não possui fundos suficientes! Tente novamente...");
+                sb = Utilidades.RetornaMensagem($"Sua conta de ID: {numeroContaTransfere + 1.ToString()} não possui fundos suficientes! Tente novamente...");
                 Console.WriteLine(sb.ToString());
                 return;
             }
 
             else
             {
-                Transacao tReceber = new(dataHoje, "Receita", "Transferência entre Contas", $"Transferência de valor da conta ID:{numeroContaTransfere+1.ToString()}", valor);
-                Transacao tTransferir = new(dataHoje, "Despesa","Transferência entre Contas", $"Transferência de valor para a conta ID:{numeroContaRecebe+1.ToString() }", valor);
+                Transacao tReceber = new(dataHoje, "Receita", "Transferência entre Contas", $"Transferência de valor da conta ID:{numeroContaTransfere + 1.ToString()}", valor);
+                Transacao tTransferir = new(dataHoje, "Despesa", "Transferência entre Contas", $"Transferência de valor para a conta ID:{numeroContaRecebe.ToString()}", valor);
 
                 AdicionaTransacaoConta(minhasContas, tReceber, numeroContaRecebe);
                 AdicionaTransacaoConta(minhasContas, tTransferir, numeroContaTransfere);
@@ -490,7 +492,7 @@ namespace Sistema_Gerenciamento_Despesas
         }
 
         //Método que exibe um resumo das transações mensais conforme a data atual
-        public static void ExtratoMensal(List<Conta> minhasContas) 
+        public static void ExtratoMensal(List<Conta> minhasContas)
         {
             StringBuilder sb;
             int despesa = 0, receita = 0;
@@ -533,6 +535,34 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine(sb.ToString());
         }
 
+        public static void TransacaoMinMax(List<Conta> minhasContas)
+        {
+            Transacao maiorValor, menorValor;
+            
+            StringBuilder sb;
+           
+
+            foreach (Conta c in minhasContas)
+            {
+                List<Transacao> transacoes = c.GetTransacoes();
+
+                // Ordene as transações da conta pelo valor
+                List<Transacao> transacoesOrdenadas = transacoes.OrderBy(t => t.GetValor()).ToList();
+                menorValor = transacoesOrdenadas.First();
+                maiorValor = transacoesOrdenadas.Last();
+
+
+                sb = Utilidades.RetornaMensagem($"     TRANSAÇÃO COM MAIOR VALOR NA CONTA ID :{c.id.ToString()}     ");
+                Console.WriteLine(sb.ToString());
+                Console.WriteLine(maiorValor.ToString());
+
+                sb = Utilidades.RetornaMensagem($"    TRANSAÇÃO COM MENOR VALOR NA CONTA ID :{c.id.ToString()}     ");
+                Console.WriteLine(sb.ToString());
+                Console.WriteLine(menorValor.ToString());
+            }
+
+           
+        }
     }
 }
 

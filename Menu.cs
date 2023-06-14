@@ -137,7 +137,7 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine("|1. Resumo das contas                       |");
             Console.WriteLine("|2. Resumo de receitas e despesas do mês    |");
             Console.WriteLine("|3. Saldo geral dos últimos 6 meses         |");
-            Console.WriteLine("|4. FUNCIONALIDADE                          |");
+            Console.WriteLine("|4. Transações com maior valor e menor valor|");
             Console.WriteLine("|5. Voltar ao menu inicial                  |");
             Console.WriteLine("|___________________________________________|");
             Console.WriteLine();
@@ -364,9 +364,23 @@ namespace Sistema_Gerenciamento_Despesas
                     Console.WriteLine("Retornando ao menu...");
                     break;
 
-                // MINHA FUNCIONALIDADE
+                // Retorna a menor e a maior transação apra cada conta cadastrada
                 case 4:
 
+                    isValid = VerificaQuantidadesContas(minhasContas, 1);
+                    if (isValid)
+                    {
+                        Conta.TransacaoMinMax(minhasContas);
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("Primeiramente cadastre UMA conta!");
+                    }
+
+                    Wait(5000);
+                    Console.WriteLine("Retornando ao menu...");
+                    break;
 
                 //sair p/ menu inicial
                 case 5:

@@ -137,9 +137,8 @@ namespace Sistema_Gerenciamento_Despesas
             StringBuilder sb;
             Transacao ultimaTransacao;
 
-            posicaoConta = RetornaIdTransacao(minhasContas,minhaTransacao);
-            ultimaTransacao = minhasContas[posicaoConta].GetTransacoes().Last();
-            minhasContas[posicaoConta].GetTransacoes().Remove(ultimaTransacao);
+            posicaoConta = RetornaIdTransacao(minhasContas,minhaTransacao); 
+            minhasContas[posicaoConta].GetTransacoes().Remove(minhaTransacao);
 
             sb = Utilidades.RetornaMensagem("     EDITAR ÚLTIMA TRANSAÇÃO     ");
             Console.WriteLine(sb.ToString());
