@@ -70,8 +70,8 @@ namespace Sistema_Gerenciamento_Despesas
         //Imprime Menu Inicial
         public static void ImprimeMenuInicial()
         {
-            Wait(600);
-            //Console.Clear();
+            Wait(1000);
+            Console.Clear();
             Console.WriteLine();
             Console.WriteLine("    SISTEMA DE GERENCIAMENTO DE DESPESAS    ");
             Console.WriteLine();
@@ -89,8 +89,8 @@ namespace Sistema_Gerenciamento_Despesas
         //Imprime Menu da funcionaliade Gerenciar Conta
         public static void ImprimeMenuCase1()
         {
-            Wait(600);
-            //Console.Clear();
+            Wait(1000);
+            Console.Clear();
             Console.WriteLine();
             Console.WriteLine("____________________________________________");
             Console.WriteLine("|              GERENCIAR CONTA              |");
@@ -108,8 +108,8 @@ namespace Sistema_Gerenciamento_Despesas
         //Imprime Menu da funcionaliade Gerenciar Transações
         public static void ImprimeMenuCase2()
         {
-            Wait(600);
-            //Console.Clear();
+            Wait(1000);
+            Console.Clear();
             Console.WriteLine();
             Console.WriteLine(".___________________________________________.");
             Console.WriteLine("|            GERENCIAR TRANSACOES           |");
@@ -128,8 +128,8 @@ namespace Sistema_Gerenciamento_Despesas
         //Imprime Menu da funcionaliade Painel Geral
         public static void ImprimeMenuCase3()
         {
-            Wait(600);
-            //Console.Clear();
+            Wait(1000);
+            Console.Clear();
             Console.WriteLine();
             Console.WriteLine(".___________________________________________.");
             Console.WriteLine("|               PAINEL GERAL                |");
@@ -233,7 +233,7 @@ namespace Sistema_Gerenciamento_Despesas
                     }
 
                     Console.WriteLine("Retornando ao menu inicial...");
-                    Wait(1000);
+                    Wait(3000);
                     break;
 
                 // Incluir transação
@@ -253,7 +253,7 @@ namespace Sistema_Gerenciamento_Despesas
                         Console.WriteLine("Primeiramente cadastre UMA conta!");
                     }
                     Console.WriteLine("Retornando ao menu inicial...");
-                    Wait(1000);
+                    Wait(3000);
                     break;
 
                 // Editar a última transação
@@ -262,14 +262,14 @@ namespace Sistema_Gerenciamento_Despesas
                     if (ultimaTransacao == null)
                     {
                         Console.WriteLine("Primeiro cadastre uma transação");
-                        Wait(1000);
+                        Wait(3000);
                         break;
                     }
                     else
                     {
                         minhasContas = Transacao.EditarTransacao(minhasContas, ultimaTransacao);
                         Console.WriteLine("Retornando ao menu inicial...");
-                        Wait(5000);
+                        Wait(3000);
                         break;
                     }
 
@@ -287,6 +287,7 @@ namespace Sistema_Gerenciamento_Despesas
                     }
 
                     Console.WriteLine("Retornando ao menu inicial...");
+                    Wait(3000);
                     break;
 
                 //sair p/ menu inicial
@@ -364,7 +365,7 @@ namespace Sistema_Gerenciamento_Despesas
                     Console.WriteLine("Retornando ao menu...");
                     break;
 
-                // Retorna a menor e a maior transação apra cada conta cadastrada
+                // Retorna a menor e a maior transação para cada conta cadastrada
                 case 4:
 
                     isValid = VerificaQuantidadesContas(minhasContas, 1);
