@@ -135,28 +135,20 @@ namespace Sistema_Gerenciamento_Despesas
             int conta, posicaoConta;
             List<Transacao> trans;
             StringBuilder sb;
+            Transacao ultimaTransacao;
 
             posicaoConta = RetornaIdTransacao(minhasContas,minhaTransacao);
+            ultimaTransacao = minhasContas[posicaoConta].GetTransacoes().Last();
+            minhasContas[posicaoConta].GetTransacoes().Remove(ultimaTransacao);
 
-          
             sb = Utilidades.RetornaMensagem("     EDITAR ÚLTIMA TRANSAÇÃO     ");
             Console.WriteLine(sb.ToString());
             Console.WriteLine(minhaTransacao.ToString());
 
             Console.WriteLine("Para alterar os dados da transacao acima:");
             minhaTransacao = CriarTransacao();
-            
-            Conta.ImprimirContasAtivas(minhasContas);
-            Console.WriteLine($"{"\n"}Por favor, digite a ID da conta que irá receber as transações:");
-            conta = Conta.RetornaNumeroConta(minhasContas);
+            minhasContas[posicaoConta].SetTransacao(minhaTransacao);
 
-            Conta.AdicionaTransacaoConta(minhasContas, minhaTransacao, conta); // adiciona a nova transição a conta desejada
-
-            int posicaoUltimaTransacao = minhasContas[posicaoConta].GetTransacoes().Count();
-            Transacao ultimaTransacao = minhasContas[posicaoConta].GetTransacoes()[posicaoUltimaTransacao];
-            minhasContas[posicaoConta].GetTransacoes().Remove(ultimaTransacao);
-
-             
             Conta.ImprimirContasAtivas(minhasContas);
 
             Console.WriteLine("TRANSACAO ALTERADA COM SUCESSO!");
