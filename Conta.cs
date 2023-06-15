@@ -475,14 +475,14 @@ namespace Sistema_Gerenciamento_Despesas
 
             if (valor > minhasContas[numeroContaTransfere].GetSaldo() || minhasContas[numeroContaTransfere].GetSaldo() == 0)
             {
-                sb = Utilidades.RetornaMensagem($"Sua conta de ID: {numeroContaTransfere + 1.ToString()} não possui fundos suficientes! Tente novamente...");
+                sb = Utilidades.RetornaMensagem($"Sua conta de ID: {(numeroContaTransfere+1).ToString()} não possui fundos suficientes! Tente novamente...");
                 Console.WriteLine(sb.ToString());
                 return;
             }
 
             else
             {
-                Transacao tReceber = new(dataHoje, "Receita", "Transferência entre Contas", $"Transferência de valor da conta ID:{numeroContaTransfere + 1.ToString()}", valor);
+                Transacao tReceber = new(dataHoje, "Receita", "Transferência entre Contas", $"Transferência de valor da conta ID:{numeroContaTransfere.ToString()}", valor);
                 Transacao tTransferir = new(dataHoje, "Despesa", "Transferência entre Contas", $"Transferência de valor para a conta ID:{numeroContaRecebe.ToString()}", valor);
 
                 AdicionaTransacaoConta(minhasContas, tReceber, numeroContaRecebe);
@@ -535,7 +535,7 @@ namespace Sistema_Gerenciamento_Despesas
             Console.WriteLine(sb.ToString());
         }
 
-        public static void TransacaoMinMax(List<Conta> minhasContas)
+        public static void TransacaoMenoreMaior(List<Conta> minhasContas)
         {
             Transacao maiorValor, menorValor;
             

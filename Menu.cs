@@ -371,7 +371,7 @@ namespace Sistema_Gerenciamento_Despesas
                     isValid = VerificaQuantidadesContas(minhasContas, 1);
                     if (isValid)
                     {
-                        Conta.TransacaoMinMax(minhasContas);
+                        Conta.TransacaoMenoreMaior(minhasContas);
                     }
 
                     else

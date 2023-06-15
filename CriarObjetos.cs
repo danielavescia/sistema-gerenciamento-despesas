@@ -48,6 +48,7 @@
             {
                 Conta.AdicionaTransacaoConta(minhasContas, minhasTransacoes[i], 1);
             }
+            Console.Clear();
 
             return minhasContas;
         }
