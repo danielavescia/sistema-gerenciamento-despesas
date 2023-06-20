@@ -11,56 +11,36 @@ namespace Sistema_Gerenciamento_Despesas
         protected DateOnly data = new();
         protected string tipo, categoria, descricao;
         protected double valor;
-      
+
         //propriedades de acesso
-        public DateOnly GetData()
+        public DateOnly Data
         {
-            return data;
+            get { return data; }
+            set { data = value; }
         }
 
-        public void SetDate(DateOnly data)
+        public string Tipo
         {
-            this.data = data;
+            get { return tipo; }
+            set { tipo = value; }
         }
 
-        public string GetTipo()
+        public string Categoria
         {
-            return tipo;
+            get { return categoria; }
+            set { categoria = value; }
         }
 
-        public void SetTipo(string tipo)
+        public string Descricao
         {
-            this.tipo = tipo;
+            get { return descricao; }
+            set { descricao = value; }
         }
 
-        public string GetCategoria()
+        public double Valor
         {
-            return categoria;
-        }
-
-        public void SetCategoria(string categoria)
-        {
-            this.categoria = categoria;
-        }
-
-        public string GetDescricao()
-        {
-            return descricao;
-        }
-
-        public void SetDescricao(string descricao)
-        {
-            this.descricao = descricao;
-        }
-
-        public double GetValor()
-        {
-            return valor;
-        }
-
-        public void SetValor(double valor)
-        {
-            this.valor = valor;
+            get { return valor; }
+            set { valor = value; }
         }
 
         //método construtor default
@@ -85,11 +65,11 @@ namespace Sistema_Gerenciamento_Despesas
                -------------------------------------------
                 DADOS REFERENTES DA TRANSACAO:
                -------------------------------------------
-               Data {GetData()}
-               Tipo: {GetTipo()}
-               Categoria: {GetCategoria()}
-               Descricao: {GetDescricao()}
-               Valor: {GetValor().ToString("N2")}
+               Data {Data}
+               Tipo: {Tipo}
+               Categoria: {Categoria}
+               Descricao: {Descricao}
+               Valor: {Valor.ToString("N2")}
                --------------------------------------------";
         }
 
@@ -159,15 +139,15 @@ namespace Sistema_Gerenciamento_Despesas
         //metodo que pesquisa que permite identificar a localização de uma transação especifica numa das Contas
         public static int RetornaIdTransacao(List<Conta> minhasContas, Transacao minhaTransacao) 
         {
-            string descricao = minhaTransacao.GetDescricao();
-            double valor= minhaTransacao.GetValor();
+            string descricao = minhaTransacao.Descricao;
+            double valor= minhaTransacao.Valor;
             int idBanco = 0;
 
             foreach (Conta c in minhasContas) 
             {
                 foreach (Transacao t in c.GetTransacoes()) 
                 {
-                    if (t.GetDescricao().Equals(descricao) && (t.GetValor() == valor))
+                    if (t.Descricao.Equals(descricao) && (t.Valor == valor))
                     { 
                         return idBanco = c.GetId();
                     }

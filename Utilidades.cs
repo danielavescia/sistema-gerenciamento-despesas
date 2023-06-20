@@ -24,7 +24,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                 if (!isValid)
                 {
-                    Console.WriteLine("Formato incorreto! Digite novamente:");
+                    throw new FormatException("Valor inserido é inválido! Digite novamente um número inteiro:");
                 }
 
             } while (!isValid);
@@ -41,12 +41,12 @@ namespace Sistema_Gerenciamento_Despesas
 
             do
             {
-                input = (Console.ReadLine());
+                input = Console.ReadLine();
                 isValid = Regex.IsMatch(input, regex);
 
                 if (!isValid)
                 {
-                    Console.WriteLine("Formato incorreto! Tente novamente...");
+                    throw new FormatException("Valor inválido! Digite novamente o valor desejado:");
                 }
 
             } while (!isValid);
@@ -68,7 +68,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                 if (!isValid)
                 {
-                    Console.WriteLine("Formato incorreto! Tente novamente...");
+                    throw new FormatException("Formato inválido! Digite novamente:");
                 }
 
             } while (!isValid);
@@ -112,21 +112,30 @@ namespace Sistema_Gerenciamento_Despesas
         public static StringBuilder RetornaMenu(string [] frases)
         {
             StringBuilder sb = new();
-            int indiceMaiorPalavra = RetornaMaiorString(frases);
-            int larguraMenu = frases[indiceMaiorPalavra].Length;
 
-            sb.AppendLine($".{new string('_', larguraMenu + 2)}.");
-            sb.AppendFormat("| {0,-" + larguraMenu + "} |\n", frases[0].Trim());
-            sb.AppendLine($".{new string('_', larguraMenu + 2)}.");
-
-            for (int i = 1; i < frases.Length-1; i++)
+            if (frases == null)
             {
-                sb.AppendFormat("| {0,-" + larguraMenu + "} |\n", frases[i].Trim());
+                throw new ArgumentNullException("Adicione strings ao array para imprimir as mensagens corretamente!");
             }
-            sb.AppendLine($"|{new string('_', larguraMenu + 2)}|");
-            sb.AppendLine();
-            sb.AppendLine(frases[frases.Length-1]);
 
+            else
+            {
+               
+                int indiceMaiorPalavra = RetornaMaiorString(frases);
+                int larguraMenu = frases[indiceMaiorPalavra].Length;
+
+                sb.AppendLine($".{new string('_', larguraMenu + 2)}.");
+                sb.AppendFormat("| {0,-" + larguraMenu + "} |\n", frases[0].Trim());
+                sb.AppendLine($".{new string('_', larguraMenu + 2)}.");
+
+                for (int i = 1; i < frases.Length - 1; i++)
+                {
+                    sb.AppendFormat("| {0,-" + larguraMenu + "} |\n", frases[i].Trim());
+                }
+                sb.AppendLine($"|{new string('_', larguraMenu + 2)}|");
+                sb.AppendLine();
+                sb.AppendLine(frases[frases.Length - 1]);
+            }
             return sb;
 
         }
@@ -134,13 +143,6 @@ namespace Sistema_Gerenciamento_Despesas
         public static int RetornaMaiorString(string[] frases) 
         {
             int indiceMaiorPalavra;
-
-            if (frases == null)
-            {
-                return -1;
-            }
-
-            else {
 
               string maiorPalavra = frases[0] ;
 
@@ -151,7 +153,7 @@ namespace Sistema_Gerenciamento_Despesas
                 }
 
                 indiceMaiorPalavra = Array.IndexOf(frases, maiorPalavra);
-            }
+            
             return indiceMaiorPalavra;
         }
     }
