@@ -552,11 +552,11 @@ namespace Sistema_Gerenciamento_Despesas
                 maiorValor = transacoesOrdenadas.Last();
 
 
-                sb = Utilidades.RetornaMensagem($"     TRANSAÇÃO COM MAIOR VALOR NA CONTA ID :{c.id.ToString()}     ");
+                sb = Utilidades.RetornaMensagem($"     TRANSAÇÃO COM MAIOR VALOR NA CONTA ID :{c.id.ToString()}");
                 Console.WriteLine(sb.ToString());
                 Console.WriteLine(maiorValor.ToString());
 
-                sb = Utilidades.RetornaMensagem($"    TRANSAÇÃO COM MENOR VALOR NA CONTA ID :{c.id.ToString()}     ");
+                sb = Utilidades.RetornaMensagem($"    TRANSAÇÃO COM MENOR VALOR NA CONTA ID :{c.id.ToString()}");
                 Console.WriteLine(sb.ToString());
                 Console.WriteLine(menorValor.ToString());
             }

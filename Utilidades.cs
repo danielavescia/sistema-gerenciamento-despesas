@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace Sistema_Gerenciamento_Despesas
 {
     internal class Utilidades
+
     {
         //recebe uma string verifica se ela é válida conforme o padrão de regex determinado e retorna um int
         public static int RetornaInt(string regex)
@@ -91,10 +92,10 @@ namespace Sistema_Gerenciamento_Despesas
         }
 
         //constroi as mensagen sdo sistema conforme o parametro inserido
-        public static StringBuilder RetornaMensagem(String mensagem) { 
+        public static StringBuilder RetornaMensagem(String mensagem) {
+            
+            StringBuilder sb = new();
 
-            StringBuilder sb = new StringBuilder();
-           
             sb.AppendLine();
             sb.Append(".");
             sb.Append('-', mensagem.Length+2);
@@ -108,5 +109,50 @@ namespace Sistema_Gerenciamento_Despesas
             return sb;
         }
 
+        public static StringBuilder RetornaMenu(string [] frases)
+        {
+            StringBuilder sb = new();
+            int indiceMaiorPalavra = RetornaMaiorString(frases);
+            int larguraMenu = frases[indiceMaiorPalavra].Length;
+
+            sb.AppendLine($".{new string('_', larguraMenu + 2)}.");
+            sb.AppendFormat("| {0,-" + larguraMenu + "} |\n", frases[0].Trim());
+            sb.AppendLine($".{new string('_', larguraMenu + 2)}.");
+
+            for (int i = 1; i < frases.Length-1; i++)
+            {
+                sb.AppendFormat("| {0,-" + larguraMenu + "} |\n", frases[i].Trim());
+            }
+            sb.AppendLine($"|{new string('_', larguraMenu + 2)}|");
+            sb.AppendLine();
+            sb.AppendLine(frases[frases.Length-1]);
+
+            return sb;
+
+        }
+
+        public static int RetornaMaiorString(string[] frases) 
+        {
+            int indiceMaiorPalavra;
+
+            if (frases == null)
+            {
+                return -1;
+            }
+
+            else {
+
+              string maiorPalavra = frases[0] ;
+
+                foreach (string s in frases)
+                {
+                    if (s.Length > maiorPalavra.Length)
+                        maiorPalavra = s;
+                }
+
+                indiceMaiorPalavra = Array.IndexOf(frases, maiorPalavra);
+            }
+            return indiceMaiorPalavra;
+        }
     }
 }

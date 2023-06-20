@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CRjTsQA0n2lZQf6TKON3T74uXGqo84BjK+yKXx9L0mxJwx/uLv0Mjb5Nf8z0O1fDQc5p8hDukq2Qf1Tfrybphg==",
+  "dgSpecHash": "/9M7o+zR8XGWKp8WwrJ6ogSetWcEklzB8iXyhGqdkKC4RM5h4+bNSk4Z3Ep6+5vWcMEDz867ybgIJzhSVydVHA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Sistema_Gerenciamento_Despesas\\Sistema_Gerenciamento_Despesas.csproj",
+  "projectFilePath": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Dell\\Dell 2022_2\\Sistema_Gerenciamento_Despesas\\Sistema_Gerenciamento_Despesas.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\danie\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\danie\\.nuget\\packages\\mstest.testframework\\3.0.4\\mstest.testframework.3.0.4.nupkg.sha512",

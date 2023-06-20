@@ -70,79 +70,98 @@ namespace Sistema_Gerenciamento_Despesas
         //Imprime Menu Inicial
         public static void ImprimeMenuInicial()
         {
+            StringBuilder sb = new();
+            string [] frases = new string[]
+             {
+             
+                "MENU INICIAL",
+                "1. Gerenciar Contas",
+                "2. Gerenciar Transações",
+                "3. Painel Geral",
+                 "Digite a opção desejada:",
+             };
+
             Wait(1000);
             Console.Clear();
-            Console.WriteLine();
-            Console.WriteLine("    SISTEMA DE GERENCIAMENTO DE DESPESAS    ");
-            Console.WriteLine();
-            Console.WriteLine(".___________________________________________.");
-            Console.WriteLine("|                MENU INICIAL               |");
-            Console.WriteLine("|___________________________________________|");
-            Console.WriteLine("|1. Gerenciar Contas                        |");
-            Console.WriteLine("|2. Gerenciar Transações                    |");
-            Console.WriteLine("|3. Painel Geral                            |");
-            Console.WriteLine("|___________________________________________|");
-            Console.WriteLine();
-            Console.WriteLine("Digite a opção desejada:");
+           
+            sb =  Utilidades.RetornaMenu(frases);
+            sb.Insert(0,$"SISTEMA DE GERENCIAMENTO DE DESPESAS{"\n"}");
+            Console.WriteLine(sb);
         }
-
+            
         //Imprime Menu da funcionaliade Gerenciar Conta
         public static void ImprimeMenuCase1()
         {
             Wait(1000);
             Console.Clear();
-            Console.WriteLine();
-            Console.WriteLine("____________________________________________");
-            Console.WriteLine("|              GERENCIAR CONTA              |");
-            Console.WriteLine("|___________________________________________|");
-            Console.WriteLine("|1. Cadastrar conta                         |");
-            Console.WriteLine("|2. Remover conta                           |");
-            Console.WriteLine("|3. Mesclar contas                          |");
-            Console.WriteLine("|4. Voltar ao menu inicial                  |");
-            Console.WriteLine("|___________________________________________|");
-            Console.WriteLine();
-            Console.WriteLine("Digite a opção desejada:");
+            StringBuilder sb = new();
+            string[] frases = new string[]
+            {
+       
+            "GERENCIAR CONTA",
+            "1. Cadastrar conta",
+            "2. Remover conta",
+            "3. Mesclar contas",
+            "4. Voltar ao menu inicial",
+            "Digite a opção desejada:",
+             };
+
+            Wait(1000);
+            Console.Clear();
+            sb = Utilidades.RetornaMenu(frases);
+            Console.WriteLine(sb);
 
         }
 
         //Imprime Menu da funcionaliade Gerenciar Transações
         public static void ImprimeMenuCase2()
         {
+
             Wait(1000);
             Console.Clear();
-            Console.WriteLine();
-            Console.WriteLine(".___________________________________________.");
-            Console.WriteLine("|            GERENCIAR TRANSACOES           |");
-            Console.WriteLine("|___________________________________________|");
-            Console.WriteLine("|1. Extrato da conta                        |");
-            Console.WriteLine("|2. Incluir transação                       |");
-            Console.WriteLine("|3. Editar a última transação               |");
-            Console.WriteLine("|4. Transferir fundos                       |");
-            Console.WriteLine("|5. Voltar ao menu inicial                  |");
-            Console.WriteLine("|___________________________________________|");
-            Console.WriteLine();
-            Console.WriteLine("Digite a opção desejada:");
+            StringBuilder sb = new();
+            string[] frases = new string[]
+            {
+            "GERENCIAR TRANSACOES",
+            "1. Extrato da conta",
+            "2. Incluir transação",
+            "3. Editar a última transação",
+            "4.Transferir fundos ",
+            "5. Voltar ao menu inicial",
+            "Digite a opção desejada:",
+             };
+
+            Wait(1000);
+            Console.Clear();
+            sb = Utilidades.RetornaMenu(frases);
+            Console.WriteLine(sb);
+            Wait(1000);
 
         }
 
         //Imprime Menu da funcionaliade Painel Geral
         public static void ImprimeMenuCase3()
         {
+
             Wait(1000);
             Console.Clear();
-            Console.WriteLine();
-            Console.WriteLine(".___________________________________________.");
-            Console.WriteLine("|               PAINEL GERAL                |");
-            Console.WriteLine("|___________________________________________|");
-            Console.WriteLine("|1. Resumo das contas                       |");
-            Console.WriteLine("|2. Resumo de receitas e despesas do mês    |");
-            Console.WriteLine("|3. Saldo geral dos últimos 6 meses         |");
-            Console.WriteLine("|4. Transações com maior valor e menor valor|");
-            Console.WriteLine("|5. Voltar ao menu inicial                  |");
-            Console.WriteLine("|___________________________________________|");
-            Console.WriteLine();
-            Console.WriteLine("Digite a opção desejada:");
+            StringBuilder sb = new();
+            string[] frases = new string[]
+            {
+            "PAINEL GERAL",
+            "1. Resumo das contas",
+            "2. Resumo de receitas e despesas do mês",
+            "3. Saldo geral dos últimos 6 meses",
+            "4. Transações com maior valor e menor valor",
+            "5. Voltar ao menu inicial",
+            "Digite a opção desejada:",
+             };
 
+            Wait(1000);
+            Console.Clear();
+            sb = Utilidades.RetornaMenu(frases);
+            Console.WriteLine(sb);
+      
         }
 
         //switch case relacionado as funcionalides de Gerencia Conta
