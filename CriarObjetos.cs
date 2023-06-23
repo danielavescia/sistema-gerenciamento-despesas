@@ -41,12 +41,12 @@
             //adiciona as transações de 0-9 na minhasContas[0] e as transações de 10 - 19 na minhasContas[1]
             for (int i = 0; i <= 9; i++)
             {
-                Conta.AdicionaTransacaoConta(minhasContas, minhasTransacoes[i], 0);
+                GerenciamentoConta.AdicionaTransacaoConta(minhasContas, minhasTransacoes[i], 0);
             }
 
             for (int i = 10; i <= 19; i++)
             {
-                Conta.AdicionaTransacaoConta(minhasContas, minhasTransacoes[i], 1);
+                GerenciamentoConta.AdicionaTransacaoConta(minhasContas, minhasTransacoes[i], 1);
             }
             Console.Clear();
 
