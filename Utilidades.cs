@@ -156,5 +156,39 @@ namespace Sistema_Gerenciamento_Despesas
             
             return indiceMaiorPalavra;
         }
+
+        public static int RetornaContaEscolhida(List<Conta> minhasContas, string pergunta) 
+        {
+          
+                // Imprime as contas ativas p/ usuario decidir pro input qual deseja selecionar
+                Conta.ImprimirContasAtivas(minhasContas);
+                Console.WriteLine(pergunta);
+                int contaEscolhida = RetornaNumeroConta(minhasContas); 
+
+            return contaEscolhida;
+        }
+
+        //Método que retorna um posição válida de uma conta de interesse na lista de contas
+        public static int RetornaNumeroConta(List<Conta> minhasContas)
+        {
+            string idConta;
+            int intervaloMaximo = minhasContas.Count;
+            int numeroId;
+
+            do
+            {
+                string regex = "^^[0-9]+$"; // regex que permite qualquer caracter exceto numeros
+                numeroId = Utilidades.RetornaInt(regex);
+
+                if (numeroId < 0 || numeroId > intervaloMaximo)
+                {
+                    Console.WriteLine("O número se encontra fora do intervalo das IDs de contas existentes");
+                }
+
+            } while (numeroId < 0 || numeroId > intervaloMaximo);
+
+            return numeroId - 1; // pegar a posicao na lista corretamente 
+        }
+
     }
 }

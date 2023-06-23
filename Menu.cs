@@ -182,11 +182,14 @@ namespace Sistema_Gerenciamento_Despesas
                 // Remover conta;
                 case 2:
 
-                    isValid = VerificaQuantidadesContas(minhasContas,1);
-                    
+                    isValid = VerificaQuantidadesContas(minhasContas, 1);
+                    string pergunta = "Digite a Id da conta que deseja remover:";
+                    int contaRemover;
+
                     if (isValid)
                     {
-                        GerenciamentoConta.RemoverConta(minhasContas);
+                        contaRemover = Utilidades.RetornaContaEscolhida(minhasContas, pergunta);
+                        GerenciamentoConta.RemoverConta(minhasContas, contaRemover);
                     }
 
                     else 

@@ -9,9 +9,9 @@ namespace Sistema_Gerenciamento_Despesas
     public class GerenciamentoConta
     {
         //método que remove a conta selecionada pelo usuario
-        public static List<Conta> RemoverConta(List<Conta> minhasContas)
+        public static List<Conta> RemoverConta(List<Conta> minhasContas, int contaRemover)
         {
-            int contaRemover;
+            
             StringBuilder sb;
             string mensagem1 = "LEMBRE-SE QUE AO REMOVER SUA CONTA, VOCE IRA PERDER TODAS AS TRANSACOES RELACIONADAS A ELA";
             string mensagem2 = "VOCE NAO POSSUI NENHUMA CONTA CADASTRADA";
@@ -27,13 +27,8 @@ namespace Sistema_Gerenciamento_Despesas
                 Console.WriteLine(sb);
             }
 
-            else
-            {
-                // Imprime as contas ativas p/ usuario decidir pro input qual deseja remover
-                Conta.ImprimirContasAtivas(minhasContas);
-                Console.WriteLine("Digite a Id da conta que deseja remover:");
-                contaRemover = Conta.RetornaNumeroConta(minhasContas);
-
+            else { 
+       
                 //construção mensagem impressa em tela
                 string mensagem3 = $"{minhasContas[contaRemover].GetId().ToString()} - {minhasContas[contaRemover].GetBanco().ToString()} REMOVIDA COM SUCESSO!";
                 sb = Utilidades.RetornaMensagem(mensagem3);
@@ -57,10 +52,10 @@ namespace Sistema_Gerenciamento_Despesas
             //bloco que solicita e captura as posições na lista de contas
             Conta.ImprimirContasAtivas(minhasContas);
             Console.WriteLine("Por favor, digite a ID da conta que irá receber as transações:");
-            numeroContaRecebe = Conta.RetornaNumeroConta(minhasContas);
+            numeroContaRecebe = Utilidades.RetornaNumeroConta(minhasContas);
 
             Console.WriteLine("Agora, digite a ID da conta que irá transferir as transações:");
-            numeroContaTransfere = Conta.RetornaNumeroConta(minhasContas);
+            numeroContaTransfere = Utilidades.RetornaNumeroConta(minhasContas);
 
 
             if (minhasContas[numeroContaRecebe].GetTransacoes().Count == null && minhasContas[numeroContaTransfere].GetTransacoes() == null)
@@ -123,7 +118,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                 Conta.ImprimirContasAtivas(minhasContas);
                 Console.WriteLine("Digite a id da conta que voce deseja adicionar esta transação:");
-                int conta = Conta.RetornaNumeroConta(minhasContas);
+                int conta = Utilidades.RetornaNumeroConta(minhasContas);
 
                 GerenciamentoConta.AdicionaTransacaoConta(minhasContas, t, conta);
 

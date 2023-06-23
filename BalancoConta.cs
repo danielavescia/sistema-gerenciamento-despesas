@@ -163,10 +163,10 @@ namespace Sistema_Gerenciamento_Despesas
             Conta.ImprimirContasAtivas(minhasContas);
 
             Console.WriteLine($"{"\n"} Digite a ID da conta que gostaria de RECEBER os fundos");
-            numeroContaRecebe = Conta.RetornaNumeroConta(minhasContas);
+            numeroContaRecebe = Utilidades.RetornaNumeroConta(minhasContas);
 
             Console.WriteLine($"{"\n"} Digite a ID da conta que gostaria de TRANSFERIR os fundos");
-            numeroContaTransfere = Conta.RetornaNumeroConta(minhasContas);
+            numeroContaTransfere = Utilidades.RetornaNumeroConta(minhasContas);
 
             Console.WriteLine($"{"\n"} Digite o VALOR que gostaria de transferir");
             valor = Utilidades.RetornaDouble(regex);
