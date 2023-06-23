@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Sistema_Gerenciamento_Despesas
 {
-    internal class Utilidades
+    public class Utilidades
 
     {
         //recebe uma string verifica se ela é válida conforme o padrão de regex determinado e retorna um int
@@ -19,7 +19,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             do
             {
-                input = (Console.ReadLine());
+                input = Console.ReadLine();
                 isValid = Regex.IsMatch(input, regex);
 
                 if (!isValid)
@@ -63,7 +63,7 @@ namespace Sistema_Gerenciamento_Despesas
 
             do
             {
-                input = (Console.ReadLine());
+                input = Console.ReadLine();
                 isValid = Regex.IsMatch(input, regex);
 
                 if (!isValid)
