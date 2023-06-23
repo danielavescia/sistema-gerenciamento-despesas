@@ -207,54 +207,9 @@ namespace Sistema_Gerenciamento_Despesas
             return numeroId - 1; // pegar a posicao na lista corretamente 
         }
 
-        //Método que adiciona uma transação na Lista de Transações de uma conta específica
-        public static Transacao AdicionaTransacaoConta(List<Conta> minhasContas, Transacao t, int numeroConta)
-        {
-            StringBuilder sb = new();
-            String mensagem2 = $"          Esta {t.Tipo} foi adicionada com sucesso!          ";
+       
 
-            minhasContas[numeroConta].SetTransacao(t); //adiciona transacao na conta desejada
-            minhasContas[numeroConta].GetTransacoes().OrderBy(t => t.Data); //ordena a lista de transacoes
-
-            //criação da mensagem
-            Console.WriteLine(t.ToString());
-            sb = Utilidades.RetornaMensagem(mensagem2);
-            Console.WriteLine(sb.ToString());
-            BalancoConta.CalculaSaldoTransacao(t, minhasContas[numeroConta]);
-
-            return t;
-
-        }
-
-        //Método que exibe as maiores transações e menores transações de todas as contas
-        public static void TransacaoMenoreMaior(List<Conta> minhasContas)
-        {
-            Transacao maiorValor, menorValor;
-            
-            StringBuilder sb;
-           
-
-            foreach (Conta c in minhasContas)
-            {
-                List<Transacao> transacoes = c.GetTransacoes();
-
-                // Ordene as transações da conta pelo valor
-                List<Transacao> transacoesOrdenadas = transacoes.OrderBy(t => t.Valor).ToList();
-                menorValor = transacoesOrdenadas.First();
-                maiorValor = transacoesOrdenadas.Last();
-
-
-                sb = Utilidades.RetornaMensagem($"     TRANSAÇÃO COM MAIOR VALOR NA CONTA ID :{c.id.ToString()}");
-                Console.WriteLine(sb.ToString());
-                Console.WriteLine(maiorValor.ToString());
-
-                sb = Utilidades.RetornaMensagem($"    TRANSAÇÃO COM MENOR VALOR NA CONTA ID :{c.id.ToString()}");
-                Console.WriteLine(sb.ToString());
-                Console.WriteLine(menorValor.ToString());
-            }
-
-           
-        }
+       
     }
 }
 
