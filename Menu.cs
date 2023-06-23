@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sistema_Gerenciamento_Despesas
 {
-    internal class Menu
+    public class Menu
     {
 
         private bool menuEstaAtivo;
@@ -186,7 +186,7 @@ namespace Sistema_Gerenciamento_Despesas
                     
                     if (isValid)
                     {
-                        Conta.RemoverConta(minhasContas);
+                        GerenciamentoConta.RemoverConta(minhasContas);
                     }
 
                     else 
@@ -204,7 +204,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                     if (isValid)
                     {
-                        Conta.MesclarContas(minhasContas);
+                        GerenciamentoConta.MesclarContas(minhasContas);
                     }
 
                     else
@@ -244,7 +244,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                     if (isValid)
                     {
-                        Conta.ExtratoConta(minhasContas);
+                        BalancoConta.ExtratoConta(minhasContas);
                     }
                     else
                     {
@@ -262,7 +262,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                     if (isValid)
                     {
-                        t = AdicionarTransacao(minhasContas);
+                        t = GerenciamentoConta.AdicionarTransacao(minhasContas);
                         ultimaTransacao = new Transacao();
                         ultimaTransacao = t;
                     }
@@ -286,7 +286,7 @@ namespace Sistema_Gerenciamento_Despesas
                     }
                     else
                     {
-                        minhasContas = Transacao.EditarTransacao(minhasContas, ultimaTransacao);
+                        minhasContas = GerenciamentoTransacoes.EditarTransacao(minhasContas, ultimaTransacao);
                         Console.WriteLine("Retornando ao menu inicial...");
                         Wait(3000);
                         break;
@@ -298,7 +298,7 @@ namespace Sistema_Gerenciamento_Despesas
                     isValid = VerificaQuantidadesContas(minhasContas, 2);
                     if (isValid)
                     {
-                        Conta.TransferirFundos(minhasContas);
+                        BalancoConta.TransferirFundos(minhasContas);
                     }
                     else 
                     {
@@ -335,7 +335,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                     if (isValid)
                     {
-                        Conta.ImprimeSaldo(minhasContas);
+                        BalancoConta.ImprimeSaldo(minhasContas);
                     }
 
                     else 
@@ -354,7 +354,7 @@ namespace Sistema_Gerenciamento_Despesas
 
                     if (isValid)
                     {
-                        Conta.ExtratoMensal(minhasContas);
+                        BalancoConta.ExtratoMensal(minhasContas);
                     }
 
                     else
@@ -372,7 +372,7 @@ namespace Sistema_Gerenciamento_Despesas
                     isValid = VerificaQuantidadesContas(minhasContas, 1);
                     if (isValid)
                     {
-                        Conta.ExtratoSemestral(minhasContas);
+                        BalancoConta.ExtratoSemestral(minhasContas);
                     }
 
                     else
@@ -390,7 +390,7 @@ namespace Sistema_Gerenciamento_Despesas
                     isValid = VerificaQuantidadesContas(minhasContas, 1);
                     if (isValid)
                     {
-                        Conta.TransacaoMenoreMaior(minhasContas);
+                        GerenciamentoTransacoes.TransacaoMenoreMaior(minhasContas);
                     }
 
                     else
@@ -411,33 +411,6 @@ namespace Sistema_Gerenciamento_Despesas
                     Console.WriteLine("Digite uma opcao valida!");
                     break;
             }
-        }
-
-        //loop para a criação de transações
-        public Transacao AdicionarTransacao(List<Conta> minhasContas)
-        {
-            string regex = "^(1|2)$";
-            int opcao;
-            Transacao t;
-          
-
-            do
-            {
-                t = Transacao.CriarTransacao();
-
-                Conta.ImprimirContasAtivas(minhasContas);
-                Console.WriteLine("Digite a id da conta que voce deseja adicionar esta transação:");
-                int conta = Conta.RetornaNumeroConta(minhasContas);
-
-                Conta.AdicionaTransacaoConta(minhasContas, t, conta);
-                
-                Console.WriteLine("Gostaria de adicionar mais transações? Digite:");
-                Console.WriteLine("1 - SIM     2 - NÃO");
-                opcao = Utilidades.RetornaInt(regex);
-
-            } while (opcao == 1);
-
-            return t;
         }
 
         //tempo entre cada impressão

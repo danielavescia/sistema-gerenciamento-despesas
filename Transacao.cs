@@ -6,7 +6,7 @@ using System.Xml.Xsl;
 
 namespace Sistema_Gerenciamento_Despesas
 {
-    internal class Transacao
+    public class Transacao
     {
         protected DateOnly data = new();
         protected string tipo, categoria, descricao;
@@ -106,54 +106,6 @@ namespace Sistema_Gerenciamento_Despesas
             {
                 throw new NullReferenceException("Ocorreu um erro na criação da transação! Por favor, tente novamente!");
             }
-        }
-
-        //Método responsável por realizar edição da ultima transação cadastrada 
-        public static List<Conta> EditarTransacao(List<Conta> minhasContas, Transacao minhaTransacao)
-        {
-            
-            int conta, posicaoConta;
-            List<Transacao> trans;
-            StringBuilder sb;
-            Transacao ultimaTransacao;
-
-            posicaoConta = RetornaIdTransacao(minhasContas,minhaTransacao); 
-            minhasContas[posicaoConta].GetTransacoes().Remove(minhaTransacao);
-
-            sb = Utilidades.RetornaMensagem("     EDITAR ÚLTIMA TRANSAÇÃO     ");
-            Console.WriteLine(sb.ToString());
-            Console.WriteLine(minhaTransacao.ToString());
-
-            Console.WriteLine("Para alterar os dados da transacao acima:");
-            minhaTransacao = CriarTransacao();
-            minhasContas[posicaoConta].SetTransacao(minhaTransacao);
-
-            Conta.ImprimirContasAtivas(minhasContas);
-
-            Console.WriteLine("TRANSACAO ALTERADA COM SUCESSO!");
-
-            return minhasContas;
-
-        }
-
-        //metodo que pesquisa que permite identificar a localização de uma transação especifica numa das Contas
-        public static int RetornaIdTransacao(List<Conta> minhasContas, Transacao minhaTransacao) 
-        {
-            string descricao = minhaTransacao.Descricao;
-            double valor= minhaTransacao.Valor;
-            int idBanco = 0;
-
-            foreach (Conta c in minhasContas) 
-            {
-                foreach (Transacao t in c.GetTransacoes()) 
-                {
-                    if (t.Descricao.Equals(descricao) && (t.Valor == valor))
-                    { 
-                        return idBanco = c.GetId();
-                    }
-                }
-            }
-            return idBanco-1;
         }
 
         //Método que por meio do input determina qual o tipo da transação 
